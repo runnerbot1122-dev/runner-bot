@@ -580,7 +580,8 @@
             "extrasPrefixos": [],
             "limiteCaracteres": 100,
             "antiTrava": true,
-            "tempoComando": 5
+            "tempoComando": 0,
+            "antiNotas": true
         }
     }
 }

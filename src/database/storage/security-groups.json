@@ -28,7 +28,9 @@
       "groupOwners": [],
       "verified": {},
       "blacklist": [],
-      "adminUsage": {},
+      "adminUsage": {
+        "31894460739781@lid": 4
+      },
       "antiArqv": false,
       "soDono": false,
       "noPrefixList": [],
