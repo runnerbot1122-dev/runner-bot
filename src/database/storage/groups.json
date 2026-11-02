@@ -581,7 +581,7 @@
             "limiteCaracteres": 100,
             "antiTrava": true,
             "tempoComando": 0,
-            "antiNotas": true
+            "antiNotas": false
         }
     }
 }
