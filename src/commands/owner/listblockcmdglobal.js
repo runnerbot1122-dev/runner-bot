@@ -1,0 +1,1 @@
+module.exports = require('../../utils/blockCommandFactory')({ name: ['listblockcmdglobal', 'listbcmdglobal'], description: 'Lista comandos bloqueados globalmente', action: 'list', list: 'globalCommands' });

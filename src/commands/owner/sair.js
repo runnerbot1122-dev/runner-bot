@@ -1,0 +1,2 @@
+const ownerOnly = require('../../utils/ownerOnly');
+module.exports = { name: ['sair', 'sair_chat'], description: 'Faz o bot sair do grupo atual', execute: async ctx => { ownerOnly(ctx); if (!ctx.isGroup) return ctx.replyNYX('❌ Use este comando dentro do grupo do qual o bot deve sair.', 'bot'); const chat = ctx.chat; await ctx.replyNYX('👋 Estou saindo deste grupo.', 'bot'); try { await ctx.sock.groupLeave(chat); } catch (e) { return ctx.replyNYX('❌ Não consegui sair do grupo. Verifique a conexão do bot.', 'bot'); } } };

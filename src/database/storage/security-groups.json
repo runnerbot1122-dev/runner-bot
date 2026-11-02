@@ -1,0 +1,29 @@
+{
+  "groups": {
+    "120363427756624621@g.us": {
+      "subowners": [],
+      "groupOwners": [
+        "99528048934922@lid"
+      ],
+      "verified": {},
+      "blacklist": [],
+      "adminUsage": {
+        "31894460739781@lid": 6
+      },
+      "antiArqv": true,
+      "soDono": false,
+      "noPrefixList": [
+        "fig",
+        "tk"
+      ],
+      "perms": {
+        "99528048934922@lid": [
+          "ping",
+          "status"
+        ]
+      }
+    }
+  },
+  "globalVerified": {},
+  "antiPvLevel": 0
+}

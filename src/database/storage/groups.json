@@ -1,0 +1,582 @@
+{
+    "120363427756624621@g.us": {
+        "settings": {
+            "welcome": true,
+            "antilink": false,
+            "antiSpam": true,
+            "antiFlood": false,
+            "autoRead": false,
+            "autoTyping": false,
+            "prefix": "7",
+            "botOff": false,
+            "xpEnabled": true,
+            "reactionKeywords": [],
+            "autoReplies": [],
+            "soadm": false,
+            "visualizarMsg": false,
+            "antiImg": false,
+            "antiPay": true,
+            "antiDoc": true,
+            "legendabv": "opa, seja bem vindo ao grupo! Caso vc precise de ajuda, pode marcar os adms e informar o que precisa!!",
+            "legendasaida": "Foi bom enquanto durou, #numero!",
+            "autoSticker": false,
+            "dddBloqueados": [
+                "12",
+                "13",
+                "14",
+                "15",
+                "16",
+                "17",
+                "18",
+                "19",
+                "21",
+                "22",
+                "24",
+                "27",
+                "28",
+                "31",
+                "32",
+                "33",
+                "34",
+                "35",
+                "37",
+                "38",
+                "41",
+                "42",
+                "43",
+                "44",
+                "45",
+                "46",
+                "47",
+                "48",
+                "49",
+                "51",
+                "53",
+                "54",
+                "55",
+                "61",
+                "62",
+                "64",
+                "63",
+                "65",
+                "66",
+                "67",
+                "68",
+                "69",
+                "71",
+                "73",
+                "74",
+                "75",
+                "77",
+                "79",
+                "81",
+                "87",
+                "82",
+                "83",
+                "84",
+                "85",
+                "88",
+                "86",
+                "89",
+                "91",
+                "93",
+                "94",
+                "92",
+                "97",
+                "95",
+                "96",
+                "98",
+                "99"
+            ],
+            "aprovacaoEntrada": true
+        }
+    },
+    "120363412156620024@g.us": {
+        "settings": {
+            "welcome": false,
+            "antilink": false,
+            "antiSpam": false,
+            "antiFlood": false,
+            "autoRead": false,
+            "autoTyping": false,
+            "prefix": "7",
+            "botOff": false,
+            "xpEnabled": true,
+            "reactionKeywords": [],
+            "autoReplies": [],
+            "soadm": false,
+            "visualizarMsg": false
+        }
+    },
+    "120363427232281410@g.us": {
+        "settings": {
+            "welcome": false,
+            "antilink": false,
+            "antiSpam": false,
+            "antiFlood": false,
+            "autoRead": false,
+            "autoTyping": false,
+            "prefix": "7",
+            "botOff": false,
+            "xpEnabled": true,
+            "reactionKeywords": [],
+            "autoReplies": [],
+            "soadm": false,
+            "visualizarMsg": false
+        }
+    },
+    "120363168388883230@g.us": {
+        "settings": {
+            "welcome": false,
+            "antilink": false,
+            "antiSpam": false,
+            "antiFlood": false,
+            "autoRead": false,
+            "autoTyping": false,
+            "prefix": "7",
+            "botOff": false,
+            "xpEnabled": true,
+            "reactionKeywords": [],
+            "autoReplies": [],
+            "soadm": false,
+            "visualizarMsg": false
+        }
+    },
+    "120363424217243238@g.us": {
+        "settings": {
+            "welcome": false,
+            "antilink": false,
+            "antiSpam": false,
+            "antiFlood": false,
+            "autoRead": false,
+            "autoTyping": false,
+            "prefix": "7",
+            "botOff": false,
+            "xpEnabled": true,
+            "reactionKeywords": [],
+            "autoReplies": [],
+            "soadm": false,
+            "visualizarMsg": false
+        }
+    },
+    "status@broadcast": {
+        "settings": {
+            "welcome": false,
+            "antilink": false,
+            "antiSpam": false,
+            "antiFlood": false,
+            "autoRead": false,
+            "autoTyping": false,
+            "prefix": "7",
+            "botOff": false,
+            "xpEnabled": true,
+            "reactionKeywords": [],
+            "autoReplies": [],
+            "soadm": false,
+            "visualizarMsg": false
+        }
+    },
+    "120363420252511456@g.us": {
+        "settings": {
+            "welcome": false,
+            "antilink": false,
+            "antiSpam": false,
+            "antiFlood": false,
+            "autoRead": false,
+            "autoTyping": false,
+            "prefix": "7",
+            "botOff": false,
+            "xpEnabled": true,
+            "reactionKeywords": [],
+            "autoReplies": [],
+            "soadm": false,
+            "visualizarMsg": false
+        }
+    },
+    "120363411814433957@g.us": {
+        "settings": {
+            "welcome": false,
+            "antilink": false,
+            "antiSpam": false,
+            "antiFlood": false,
+            "autoRead": false,
+            "autoTyping": false,
+            "prefix": "7",
+            "botOff": false,
+            "xpEnabled": true,
+            "reactionKeywords": [],
+            "autoReplies": [],
+            "soadm": false
+        }
+    },
+    "120363406610307587@g.us": {
+        "settings": {
+            "welcome": false,
+            "antilink": false,
+            "antiSpam": false,
+            "antiFlood": false,
+            "autoRead": false,
+            "autoTyping": false,
+            "prefix": "7",
+            "botOff": false,
+            "xpEnabled": true,
+            "reactionKeywords": [],
+            "autoReplies": [],
+            "soadm": false
+        }
+    },
+    "120363026833414324@g.us": {
+        "settings": {
+            "welcome": false,
+            "antilink": false,
+            "antiSpam": false,
+            "antiFlood": false,
+            "autoRead": false,
+            "autoTyping": false,
+            "prefix": "7",
+            "botOff": false,
+            "xpEnabled": true,
+            "reactionKeywords": [],
+            "autoReplies": [],
+            "soadm": false,
+            "visualizarMsg": false
+        }
+    },
+    "120363418773898558@g.us": {
+        "settings": {
+            "welcome": false,
+            "antilink": false,
+            "antiSpam": false,
+            "antiFlood": false,
+            "autoRead": false,
+            "autoTyping": false,
+            "prefix": "7",
+            "botOff": false,
+            "xpEnabled": true,
+            "reactionKeywords": [],
+            "autoReplies": [],
+            "soadm": false
+        }
+    },
+    "120363401625502501@g.us": {
+        "settings": {
+            "welcome": false,
+            "antilink": false,
+            "antiSpam": false,
+            "antiFlood": false,
+            "autoRead": false,
+            "autoTyping": false,
+            "prefix": "7",
+            "botOff": false,
+            "xpEnabled": true,
+            "reactionKeywords": [],
+            "autoReplies": [],
+            "soadm": false,
+            "visualizarMsg": false
+        }
+    },
+    "99528048934922@lid": {
+        "settings": {
+            "welcome": false,
+            "antilink": false,
+            "antiSpam": false,
+            "antiFlood": false,
+            "autoRead": false,
+            "autoTyping": false,
+            "prefix": "7",
+            "botOff": false,
+            "xpEnabled": true,
+            "reactionKeywords": [],
+            "autoReplies": [],
+            "soadm": false
+        }
+    },
+    "120363142999607164@g.us": {
+        "settings": {
+            "welcome": false,
+            "antilink": false,
+            "antiSpam": false,
+            "antiFlood": false,
+            "autoRead": false,
+            "autoTyping": false,
+            "prefix": "7",
+            "botOff": false,
+            "xpEnabled": true,
+            "reactionKeywords": [],
+            "autoReplies": [],
+            "soadm": false,
+            "visualizarMsg": false
+        }
+    },
+    "120363426613242513@g.us": {
+        "settings": {
+            "welcome": false,
+            "antilink": false,
+            "antiSpam": false,
+            "antiFlood": false,
+            "autoRead": false,
+            "autoTyping": false,
+            "prefix": "7",
+            "botOff": false,
+            "xpEnabled": true,
+            "reactionKeywords": [],
+            "autoReplies": [],
+            "soadm": false,
+            "visualizarMsg": false
+        }
+    },
+    "120363420168894902@g.us": {
+        "settings": {
+            "welcome": false,
+            "antilink": false,
+            "antiSpam": false,
+            "antiFlood": false,
+            "autoRead": false,
+            "autoTyping": false,
+            "prefix": "7",
+            "botOff": false,
+            "xpEnabled": true,
+            "reactionKeywords": [],
+            "autoReplies": [],
+            "soadm": false,
+            "visualizarMsg": false
+        }
+    },
+    "global@config": {
+        "settings": {
+            "reactionKeywords": [
+                {
+                    "trigger": "runner",
+                    "emoji": "👑"
+                },
+                {
+                    "trigger": "ez",
+                    "emoji": "👑"
+                }
+            ],
+            "prefix": "7"
+        }
+    },
+    "553196214809-1562431350@g.us": {
+        "settings": {
+            "welcome": false,
+            "antilink": false,
+            "antiSpam": false,
+            "antiFlood": false,
+            "autoRead": false,
+            "autoTyping": false,
+            "prefix": "7",
+            "botOff": false,
+            "xpEnabled": true,
+            "reactionKeywords": [],
+            "autoReplies": [],
+            "soadm": false,
+            "visualizarMsg": false
+        }
+    },
+    "120363285343849186@g.us": {
+        "settings": {
+            "welcome": false,
+            "antilink": false,
+            "antiSpam": false,
+            "antiFlood": false,
+            "autoRead": false,
+            "autoTyping": false,
+            "prefix": "7",
+            "botOff": false,
+            "xpEnabled": true,
+            "reactionKeywords": [],
+            "autoReplies": [],
+            "soadm": false,
+            "visualizarMsg": false
+        }
+    },
+    "52626636988565@lid": {
+        "settings": {
+            "welcome": false,
+            "antilink": false,
+            "antiSpam": false,
+            "antiFlood": false,
+            "autoRead": false,
+            "autoTyping": false,
+            "prefix": "7",
+            "botOff": false,
+            "xpEnabled": true,
+            "reactionKeywords": [],
+            "autoReplies": [],
+            "soadm": false,
+            "visualizarMsg": false
+        }
+    },
+    "120363231212530434@g.us": {
+        "settings": {
+            "welcome": false,
+            "antilink": false,
+            "antiSpam": false,
+            "antiFlood": false,
+            "autoRead": false,
+            "autoTyping": false,
+            "prefix": "7",
+            "botOff": false,
+            "xpEnabled": true,
+            "reactionKeywords": [],
+            "autoReplies": [],
+            "soadm": false,
+            "visualizarMsg": false
+        }
+    },
+    "120363314445884683@g.us": {
+        "settings": {
+            "welcome": false,
+            "antilink": false,
+            "antiSpam": false,
+            "antiFlood": false,
+            "autoRead": false,
+            "autoTyping": false,
+            "prefix": "7",
+            "botOff": false,
+            "xpEnabled": true,
+            "reactionKeywords": [],
+            "autoReplies": [],
+            "soadm": false,
+            "visualizarMsg": false
+        }
+    },
+    "553196881831-1559081245@g.us": {
+        "settings": {
+            "welcome": false,
+            "antilink": false,
+            "antiSpam": false,
+            "antiFlood": false,
+            "autoRead": false,
+            "autoTyping": false,
+            "prefix": "7",
+            "botOff": false,
+            "xpEnabled": true,
+            "reactionKeywords": [],
+            "autoReplies": [],
+            "soadm": false,
+            "visualizarMsg": false
+        }
+    },
+    "120363429852637950@g.us": {
+        "settings": {
+            "welcome": false,
+            "antilink": false,
+            "antiSpam": false,
+            "antiFlood": false,
+            "autoRead": false,
+            "autoTyping": false,
+            "prefix": "7",
+            "botOff": false,
+            "xpEnabled": true,
+            "reactionKeywords": [],
+            "autoReplies": [],
+            "soadm": false,
+            "visualizarMsg": false
+        }
+    },
+    "166495162216541@lid": {
+        "settings": {
+            "welcome": false,
+            "antilink": false,
+            "antiSpam": false,
+            "antiFlood": false,
+            "autoRead": false,
+            "autoTyping": false,
+            "prefix": "7",
+            "botOff": false,
+            "xpEnabled": true,
+            "reactionKeywords": [],
+            "autoReplies": [],
+            "soadm": false,
+            "visualizarMsg": false
+        }
+    },
+    "120363430923089416@g.us": {
+        "settings": {
+            "welcome": false,
+            "antilink": false,
+            "antiSpam": false,
+            "antiFlood": false,
+            "autoRead": false,
+            "autoTyping": false,
+            "prefix": "7",
+            "botOff": false,
+            "xpEnabled": true,
+            "reactionKeywords": [],
+            "autoReplies": [],
+            "soadm": false,
+            "visualizarMsg": false
+        }
+    },
+    "120363412532472529@g.us": {
+        "settings": {
+            "welcome": false,
+            "antilink": false,
+            "antiSpam": false,
+            "antiFlood": false,
+            "autoRead": false,
+            "autoTyping": false,
+            "prefix": "7",
+            "botOff": false,
+            "xpEnabled": true,
+            "reactionKeywords": [],
+            "autoReplies": [],
+            "soadm": false,
+            "visualizarMsg": false
+        }
+    },
+    "120363410873638431@g.us": {
+        "settings": {
+            "welcome": false,
+            "antilink": false,
+            "antiSpam": false,
+            "antiFlood": false,
+            "autoRead": false,
+            "autoTyping": false,
+            "prefix": "7",
+            "botOff": false,
+            "xpEnabled": true,
+            "reactionKeywords": [],
+            "autoReplies": [],
+            "soadm": false,
+            "visualizarMsg": false
+        }
+    },
+    "24584560631982@lid": {
+        "settings": {
+            "welcome": false,
+            "antilink": false,
+            "antiSpam": false,
+            "antiFlood": false,
+            "autoRead": false,
+            "autoTyping": false,
+            "prefix": "7",
+            "botOff": false,
+            "xpEnabled": true,
+            "reactionKeywords": [],
+            "autoReplies": [],
+            "soadm": false,
+            "visualizarMsg": false
+        }
+    },
+    "120363432197579234@g.us": {
+        "settings": {
+            "welcome": false,
+            "antilink": false,
+            "antiSpam": false,
+            "antiFlood": false,
+            "autoRead": false,
+            "autoTyping": false,
+            "prefix": "7",
+            "botOff": false,
+            "xpEnabled": true,
+            "reactionKeywords": [],
+            "autoReplies": [],
+            "soadm": false,
+            "visualizarMsg": false,
+            "antiLigacao": true
+        }
+    }
+}

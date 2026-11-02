@@ -1,0 +1,3 @@
+const ownerOnly = require('../../utils/ownerOnly');
+const update = require('../../utils/updateOwnerConfig');
+module.exports = { name: ['numero-dono', 'numerodono'], description: 'Atualiza o número principal do dono', execute: async ctx => { ownerOnly(ctx); const value = (ctx.args || []).join(' ').trim(); if (!value) return ctx.replyNYX('Uso: 7numero-dono 5531999999999', 'bot'); try { update.setNumber(value); return ctx.replyNYX('✅ Número do dono atualizado no config.js. A configuração também foi atualizada nesta execução.', 'bot'); } catch (e) { return ctx.replyNYX(e.message === 'INVALID_NUMBER' ? '❌ Informe um número válido com DDI e DDD.' : '❌ Não consegui atualizar o config.js.', 'bot'); } } };

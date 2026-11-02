@@ -1,0 +1,2 @@
+const afk = require('../../database/afk');
+module.exports = { name: ['off', 'afk'], description: 'Registra ausência temporária', execute: async ctx => { const reason = (ctx.args || []).join(' ').trim(); try { afk.set(ctx.sender, reason); return ctx.replyNYX('✅ Mensagem de ausência registrada' + (reason ? `\nMotivo: ${reason}` : '.'), 'bot'); } catch (e) { return ctx.replyNYX('❌ Não consegui registrar sua ausência.', 'bot'); } } };

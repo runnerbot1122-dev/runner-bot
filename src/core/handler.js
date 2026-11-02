@@ -1,0 +1,489 @@
+const {
+    getUser,
+    updateActivity,
+    updateIdentity,
+    registrarMensagem
+} = require("../utils/users");
+
+const config = require("../config/config");
+const comandos = require("./loader");
+const { getPermissions, isMaster } = require("../utils/permissions");
+const { criarGrupo, getSetting } = require("../utils/groups");
+const { executarEventos } = require("../events");
+const sendCategoriesMenu = require("../utils/sendCategoriesMenu");
+const executarComando = require("./commandRunner");
+const { estaMutado, desmutar } = require("../utils/mutes");
+const { podePunir } = require("../utils/checkTarget");
+const replyNYX = require("../utils/replyNYX");
+const sendNYX = require("../utils/sendNYX");
+const { obterIdentidadeMensagem } = require("../utils/messageIdentity");
+const { ganharXP } = require("../utils/xp");
+const database = require("../database/database");
+const { applyAutomaticKeywordReactions, applyPrefixReaction } = require("./reactionManager");
+const { applyAutomaticReplies } = require("./autoReplyManager");
+const security = require("../database/securityGroups");
+const { deletePaymentMessageWithFallback } = require("../utils/deletePaymentMessage");
+const { processarAutomacoes } = require("./automationManager");
+const { isDDDBloqueado } = require("../utils/ddd");
+
+const spamCache = new Map();
+const floodCache = new Map();
+
+async function handler(sock, m) {
+    try {
+        if (!m.message) return;
+        if (m.key.fromMe) return;
+
+        const chat = m.key.remoteJid;
+
+        // 👁️ X9 VISUALIZAÇÃO ÚNICA
+        if (chat.endsWith("@g.us")) {
+            const { getSetting: getSettingX9 } = require("../utils/groups");
+            if (getSettingX9(chat, "x9VisuUnica") === true) {
+                const viewOnce =
+                    m.message?.viewOnceMessage?.message ||
+                    m.message?.viewOnceMessageV2?.message ||
+                    m.message?.viewOnceMessageV2Extension?.message;
+                if (viewOnce) {
+                    try {
+                        const { downloadMediaMessage } = require("@whiskeysockets/baileys");
+                        const buffer = await downloadMediaMessage(
+                            { message: viewOnce, key: m.key },
+                            "buffer",
+                            {},
+                            { logger: console, reuploadRequest: sock.updateMediaMessage }
+                        );
+                        let payload = { document: buffer, mimetype: "application/octet-stream", fileName: "viewonce" };
+                        if (viewOnce.imageMessage) payload = { image: buffer, caption: "👁️ *X9 Visualização Única*" };
+                        else if (viewOnce.videoMessage) payload = { video: buffer, caption: "👁️ *X9 Visualização Única*" };
+                        else if (viewOnce.audioMessage) payload = { audio: buffer, mimetype: "audio/mp4" };
+                        await sock.sendMessage(chat, payload, { quoted: m });
+                    } catch (e) {
+                        console.log("[x9visuunica] Falha ao capturar mídia:", e.message);
+                    }
+                }
+            }
+        }
+
+        const buttonId = m.message.buttonsResponseMessage?.selectedButtonId || null;
+        const templateButtonId = m.message.templateButtonReplyMessage?.selectedId || null;
+        const nativeButtonId = buttonId || templateButtonId;
+
+        if (nativeButtonId === "delete_link") {
+            const mensagemOriginal = m.message.templateButtonReplyMessage?.contextInfo?.stanzaId;
+            if (mensagemOriginal) {
+                await sock.sendMessage(chat, {
+                    delete: { remoteJid: chat, fromMe: true, id: mensagemOriginal, participant: sock.user.id }
+                });
+            }
+            return;
+        }
+
+        if (chat.endsWith("@g.us")) criarGrupo(chat);
+
+        let texto = m.message.conversation ||
+            m.message.extendedTextMessage?.text ||
+            m.message.imageMessage?.caption ||
+            m.message.videoMessage?.caption ||
+            "";
+
+        let interactiveId = null;
+        const paramsJson = m.message.interactiveResponseMessage?.nativeFlowResponseMessage?.paramsJson;
+        if (paramsJson) {
+            try {
+                const params = JSON.parse(paramsJson);
+                interactiveId = params.id || null;
+            } catch (erro) { console.log("Erro ao ler resposta do menu:", erro.message); }
+        }
+
+        texto = texto.trim();
+
+        const identidade = obterIdentidadeMensagem(m);
+        const remetente = identidade.remetente;
+
+        const permissoes = await getPermissions(sock, chat, remetente, [identidade.jid, identidade.lid]);
+        const isAdmin = permissoes.admin || permissoes.owner;
+
+        // 🛡️ SISTEMA DE PROTEÇÕES COMPLETO
+        if (chat.endsWith("@g.us")) {
+            const protecoes = {
+                antiImg: getSetting(chat, "antiImg") === true,
+                antiVideo: getSetting(chat, "antiVideo") === true,
+                antiAudio: getSetting(chat, "antiAudio") === true,
+                antiSticker: getSetting(chat, "antiSticker") === true,
+                antiDoc: getSetting(chat, "antiDoc") === true || getSetting(chat, "antiDocumento") === true,
+                antiContato: getSetting(chat, "antiContato") === true,
+                antiCatalogo: getSetting(chat, "antiCatalogo") === true,
+                antiTrava: getSetting(chat, "antiTrava") === true,
+                antiFake: getSetting(chat, "antiFake") === true,
+                antiPay: getSetting(chat, "antiPay") === true,
+                antiPalavra: getSetting(chat, "antiPalavra") === true,
+                antiDdd: getSetting(chat, "antiDdd") === true,
+                antiStatus: getSetting(chat, "antiStatus") === true,
+                antiLigacao: getSetting(chat, "antiLigacao") === true 
+            };
+
+            let infracao = null;
+            const isStatusMention = Boolean(m.message.groupStatusMentionMessage || m.message.messageContextInfo?.groupStatusMentionMessage);
+            const isCallLog = Boolean(m.message.call || m.message.callLogMesssage || m.message.callMessage);
+
+            // 0. Proteção Anti-Status
+            if (protecoes.antiStatus && isStatusMention) infracao = "Status de Grupo";
+
+            // 0.5 Proteção Anti-Ligação (Recusa e Avisa)
+            if (protecoes.antiLigacao && isCallLog) {
+                infracao = "Ligação no Grupo";
+                
+                try {
+                    const autorLigacao = m.key.participant || m.key.remoteJid;
+                    const callId = m.message.call?.callKey;
+
+                    console.log(`[ANTI-LIGACAO] Chamada detectada. Recusando...`);
+
+                    // 1. Recusa a chamada
+                    if (callId) {
+                        await sock.rejectCall(callId, autorLigacao);
+                    }
+
+                    // 2. Manda o aviso no grupo
+                    await replyNYX({ sock, chat, message: m, sender: remetente }, 
+                        `🚫 *ANTI-LIGAÇÃO ATIVADO*\n\nAs chamadas estão desativadas neste grupo.`, 
+                        "bot"
+                    );
+
+                } catch (e) {
+                    console.log("[ANTI-LIGACAO] Erro:", e.message);
+                }
+                return; // Interrompe o processamento para não cair no bloco de apagar
+            }
+
+            // 1. Proteções de Mídia e Cartões Nativos
+            if (!infracao && m.message.imageMessage && protecoes.antiImg) infracao = "Imagem";
+            else if (!infracao && m.message.videoMessage && protecoes.antiVideo) infracao = "Vídeo";
+            else if (!infracao && m.message.audioMessage && protecoes.antiAudio) infracao = "Áudio";
+            else if (!infracao && m.message.stickerMessage && protecoes.antiSticker) infracao = "Figurinha";
+            else if (!infracao && m.message.documentMessage && protecoes.antiDoc) infracao = "Documento";
+            else if (!infracao && m.message.requestPaymentMessage && protecoes.antiPay) infracao = "Pedido de Pagamento";
+            else if (!infracao && m.message.contactMessage && protecoes.antiContato) infracao = "Contato";
+            else if (!infracao && m.message.productMessage && protecoes.antiCatalogo) infracao = "Catálogo";
+
+            // 2. Proteções de Texto
+            if (!infracao && texto) {
+                const textoLower = texto.toLowerCase();
+
+                if (protecoes.antiTrava && (texto.length > 5000 || /[\u200B-\u200D\uFEFF]{10,}/.test(texto))) infracao = "Trava (Texto Suspeito)";
+
+                if (protecoes.antiPalavra) {
+                    const palavrasProibidas = ["caralho", "porra", "merda", "foder", "puta", "viado", "arrombado", "desgraçado"];
+                    if (palavrasProibidas.some(p => textoLower.includes(p))) infracao = "Palavrão";
+                }
+
+                if (protecoes.antiPay && (textoLower.includes("pix") || textoLower.includes("pagamento") || textoLower.includes("transferência") || textoLower.includes("copiar chave"))) {
+                    if (!isAdmin) infracao = "Pedido de Pagamento";
+                }
+            }
+
+            // 3. Anti-DDD
+            if (!infracao && protecoes.antiDdd && isDDDBloqueado(chat, remetente)) infracao = "Número com DDD Bloqueado";
+
+            // 4. Anti-Fake
+            if (!infracao && protecoes.antiFake && remetente.endsWith("@s.whatsapp.net")) {
+                const numero = remetente.split("@")[0];
+                if (!numero.startsWith("55") || numero.length < 10) infracao = "Número Fake/Estrangeiro";
+            }
+
+            // Se encontrou infração (que não seja ligação, pois ela já deu return), apaga a mensagem
+            if (infracao) {
+                try {
+                    if (m.message.requestPaymentMessage) {
+                        await deletePaymentMessageWithFallback({
+                            socket: sock, remoteJid: chat,
+                            messageKey: { remoteJid: chat, fromMe: false, id: m.key.id, participant: remetente }
+                        });
+                    } else {
+                        await sock.sendMessage(chat, { delete: { remoteJid: chat, fromMe: false, id: m.key.id, participant: remetente } });
+                    }
+                    
+                    await replyNYX({ sock, chat, message: m, sender: remetente }, `🚫 *PROTEÇÃO ATIVADA*\n\nO envio de *${infracao}* não é permitido neste grupo.`, "bot");
+                } catch (e) { console.log(`Erro ao aplicar proteção de ${infracao}:`, e.message); }
+                return;
+            }
+        }
+
+        // 🛡️ PROTEÇÕES AVANÇADAS: ANTI-SPAM E ANTI-FLOOD
+        if (chat.endsWith("@g.us") && texto && !isAdmin) {
+            const textoLower = texto.toLowerCase();
+            const agora = Date.now();
+
+            const obterDadosUsuario = async (jidOriginal) => {
+                let jidFinal = jidOriginal;
+                let nome = jidOriginal.split("@")[0];
+                try {
+                    const busca = await sock.onWhatsApp(jidOriginal);
+                    if (busca && busca.length > 0 && busca[0].exists) jidFinal = busca[0].jid;
+                } catch (e) {}
+                const podeMarcar = !jidFinal.endsWith("@lid");
+                try {
+                    const metadata = await sock.groupMetadata(chat);
+                    const participante = metadata.participants.find(p => p.id === jidOriginal);
+                    if (participante) nome = participante.notify || participante.name || nome;
+                } catch (e) {}
+                return { jid: jidFinal, nome, podeMarcar };
+            };
+
+            const antiSpamAtivo = getSetting(chat, "antiSpam") === true;
+            if (antiSpamAtivo) {
+                const chaveSpam = `${chat}_${remetente}`;
+                if (!spamCache.has(chaveSpam)) {
+                    spamCache.set(chaveSpam, { texto: textoLower, tempo: agora, contador: 1, avisou: false });
+                } else {
+                    const dados = spamCache.get(chaveSpam);
+                    if (dados.texto === textoLower && (agora - dados.tempo) < 4000) {
+                        dados.contador++;
+                        dados.tempo = agora;
+                        if (dados.contador === 3 && !dados.avisou) {
+                            dados.avisou = true;
+                            const user = await obterDadosUsuario(remetente);
+                            await replyNYX({ sock, chat, message: m, sender: remetente }, user.podeMarcar ? `⚠️ *AVISO*\n\n@${user.jid.split("@")[0]}, evite spam ou você será removido do grupo.` : `⚠️ *AVISO*\n\n${user.nome}, evite spam ou você será removido do grupo.`, "bot", user.podeMarcar ? [user.jid] : []);
+                        }
+                        if (dados.contador >= 5) {
+                            spamCache.delete(chaveSpam);
+                            const user = await obterDadosUsuario(remetente);
+                            try { await sock.groupParticipantsUpdate(chat, [user.jid], "remove"); } catch(e) {}
+                            await replyNYX({ sock, chat, message: m, sender: remetente }, user.podeMarcar ? `🚫 *MEMBRO REMOVIDO*\n\n@${user.jid.split("@")[0]} foi removido por SPAM.` : `🚫 *MEMBRO REMOVIDO*\n\n${user.nome} foi removido por SPAM.`, "bot", user.podeMarcar ? [user.jid] : []);
+                            return;
+                        }
+                    } else {
+                        spamCache.set(chaveSpam, { texto: textoLower, tempo: agora, contador: 1, avisou: false });
+                    }
+                }
+            }
+
+            const antiFloodAtivo = getSetting(chat, "antiFlood") === true;
+            if (antiFloodAtivo) {
+                const chaveFlood = `${chat}_flood_${remetente}`;
+                if (!floodCache.has(chaveFlood)) {
+                    floodCache.set(chaveFlood, { tempoInicio: agora, contador: 1, avisou: false });
+                } else {
+                    const dados = floodCache.get(chaveFlood);
+                    if ((agora - dados.tempoInicio) < 6000) { 
+                        dados.contador++;
+                        if (dados.contador === 8 && !dados.avisou) {
+                            dados.avisou = true;
+                            const user = await obterDadosUsuario(remetente);
+                            await replyNYX({ sock, chat, message: m, sender: remetente }, user.podeMarcar ? `⚠️ *AVISO*\n\n@${user.jid.split("@")[0]}, evite flood ou você será removido do grupo.` : `⚠️ *AVISO*\n\n${user.nome}, evite flood ou você será removido do grupo.`, "bot", user.podeMarcar ? [user.jid] : []);
+                        }
+                        if (dados.contador >= 12) {
+                            floodCache.delete(chaveFlood);
+                            const user = await obterDadosUsuario(remetente);
+                            try { await sock.groupParticipantsUpdate(chat, [user.jid], "remove"); } catch(e) {}
+                            await replyNYX({ sock, chat, message: m, sender: remetente }, user.podeMarcar ? `🚫 *MEMBRO REMOVIDO*\n\n@${user.jid.split("@")[0]} foi removido por FLOOD.` : `🚫 *MEMBRO REMOVIDO*\n\n${user.nome} foi removido por FLOOD.`, "bot", user.podeMarcar ? [user.jid] : []);
+                            return;
+                        }
+                    } else {
+                        floodCache.set(chaveFlood, { tempoInicio: agora, contador: 1, avisou: false });
+                    }
+                }
+            }
+        }
+
+        // 🤖 AUTOMAÇÕES
+        if (chat.endsWith("@g.us")) {
+            try {
+                const prefixoParaAuto = getSetting(chat, "prefix") || config.prefix;
+                await processarAutomacoes({ sock, m, chat, remetente, texto, isAdmin, prefixoAtual: prefixoParaAuto });
+            } catch (error) { console.error("[automacoes] Falha ao processar automações:", error.message); }
+        }
+
+        // SALVAR NO CACHE PARA O ANTI-DELETE
+        if (chat.endsWith("@g.us") && m.key.id) {
+            const messageStore = require("../database/messageStore");
+            const { downloadMediaMessage } = require("@whiskeysockets/baileys");
+            let msgParaSalvar = m.message;
+            if (msgParaSalvar.viewOnceMessageV2) msgParaSalvar = msgParaSalvar.viewOnceMessageV2.message;
+            else if (msgParaSalvar.viewOnceMessageV2Extension) msgParaSalvar = msgParaSalvar.viewOnceMessageV2Extension.message;
+
+            const textoCache = msgParaSalvar?.conversation || msgParaSalvar?.extendedTextMessage?.text || msgParaSalvar?.imageMessage?.caption || msgParaSalvar?.videoMessage?.caption || "";
+            const paraSalvar = { text: textoCache || "[Mídia]", sender: m.key.participant || m.key.remoteJid, timestamp: Date.now(), mediaBuffer: null, mediaType: null };
+
+            if (msgParaSalvar.imageMessage) paraSalvar.mediaType = "image";
+            else if (msgParaSalvar.videoMessage) paraSalvar.mediaType = "video";
+            else if (msgParaSalvar.audioMessage) paraSalvar.mediaType = "audio";
+
+            if (paraSalvar.mediaType) {
+                try {
+                    paraSalvar.mediaBuffer = await downloadMediaMessage({ message: msgParaSalvar }, "buffer", {}, { logger: console, reuploadRequest: sock.updateMediaMessage });
+                } catch (e) { console.log("Não foi possível baixar mídia para o cache:", e.message); }
+            }
+            messageStore.save(m.key.id, paraSalvar);
+        }
+
+        // MENU NATIVO → COMANDOS
+        const menusNativos = ["menudono", "menuadm", "menuia", "menudownload", "menubrincadeiras"];
+        const prefixoAtual = chat.endsWith("@g.us") ? getSetting(chat, "prefix") || config.prefix : config.prefix;
+
+        if (interactiveId && menusNativos.includes(interactiveId)) texto = `${prefixoAtual}${interactiveId}`;
+
+        const isStatusMentionForReturn = Boolean(m.message.groupStatusMentionMessage || m.message.messageContextInfo?.groupStatusMentionMessage);
+        const isCallLogForReturn = Boolean(m.message.call || m.message.callLogMesssage || m.message.callMessage);
+        
+        if (!texto && !buttonId && !isStatusMentionForReturn && !isCallLogForReturn) return;
+
+        const { logMensagem } = require("../utils/logs");
+        const tipoMensagem = m.message.imageMessage ? "Imagem" : m.message.videoMessage ? "Vídeo" : m.message.audioMessage ? "Áudio" : m.message.stickerMessage ? "Figurinha" : m.message.documentMessage ? "Documento" : (buttonId || templateButtonId) ? "Botão" : "Texto";
+        logMensagem({ usuario: m.pushName || "Desconhecido", remetente: remetente.split("@")[0], chat: chat.endsWith("@g.us") ? "Grupo" : "Privado", tipo: tipoMensagem, conteudo: "[conteúdo omitido por privacidade]" });
+
+        const lid = identidade.lid;
+        const jid = identidade.jid;
+
+        const testeMute = estaMutado(chat, remetente);
+        if (testeMute && chat.endsWith("@g.us")) {
+            try { await sock.sendMessage(chat, { delete: { remoteJid: chat, fromMe: false, id: m.key.id, participant: remetente } }); }
+            catch (error) { console.log("Não foi possível apagar mensagem de usuário mutado:", error.message); }
+            return;
+        }
+
+        updateIdentity(jid, lid);
+        if (m.pushName && remetente) getUser(remetente, m.pushName);
+
+        if (!permissoes.owner) {
+            try {
+                const bloqueios = require("../database/blockRules");
+                if (bloqueios.isUserBlocked(remetente)) return;
+                if (chat.endsWith("@g.us") && bloqueios.isGroupBlocked(chat)) return;
+            } catch (error) { console.error("Falha ao verificar bloqueios de usuário/grupo:", error.message); return; }
+        }
+
+        const botOff = chat.endsWith("@g.us") ? getSetting(chat, "botOff") : false;
+        if (botOff && !permissoes.owner) { console.log("Bot desligado neste grupo."); return; }
+
+        const mensagemInterna = Boolean(buttonId || interactiveId);
+        const atalhoSemPrefixo = /^(?:a|f|t(?:\s|$)|[sx]\d*|fig)$/i.test(texto.trim());
+        const ehComando = texto.startsWith(prefixoAtual) || atalhoSemPrefixo;
+
+        if (!mensagemInterna && chat.endsWith("@g.us")) {
+            database.beginUsersBatch();
+            try {
+                registrarMensagem(remetente, chat);
+                if (!botOff && getSetting(chat, "xpEnabled") !== false && !ehComando && texto.trim().toLowerCase() !== "prefixo") {
+                    try { ganharXP(remetente, chat, texto); } catch (error) { console.error("Erro ao conceder XP:", error); }
+                }
+            } finally { database.endUsersBatch(); }
+        }
+
+        const ctx = {
+            sock, message: m, chat, sender: remetente, args: [], command: null,
+            prefix: prefixoAtual, text: texto, level: permissoes.level,
+            isOwner: permissoes.owner,
+            isMaster: isMaster(remetente) || isMaster(identidade.jid) || isMaster(identidade.lid),
+            isAdmin: permissoes.admin, isGroup: chat.endsWith("@g.us"),
+            reply(conteudo) { return sendNYX.sendCommandReply(this, conteudo); },
+            replyNYX(texto, modo = "user") { return replyNYX(this, texto, modo); },
+            react(emoji) { return sock.sendMessage(chat, { react: { text: emoji, key: m.key } }); },
+            delete() { return sock.sendMessage(chat, { delete: { remoteJid: chat, fromMe: m.key.fromMe, id: m.key.id, participant: m.key.participant } }); }
+        };
+
+        if (buttonId === "runner_menu") { await sendCategoriesMenu(ctx); return; }
+
+        await executarEventos(ctx);
+
+        if (ctx.isGroup) {
+            const prefixForAfk = ctx.prefix || prefixoAtual;
+            const rawText = String(texto || '').trim();
+            const commandToken = rawText.startsWith(prefixForAfk) ? rawText.slice(prefixForAfk.length).trim().split(/\s+/)[0].toLowerCase() : '';
+            if (!['on', 'off', 'afk'].includes(commandToken)) {
+                try {
+                    const afk = require('../database/afk');
+                    const contextInfo = m.message?.extendedTextMessage?.contextInfo || m.message?.imageMessage?.contextInfo || m.message?.videoMessage?.contextInfo || m.message?.documentMessage?.contextInfo || m.message?.stickerMessage?.contextInfo || {};
+                    const mentioned = Array.isArray(contextInfo.mentionedJid) ? contextInfo.mentionedJid : [];
+                    for (const mentionedJid of [...new Set(mentioned)]) {
+                        let status = afk.get(mentionedJid) || afk.get(String(mentionedJid).replace(/:\d+@/, '@'));
+                        if (!status) {
+                            try {
+                                const users = require('../utils/users');
+                                const user = String(mentionedJid).endsWith('@lid') ? users.getUserByLid(mentionedJid) : users.getUserByJid(mentionedJid);
+                                if (user?.jid) status = afk.get(user.jid);
+                                if (!status && user?.lid) status = afk.get(user.lid);
+                            } catch (_) {}
+                        }
+                        if (!status) continue;
+                        const elapsed = afk.formatDuration(Date.now() - status.since);
+                        const reason = status.reason ? `\nMotivo: ${status.reason}` : '';
+                        let alvoMencao = mentionedJid;
+                        try { alvoMencao = await require('../utils/resolveUser')(sock, chat, mentionedJid); } catch (_) {}
+                        const tokenMencao = `@${String(alvoMencao).split('@')[0].split(':')[0]}`;
+                        await ctx.replyNYX({ text: `${tokenMencao} está ausente há ${elapsed}.${reason}`, mentions: [alvoMencao] }, 'user');
+                    }
+                } catch (error) { console.error('Falha ao consultar status AFK:', error.message); }
+            }
+        }
+
+        await applyAutomaticKeywordReactions(ctx);
+
+        const prefixo = chat.endsWith("@g.us") ? getSetting(chat, "prefix") || config.prefix : config.prefix;
+
+        if (chat.endsWith("@g.us")) {
+            const textoLower = texto.toLowerCase();
+            if (textoLower === "a") texto = `${prefixo}abrir`;
+            if (textoLower === "f") texto = `${prefixo}fechar`;
+            if (textoLower === "t") texto = `${prefixo}totag`;
+            if (textoLower.startsWith("t ")) texto = `${prefixo}totag ${texto.slice(2)}`;
+        }
+
+        if (!texto.startsWith(prefixo) && texto.trim().toLowerCase() !== "prefixo") {
+            if (texto.trim().toLowerCase() === "fig") texto = `${prefixo}fig`;
+        }
+
+        if (!texto.startsWith(prefixo) && texto.trim().toLowerCase() !== "prefixo") await applyAutomaticReplies(ctx, texto);
+
+        if (texto.trim().toLowerCase() === "prefixo") {
+            await ctx.replyNYX(`·.💸:.      『 *${prefixo}* 』*\n\nᴇsᴛᴏᴜ ᴄᴏɴғɪɢᴜʀᴀᴅᴏ ᴘᴀʀᴀ ʀᴇsᴘᴏɴᴅᴇʀ ᴀ\nᴇsᴛᴇ ᴘʀᴇғɪxᴏ`, "user");
+            await applyPrefixReaction(ctx);
+            return;
+        }
+
+        if (/^[sx](?:\d+)?$/.test(texto.toLowerCase())) texto = `${prefixo}${texto.toLowerCase()}`;
+
+        let temPrefixo = texto.startsWith(prefixo);
+        if (!temPrefixo && chat.endsWith("@g.us")) {
+            const semPrefixo = texto.trim().toLowerCase();
+            const primeiroParametro = semPrefixo.split(/\s+/)[0];
+            const listaPermitida = security.getNoPrefixList(chat);
+            if (listaPermitida.includes(primeiroParametro)) { texto = prefixo + texto; temPrefixo = true; }
+        }
+        if (!temPrefixo) return;
+
+        const args = texto.slice(prefixo.length).trim().split(/\s+/);
+        const mapaComandos = {
+            "ᴀ": "a", "ʙ": "b", "ᴄ": "c", "ᴅ": "d", "ᴇ": "e", "ғ": "f", "ɢ": "g", "ʜ": "h", "ɪ": "i", "ᴊ": "j", "ᴋ": "k", "ʟ": "l", "ᴍ": "m", "ɴ": "n", "ᴏ": "o", "ᴘ": "p", "ǫ": "q", "ʀ": "r", "ᴛ": "t", "ᴜ": "u", "ᴠ": "v", "ᴡ": "w", "ʏ": "y", "ᴢ": "z"
+        };
+
+        const comandoRecebido = Array.from(args.shift().toLowerCase(), letra => mapaComandos[letra] ?? letra).join("");
+        const atalhoS = comandoRecebido.match(/^s(\d+)?$/);
+        const atalhoX = comandoRecebido.match(/^x(\d+)?$/);
+
+        if (atalhoS) ctx.sQuantity = atalhoS[1] ? Number(atalhoS[1]) : 4;
+        if (atalhoX) ctx.xQuantity = atalhoX[1] ? Number(atalhoX[1]) : 4;
+
+        const comando = atalhoS ? "s" : atalhoX ? "x" : comandoRecebido;
+        ctx.args = args;
+        ctx.command = comando;
+        updateActivity(remetente, comando);
+
+        if (!ctx.isGroup && !ctx.isOwner) {
+            let antiPvLevel = 0;
+            try { antiPvLevel = require("../database/securityGroups").getAntiPvLevel(); }
+            catch (error) { console.error("Falha ao consultar anti-PV:", error.message); return; }
+            if (antiPvLevel === 3) return;
+            if (antiPvLevel === 2 && texto.startsWith(ctx.prefix)) return;
+            if (antiPvLevel === 1 && texto.startsWith(ctx.prefix)) {
+                await ctx.replyNYX("⚠️ O bot está protegido contra uso no privado. Use os comandos no grupo.", "bot");
+                return;
+            }
+        }
+
+        await executarComando(ctx);
+    } catch (e) { console.log("Erro handler:", e.message); }
+}
+
+module.exports = handler;

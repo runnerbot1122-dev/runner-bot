@@ -1,0 +1,2 @@
+const ownerOnly=require('../../utils/ownerOnly'); const db=require('../../database/securityGroups');
+module.exports={name:['listblacklist','verblacklist'],description:'Lista números na lista negra do grupo',execute:async(ctx)=>{ownerOnly(ctx);if(!ctx.isGroup)return ctx.reply('❌ Use em um grupo.');const users=db.getBlacklist(ctx.chat);await ctx.replyNYX(users.length?'🚫 Lista negra deste grupo:\n'+users.map((u,i)=>`${i+1}. @${u.split('@')[0]}`).join('\n'):'A lista negra deste grupo está vazia.','bot');}};
