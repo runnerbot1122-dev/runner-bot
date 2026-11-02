@@ -576,7 +576,11 @@
             "autoReplies": [],
             "soadm": false,
             "visualizarMsg": false,
-            "antiLigacao": true
+            "antiLigacao": true,
+            "extrasPrefixos": [],
+            "limiteCaracteres": 100,
+            "antiTrava": true,
+            "tempoComando": 5
         }
     }
 }

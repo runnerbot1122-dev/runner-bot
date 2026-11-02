@@ -22,6 +22,17 @@
           "status"
         ]
       }
+    },
+    "120363432197579234@g.us": {
+      "subowners": [],
+      "groupOwners": [],
+      "verified": {},
+      "blacklist": [],
+      "adminUsage": {},
+      "antiArqv": false,
+      "soDono": false,
+      "noPrefixList": [],
+      "perms": {}
     }
   },
   "globalVerified": {},

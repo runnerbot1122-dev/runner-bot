@@ -25,8 +25,10 @@ const security = require("../database/securityGroups");
 const { deletePaymentMessageWithFallback } = require("../utils/deletePaymentMessage");
 const { processarAutomacoes } = require("./automationManager");
 const { isDDDBloqueado } = require("../utils/ddd");
+const soadm = require("../utils/soadm");
 
 const spamCache = new Map();
+const cooldownCache = new Map();
 const floodCache = new Map();
 
 async function handler(sock, m) {
@@ -104,6 +106,26 @@ async function handler(sock, m) {
         const permissoes = await getPermissions(sock, chat, remetente, [identidade.jid, identidade.lid]);
         const isAdmin = permissoes.admin || permissoes.owner;
 
+        // =========================================================
+        // 🔒 MODO SÓ ADMIN (Bloqueia comandos de membros comuns)
+        // =========================================================
+        if (chat.endsWith("@g.us") && soadm.status(chat) && !isAdmin) {
+            const prefixoPrincipal = getSetting(chat, "prefix") || config.prefix;
+            const extras = getSetting(chat, "extrasPrefixos") || [];
+            const todosPrefixos = [prefixoPrincipal, ...extras];
+            const tentouComando = todosPrefixos.some(p => texto.startsWith(p));
+
+            if (tentouComando || buttonId || interactiveId) {
+                await replyNYX({ sock, chat, message: m, sender: remetente }, 
+                    `🔒 *SÓ ADMIN ATIVADO*\n\n@${remetente.split("@")[0]}, apenas administradores podem usar os comandos do bot agora.`, 
+                    "bot",
+                    [remetente]
+                );
+            }
+            return; 
+        }
+        // =========================================================
+
         // 🛡️ SISTEMA DE PROTEÇÕES COMPLETO
         if (chat.endsWith("@g.us")) {
             const protecoes = {
@@ -120,44 +142,33 @@ async function handler(sock, m) {
                 antiPalavra: getSetting(chat, "antiPalavra") === true,
                 antiDdd: getSetting(chat, "antiDdd") === true,
                 antiStatus: getSetting(chat, "antiStatus") === true,
-                antiLigacao: getSetting(chat, "antiLigacao") === true 
+                antiLigacao: getSetting(chat, "antiLigacao") === true,
+                antiNotas: getSetting(chat, "antiNotas") === true
             };
 
             let infracao = null;
             const isStatusMention = Boolean(m.message.groupStatusMentionMessage || m.message.messageContextInfo?.groupStatusMentionMessage);
             const isCallLog = Boolean(m.message.call || m.message.callLogMesssage || m.message.callMessage);
 
-            // 0. Proteção Anti-Status
             if (protecoes.antiStatus && isStatusMention) infracao = "Status de Grupo";
 
-            // 0.5 Proteção Anti-Ligação (Recusa e Avisa)
             if (protecoes.antiLigacao && isCallLog) {
                 infracao = "Ligação no Grupo";
-                
                 try {
                     const autorLigacao = m.key.participant || m.key.remoteJid;
                     const callId = m.message.call?.callKey;
-
-                    console.log(`[ANTI-LIGACAO] Chamada detectada. Recusando...`);
-
-                    // 1. Recusa a chamada
-                    if (callId) {
-                        await sock.rejectCall(callId, autorLigacao);
-                    }
-
-                    // 2. Manda o aviso no grupo
-                    await replyNYX({ sock, chat, message: m, sender: remetente }, 
-                        `🚫 *ANTI-LIGAÇÃO ATIVADO*\n\nAs chamadas estão desativadas neste grupo.`, 
-                        "bot"
-                    );
-
-                } catch (e) {
-                    console.log("[ANTI-LIGACAO] Erro:", e.message);
-                }
-                return; // Interrompe o processamento para não cair no bloco de apagar
+                    if (callId) await sock.rejectCall(callId, autorLigacao);
+                    await replyNYX({ sock, chat, message: m, sender: remetente }, `🚫 *ANTI-LIGAÇÃO ATIVADO*\n\nAs chamadas estão desativadas neste grupo.`, "bot");
+                } catch (e) { console.log("[ANTI-LIGACAO] Erro:", e.message); }
+                return;
             }
 
-            // 1. Proteções de Mídia e Cartões Nativos
+            if (protecoes.antiNotas && !infracao) {
+                if (m.message.notesMessage || m.message.extendedTextMessage?.contextInfo?.isNote) {
+                    infracao = "Nota no Grupo";
+                }
+            }
+
             if (!infracao && m.message.imageMessage && protecoes.antiImg) infracao = "Imagem";
             else if (!infracao && m.message.videoMessage && protecoes.antiVideo) infracao = "Vídeo";
             else if (!infracao && m.message.audioMessage && protecoes.antiAudio) infracao = "Áudio";
@@ -167,11 +178,16 @@ async function handler(sock, m) {
             else if (!infracao && m.message.contactMessage && protecoes.antiContato) infracao = "Contato";
             else if (!infracao && m.message.productMessage && protecoes.antiCatalogo) infracao = "Catálogo";
 
-            // 2. Proteções de Texto
             if (!infracao && texto) {
                 const textoLower = texto.toLowerCase();
 
                 if (protecoes.antiTrava && (texto.length > 5000 || /[\u200B-\u200D\uFEFF]{10,}/.test(texto))) infracao = "Trava (Texto Suspeito)";
+
+                // 👇 NOVO: LIMITE DE CARACTERES
+                const limiteChar = getSetting(chat, "limiteCaracteres");
+                if (!infracao && limiteChar && limiteChar > 0 && texto.length > limiteChar) {
+                    infracao = `Texto muito longo (${texto.length}/${limiteChar})`;
+                }
 
                 if (protecoes.antiPalavra) {
                     const palavrasProibidas = ["caralho", "porra", "merda", "foder", "puta", "viado", "arrombado", "desgraçado"];
@@ -183,16 +199,13 @@ async function handler(sock, m) {
                 }
             }
 
-            // 3. Anti-DDD
             if (!infracao && protecoes.antiDdd && isDDDBloqueado(chat, remetente)) infracao = "Número com DDD Bloqueado";
 
-            // 4. Anti-Fake
             if (!infracao && protecoes.antiFake && remetente.endsWith("@s.whatsapp.net")) {
                 const numero = remetente.split("@")[0];
                 if (!numero.startsWith("55") || numero.length < 10) infracao = "Número Fake/Estrangeiro";
             }
 
-            // Se encontrou infração (que não seja ligação, pois ela já deu return), apaga a mensagem
             if (infracao) {
                 try {
                     if (m.message.requestPaymentMessage) {
@@ -203,7 +216,6 @@ async function handler(sock, m) {
                     } else {
                         await sock.sendMessage(chat, { delete: { remoteJid: chat, fromMe: false, id: m.key.id, participant: remetente } });
                     }
-                    
                     await replyNYX({ sock, chat, message: m, sender: remetente }, `🚫 *PROTEÇÃO ATIVADA*\n\nO envio de *${infracao}* não é permitido neste grupo.`, "bot");
                 } catch (e) { console.log(`Erro ao aplicar proteção de ${infracao}:`, e.message); }
                 return;
@@ -318,11 +330,27 @@ async function handler(sock, m) {
             messageStore.save(m.key.id, paraSalvar);
         }
 
-        // MENU NATIVO → COMANDOS
+        // =========================================================
+        // LÓGICA DE MÚLTIPLOS PREFIXOS
+        // =========================================================
         const menusNativos = ["menudono", "menuadm", "menuia", "menudownload", "menubrincadeiras"];
-        const prefixoAtual = chat.endsWith("@g.us") ? getSetting(chat, "prefix") || config.prefix : config.prefix;
+        const prefixoPrincipal = chat.endsWith("@g.us") ? getSetting(chat, "prefix") || config.prefix : config.prefix;
+        const extras = chat.endsWith("@g.us") ? (getSetting(chat, "extrasPrefixos") || []) : [];
+        const todosPrefixos = [prefixoPrincipal, ...extras];
 
-        if (interactiveId && menusNativos.includes(interactiveId)) texto = `${prefixoAtual}${interactiveId}`;
+        // Descobre qual prefixo foi usado
+        let prefixoUsado = null;
+        for (const p of todosPrefixos) {
+            if (texto.startsWith(p)) {
+                prefixoUsado = p;
+                break;
+            }
+        }
+
+        if (interactiveId && menusNativos.includes(interactiveId)) {
+            texto = `${prefixoPrincipal}${interactiveId}`;
+            prefixoUsado = prefixoPrincipal;
+        }
 
         const isStatusMentionForReturn = Boolean(m.message.groupStatusMentionMessage || m.message.messageContextInfo?.groupStatusMentionMessage);
         const isCallLogForReturn = Boolean(m.message.call || m.message.callLogMesssage || m.message.callMessage);
@@ -359,7 +387,7 @@ async function handler(sock, m) {
 
         const mensagemInterna = Boolean(buttonId || interactiveId);
         const atalhoSemPrefixo = /^(?:a|f|t(?:\s|$)|[sx]\d*|fig)$/i.test(texto.trim());
-        const ehComando = texto.startsWith(prefixoAtual) || atalhoSemPrefixo;
+        const ehComando = Boolean(prefixoUsado) || atalhoSemPrefixo;
 
         if (!mensagemInterna && chat.endsWith("@g.us")) {
             database.beginUsersBatch();
@@ -370,6 +398,8 @@ async function handler(sock, m) {
                 }
             } finally { database.endUsersBatch(); }
         }
+
+        const prefixoAtual = prefixoUsado || prefixoPrincipal;
 
         const ctx = {
             sock, message: m, chat, sender: remetente, args: [], command: null,
@@ -388,7 +418,7 @@ async function handler(sock, m) {
         await executarEventos(ctx);
 
         if (ctx.isGroup) {
-            const prefixForAfk = ctx.prefix || prefixoAtual;
+            const prefixForAfk = ctx.prefix || prefixoPrincipal;
             const rawText = String(texto || '').trim();
             const commandToken = rawText.startsWith(prefixForAfk) ? rawText.slice(prefixForAfk.length).trim().split(/\s+/)[0].toLowerCase() : '';
             if (!['on', 'off', 'afk'].includes(commandToken)) {
@@ -420,40 +450,59 @@ async function handler(sock, m) {
 
         await applyAutomaticKeywordReactions(ctx);
 
-        const prefixo = chat.endsWith("@g.us") ? getSetting(chat, "prefix") || config.prefix : config.prefix;
-
         if (chat.endsWith("@g.us")) {
             const textoLower = texto.toLowerCase();
-            if (textoLower === "a") texto = `${prefixo}abrir`;
-            if (textoLower === "f") texto = `${prefixo}fechar`;
-            if (textoLower === "t") texto = `${prefixo}totag`;
-            if (textoLower.startsWith("t ")) texto = `${prefixo}totag ${texto.slice(2)}`;
+            if (textoLower === "a") texto = `${prefixoPrincipal}abrir`;
+            if (textoLower === "f") texto = `${prefixoPrincipal}fechar`;
+            if (textoLower === "t") texto = `${prefixoPrincipal}totag`;
+            if (textoLower.startsWith("t ")) texto = `${prefixoPrincipal}totag ${texto.slice(2)}`;
         }
 
-        if (!texto.startsWith(prefixo) && texto.trim().toLowerCase() !== "prefixo") {
-            if (texto.trim().toLowerCase() === "fig") texto = `${prefixo}fig`;
+        if (!prefixoUsado && texto.trim().toLowerCase() !== "prefixo" && !ehComando) {
+            if (texto.trim().toLowerCase() === "fig") texto = `${prefixoPrincipal}fig`;
         }
 
-        if (!texto.startsWith(prefixo) && texto.trim().toLowerCase() !== "prefixo") await applyAutomaticReplies(ctx, texto);
+        if (!prefixoUsado && texto.trim().toLowerCase() !== "prefixo") await applyAutomaticReplies(ctx, texto);
 
         if (texto.trim().toLowerCase() === "prefixo") {
-            await ctx.replyNYX(`·.💸:.      『 *${prefixo}* 』*\n\nᴇsᴛᴏᴜ ᴄᴏɴғɪɢᴜʀᴀᴅᴏ ᴘᴀʀᴀ ʀᴇsᴘᴏɴᴅᴇʀ ᴀ\nᴇsᴛᴇ ᴘʀᴇғɪxᴏ`, "user");
+            await ctx.replyNYX(`·.💸:.      『 *${prefixoPrincipal}* 』*\n\nᴇsᴛᴏᴜ ᴄᴏɴғɪɢᴜʀᴀᴅᴏ ᴘᴀʀᴀ ʀᴇsᴘᴏɴᴅᴇʀ ᴀ\nᴇsᴛᴇ ᴘʀᴇғɪxᴏ`, "user");
             await applyPrefixReaction(ctx);
             return;
         }
 
-        if (/^[sx](?:\d+)?$/.test(texto.toLowerCase())) texto = `${prefixo}${texto.toLowerCase()}`;
+        if (/^[sx](?:\d+)?$/.test(texto.toLowerCase())) texto = `${prefixoPrincipal}${texto.toLowerCase()}`;
 
-        let temPrefixo = texto.startsWith(prefixo);
+        let temPrefixo = texto.startsWith(prefixoPrincipal) || (prefixoUsado && texto.startsWith(prefixoUsado));
         if (!temPrefixo && chat.endsWith("@g.us")) {
             const semPrefixo = texto.trim().toLowerCase();
             const primeiroParametro = semPrefixo.split(/\s+/)[0];
             const listaPermitida = security.getNoPrefixList(chat);
-            if (listaPermitida.includes(primeiroParametro)) { texto = prefixo + texto; temPrefixo = true; }
+            if (listaPermitida.includes(primeiroParametro)) { texto = prefixoPrincipal + texto; temPrefixo = true; }
         }
         if (!temPrefixo) return;
 
-        const args = texto.slice(prefixo.length).trim().split(/\s+/);
+        // 🕒 COOLDOWN DE COMANDOS
+        const tempoComando = getSetting(chat, "tempoComando");
+        if (tempoComando && tempoComando > 0 && !isAdmin) {
+            const agora = Date.now();
+            const ultimoUso = cooldownCache.get(`${chat}_${remetente}`) || 0;
+            const tempoPassado = (agora - ultimoUso) / 1000;
+
+            if (tempoPassado < tempoComando) {
+                const faltam = Math.ceil(tempoComando - tempoPassado);
+                await replyNYX({ sock, chat, message: m, sender: remetente }, 
+                    `⏳ *AGUARDE*\n\nVocê precisa esperar *${faltam}s* para usar outro comando.`, 
+                    "bot"
+                );
+                return;
+            }
+            cooldownCache.set(`${chat}_${remetente}`, agora);
+        }
+
+        // Agora usa o prefixoUsado (se encontrado) para cortar o texto
+        const prefixoParaCortar = prefixoUsado || prefixoPrincipal;
+        const args = texto.slice(prefixoParaCortar.length).trim().split(/\s+/);
+        
         const mapaComandos = {
             "ᴀ": "a", "ʙ": "b", "ᴄ": "c", "ᴅ": "d", "ᴇ": "e", "ғ": "f", "ɢ": "g", "ʜ": "h", "ɪ": "i", "ᴊ": "j", "ᴋ": "k", "ʟ": "l", "ᴍ": "m", "ɴ": "n", "ᴏ": "o", "ᴘ": "p", "ǫ": "q", "ʀ": "r", "ᴛ": "t", "ᴜ": "u", "ᴠ": "v", "ᴡ": "w", "ʏ": "y", "ᴢ": "z"
         };

@@ -22,11 +22,11 @@
         "lid": "48168561578043@lid",
         "warnings": 0,
         "history": [],
-        "xp": 111,
+        "xp": 149,
         "level": 2,
-        "messages": 35,
-        "xpTotal": 379,
-        "messagesTotal": 221,
+        "messages": 39,
+        "xpTotal": 417,
+        "messagesTotal": 268,
         "xpByGroup": {
             "120363427756624621@g.us": {
                 "xp": 27,
@@ -65,13 +65,13 @@
                 "lastMessageAt": "2026-11-01T19:37:10.806Z"
             },
             "120363432197579234@g.us": {
-                "xp": 111,
+                "xp": 149,
                 "level": 2,
-                "xpTotal": 211,
-                "messages": 17,
+                "xpTotal": 249,
+                "messages": 21,
                 "rewards": [],
-                "streak": 17,
-                "lastMessageAt": "2026-11-02T07:21:10.364Z"
+                "streak": 1,
+                "lastMessageAt": "2026-11-02T15:46:48.619Z"
             }
         },
         "messagesByGroup": {
@@ -79,11 +79,11 @@
             "120363168388883230@g.us": 8,
             "120363411814433957@g.us": 1,
             "120363426613242513@g.us": 1,
-            "120363432197579234@g.us": 24
+            "120363432197579234@g.us": 71
         },
         "createdAt": "2026-10-27T04:09:00.605Z",
-        "lastActivity": "2026-11-02T07:12:19.713Z",
-        "lastCommand": "antiligacao"
+        "lastActivity": "2026-11-02T16:02:45.940Z",
+        "lastCommand": "tirarprefixo"
     },
     "184662840344812@lid": {
         "name": "corvus",
@@ -91,20 +91,20 @@
         "lid": "184662840344812@lid",
         "warnings": 0,
         "history": [],
-        "xp": 94,
-        "level": 1,
-        "messages": 17,
-        "xpTotal": 133,
-        "messagesTotal": 39,
+        "xp": 3,
+        "level": 2,
+        "messages": 18,
+        "xpTotal": 142,
+        "messagesTotal": 40,
         "xpByGroup": {
             "120363168388883230@g.us": {
-                "xp": 94,
-                "level": 1,
-                "xpTotal": 94,
-                "messages": 12,
+                "xp": 3,
+                "level": 2,
+                "xpTotal": 103,
+                "messages": 13,
                 "rewards": [],
                 "streak": 1,
-                "lastMessageAt": "2026-11-01T22:39:24.644Z"
+                "lastMessageAt": "2026-11-02T10:01:01.789Z"
             },
             "120363142999607164@g.us": {
                 "xp": 32,
@@ -126,7 +126,7 @@
             }
         },
         "messagesByGroup": {
-            "120363168388883230@g.us": 34,
+            "120363168388883230@g.us": 35,
             "120363142999607164@g.us": 4,
             "120363412532472529@g.us": 1
         },
@@ -225,20 +225,20 @@
         "lid": "110690668904462@lid",
         "warnings": 0,
         "history": [],
-        "xp": 26,
+        "xp": 33,
         "level": 2,
-        "messages": 21,
-        "xpTotal": 222,
-        "messagesTotal": 37,
+        "messages": 22,
+        "xpTotal": 229,
+        "messagesTotal": 39,
         "xpByGroup": {
             "120363168388883230@g.us": {
-                "xp": 26,
+                "xp": 33,
                 "level": 2,
-                "xpTotal": 126,
-                "messages": 12,
+                "xpTotal": 133,
+                "messages": 13,
                 "rewards": [],
                 "streak": 1,
-                "lastMessageAt": "2026-11-02T02:11:38.582Z"
+                "lastMessageAt": "2026-11-02T13:20:35.385Z"
             },
             "120363142999607164@g.us": {
                 "xp": 96,
@@ -251,7 +251,7 @@
             }
         },
         "messagesByGroup": {
-            "120363168388883230@g.us": 21,
+            "120363168388883230@g.us": 23,
             "120363142999607164@g.us": 16
         },
         "createdAt": "2026-10-27T15:44:01.560Z",
@@ -429,24 +429,24 @@
         "lid": "55916800024604@lid",
         "warnings": 0,
         "history": [],
-        "xp": 6,
+        "xp": 14,
         "level": 1,
-        "messages": 1,
-        "xpTotal": 6,
-        "messagesTotal": 1,
+        "messages": 2,
+        "xpTotal": 14,
+        "messagesTotal": 2,
         "xpByGroup": {
             "120363420252511456@g.us": {
-                "xp": 6,
+                "xp": 14,
                 "level": 1,
-                "xpTotal": 6,
-                "messages": 1,
+                "xpTotal": 14,
+                "messages": 2,
                 "rewards": [],
                 "streak": 1,
-                "lastMessageAt": "2026-10-28T01:01:29.589Z"
+                "lastMessageAt": "2026-11-02T09:59:19.699Z"
             }
         },
         "messagesByGroup": {
-            "120363420252511456@g.us": 1
+            "120363420252511456@g.us": 2
         },
         "createdAt": "2026-10-28T01:01:28.691Z",
         "lastActivity": "2026-10-28T01:01:28.691Z",
@@ -489,11 +489,11 @@
         "lid": "166267579277562@lid",
         "warnings": 0,
         "history": [],
-        "xp": 65,
+        "xp": 15,
         "level": 1,
-        "messages": 11,
-        "xpTotal": 110,
-        "messagesTotal": 12,
+        "messages": 12,
+        "xpTotal": 116,
+        "messagesTotal": 13,
         "xpByGroup": {
             "120363420252511456@g.us": {
                 "xp": 65,
@@ -514,19 +514,19 @@
                 "lastMessageAt": "2026-11-01T00:42:32.539Z"
             },
             "120363412156620024@g.us": {
-                "xp": 9,
+                "xp": 15,
                 "level": 1,
-                "xpTotal": 9,
-                "messages": 1,
+                "xpTotal": 15,
+                "messages": 2,
                 "rewards": [],
                 "streak": 1,
-                "lastMessageAt": "2026-11-02T04:21:57.688Z"
+                "lastMessageAt": "2026-11-02T08:51:33.703Z"
             }
         },
         "messagesByGroup": {
             "120363420252511456@g.us": 6,
             "120363427232281410@g.us": 4,
-            "120363412156620024@g.us": 2
+            "120363412156620024@g.us": 3
         },
         "createdAt": "2026-10-28T04:00:45.712Z",
         "lastActivity": "2026-10-28T04:00:45.712Z",
@@ -609,7 +609,7 @@
         "level": 1,
         "messages": 7,
         "xpTotal": 71,
-        "messagesTotal": 40,
+        "messagesTotal": 42,
         "xpByGroup": {
             "120363427756624621@g.us": {
                 "xp": 48,
@@ -632,11 +632,11 @@
         },
         "messagesByGroup": {
             "120363427756624621@g.us": 38,
-            "120363432197579234@g.us": 2
+            "120363432197579234@g.us": 4
         },
         "createdAt": "2026-10-29T01:51:24.334Z",
-        "lastActivity": "2026-11-02T07:10:39.740Z",
-        "lastCommand": "ping"
+        "lastActivity": "2026-11-02T14:39:30.711Z",
+        "lastCommand": "menuia"
     },
     "25418488881207@lid": {
         "name": "mayzokaaadaass",
@@ -1382,11 +1382,11 @@
         "lid": "28970225541221@lid",
         "warnings": 0,
         "history": [],
-        "xp": 34,
+        "xp": 8,
         "level": 1,
-        "messages": 3,
-        "xpTotal": 34,
-        "messagesTotal": 3,
+        "messages": 4,
+        "xpTotal": 42,
+        "messagesTotal": 4,
         "xpByGroup": {
             "120363142999607164@g.us": {
                 "xp": 34,
@@ -1396,10 +1396,20 @@
                 "rewards": [],
                 "streak": 1,
                 "lastMessageAt": "2026-10-30T21:40:51.840Z"
+            },
+            "120363168388883230@g.us": {
+                "xp": 8,
+                "level": 1,
+                "xpTotal": 8,
+                "messages": 1,
+                "rewards": [],
+                "streak": 1,
+                "lastMessageAt": "2026-11-02T13:08:56.203Z"
             }
         },
         "messagesByGroup": {
-            "120363142999607164@g.us": 3
+            "120363142999607164@g.us": 3,
+            "120363168388883230@g.us": 1
         },
         "createdAt": "2026-10-30T00:30:50.305Z",
         "lastActivity": "2026-10-30T00:30:50.305Z",
