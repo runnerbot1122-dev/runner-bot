@@ -21,6 +21,7 @@ ${secao("ɢᴇsᴛᴀ̃ᴏ ᴅᴏ ɢʀᴜᴘᴏ", [
     "link",
     "revlinkgp",
     "infogp",
+    "infogrupo",
     "limpar",
     "totag",
     "regras",
@@ -58,6 +59,7 @@ ${secao("ᴘʀᴏᴛᴇᴄᴏᴇs", [
     "antilink",
     "antilinkeasyon",
     "antilinkhard",
+    "antibtm",
     "antifake",
     "antipalavra",
     "antidd",
@@ -99,13 +101,21 @@ ${secao("ᴄᴏɴғɪɢᴜʀᴀᴄᴏᴇs", [
     "autofigu",
     "autototext",
     "odelete",
-    "modox9",
+    "x9",
     "x9visuunica",
     "add_prefixo",
     "tirar_prefixo",
     "prefixos",
     "tempocmd",
     "limite_caracteres"
+])}
+
+${secao("ᴇxᴛʀᴀs", [
+    "s",
+    "x",
+    "status",
+    "xp",
+    "rank"
 ])}
 
 ╠═ • ${nomeBot}
