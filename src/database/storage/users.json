@@ -22,11 +22,11 @@
         "lid": "48168561578043@lid",
         "warnings": 0,
         "history": [],
-        "xp": 26,
+        "xp": 51,
         "level": 1,
-        "messages": 45,
-        "xpTotal": 459,
-        "messagesTotal": 360,
+        "messages": 48,
+        "xpTotal": 484,
+        "messagesTotal": 384,
         "xpByGroup": {
             "120363427756624621@g.us": {
                 "xp": 27,
@@ -65,13 +65,13 @@
                 "lastMessageAt": "2026-11-01T19:37:10.806Z"
             },
             "120363432197579234@g.us": {
-                "xp": 26,
+                "xp": 51,
                 "level": 1,
-                "xpTotal": 26,
-                "messages": 3,
+                "xpTotal": 51,
+                "messages": 6,
                 "rewards": [],
-                "streak": 1,
-                "lastMessageAt": "2026-11-04T02:27:54.071Z"
+                "streak": 3,
+                "lastMessageAt": "2026-11-04T04:12:06.221Z"
             }
         },
         "messagesByGroup": {
@@ -79,11 +79,12 @@
             "120363168388883230@g.us": 8,
             "120363411814433957@g.us": 1,
             "120363426613242513@g.us": 1,
-            "120363432197579234@g.us": 163
+            "120363432197579234@g.us": 187
         },
         "createdAt": "2026-10-27T04:09:00.605Z",
-        "lastActivity": "2026-11-04T03:39:50.540Z",
-        "lastCommand": "carioca"
+        "lastActivity": "2026-11-04T04:37:51.496Z",
+        "lastCommand": "compativel",
+        "melhorAmigo": "31894460739781@lid"
     },
     "184662840344812@lid": {
         "name": "corvus",
@@ -626,7 +627,7 @@
         "level": 1,
         "messages": 8,
         "xpTotal": 85,
-        "messagesTotal": 74,
+        "messagesTotal": 76,
         "xpByGroup": {
             "120363427756624621@g.us": {
                 "xp": 48,
@@ -640,11 +641,11 @@
         },
         "messagesByGroup": {
             "120363427756624621@g.us": 38,
-            "120363432197579234@g.us": 36
+            "120363432197579234@g.us": 38
         },
         "createdAt": "2026-10-29T01:51:24.334Z",
-        "lastActivity": "2026-11-02T17:33:51.232Z",
-        "lastCommand": "adms"
+        "lastActivity": "2026-11-04T03:44:58.014Z",
+        "lastCommand": "meunome"
     },
     "25418488881207@lid": {
         "name": "mayzokaaadaass",

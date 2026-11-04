@@ -67,6 +67,61 @@ async function handler(sock, m) {
             }
         }
 
+        // =========================================
+        // INTERCEPTADOR DE PEDIDOS DE NAMORO (SIM/NÃO)
+        // =========================================
+        const textoBruto = m.message.conversation || m.message.extendedTextMessage?.text || "";
+        if (textoBruto) {
+            const textLower = textoBruto.trim().toLowerCase();
+            const isSim = ["sim", "aceito", "quero", "s"].includes(textLower);
+            const isNao = ["não", "nao", "recuso", "n"].includes(textLower);
+
+            if (isSim || isNao) {
+                const familyDb = require("../database/families");
+                const pedido = familyDb.getPendingProposal(m.key.participant || m.key.remoteJid);
+
+                if (pedido) {
+                    const prefixoPrincipal = chat.endsWith("@g.us") ? getSetting(chat, "prefix") || config.prefix : config.prefix;
+                    
+                                        if (isSim) {
+                        familyDb.acceptProposal(pedido.id);
+                        const textoAceite = 
+`╔═━✰『 💍 ɴᴏᴠᴏ ᴄᴀsᴀʟ 』═━✰
+
+║╎⊹ ࣪ ˖ 🎉 ▸ WOWN! O pedido foi aceito!
+║╎⊹ ࣪ ˖ 💖 ▸ @${pedido.from.split("@")[0]} + @${pedido.to.split("@")[0]}
+║╎⊹ ࣪ ˖ 📜 ▸ _Parabéns aos pombinhos!_
+
+║╎⊹ ࣪ ˖ ℹ️ ▸ Use *${prefixoPrincipal}minhadupla* para ver os detalhes.
+
+╚═━═━═━═━ ᴅᴇᴠ ᴇᴢ ━═━═━═━✰`;
+                        
+                        await replyNYX({ sock, chat, message: m, sender: m.key.participant || m.key.remoteJid }, 
+                            { text: textoAceite, mentions: [pedido.from, pedido.to] },
+                            "bot"
+                        );
+                        return;
+                                        } else {
+                        familyDb.rejectProposal(pedido.id);
+                        const textoRecusa = 
+`╔═━✰『 💔 ᴘᴇᴅɪᴅᴏ ʀᴇᴄᴜsᴀᴅᴏ 』═━✰
+
+║╎⊹ ࣪ ˖ 😔 ▸ Que pena...
+║╎⊹ ࣪ ˖ 🥀 ▸ @${pedido.to.split("@")[0]} recusou o pedido de @${pedido.from.split("@")[0]}.
+║╎⊹ ࣪ ˖ 💭 ▸ _Tente com outro alguém!_
+
+╚═━═━═━═━ ᴅᴇᴠ ᴇᴢ ━═━═━═━✰`;
+
+                        await replyNYX({ sock, chat, message: m, sender: m.key.participant || m.key.remoteJid }, 
+                            { text: textoRecusa, mentions: [pedido.from, pedido.to] },
+                            "bot"
+                        );
+                        return;
+                    }
+                }
+            }
+        }
+
         const buttonId = m.message.buttonsResponseMessage?.selectedButtonId || null;
         const templateButtonId = m.message.templateButtonReplyMessage?.selectedId || null;
         const nativeButtonId = buttonId || templateButtonId;
@@ -465,12 +520,12 @@ async function handler(sock, m) {
         if (!prefixoUsado && texto.trim().toLowerCase() !== "prefixo") await applyAutomaticReplies(ctx, texto);
 
         if (texto.trim().toLowerCase() === "prefixo") {
-    await ctx.replyNYX(`·.♟️:.      『 *${prefixoPrincipal}* 』
+            await ctx.replyNYX(`·.♟️:.      『 *${prefixoPrincipal}* 』
 
 ᴘʀᴇғɪxᴏ ᴄᴏɴғɪɢᴜʀᴀᴅᴏ. ᴏ ʀᴇsᴛᴏ ᴇ́ ᴄᴏɴsᴇǫᴜᴇ̂ɴᴄɪᴀ.`, "user");
-    await applyPrefixReaction(ctx);
-    return;
-}
+            await applyPrefixReaction(ctx);
+            return;
+        }
 
         if (/^[sx](?:\d+)?$/.test(texto.toLowerCase())) texto = `${prefixoPrincipal}${texto.toLowerCase()}`;
 

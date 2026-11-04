@@ -574,7 +574,7 @@
             "xpEnabled": true,
             "reactionKeywords": [],
             "autoReplies": [],
-            "soadm": true,
+            "soadm": false,
             "visualizarMsg": false,
             "antiLigacao": true,
             "extrasPrefixos": [],
