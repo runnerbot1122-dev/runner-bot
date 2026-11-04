@@ -574,14 +574,15 @@
             "xpEnabled": true,
             "reactionKeywords": [],
             "autoReplies": [],
-            "soadm": false,
+            "soadm": true,
             "visualizarMsg": false,
             "antiLigacao": true,
             "extrasPrefixos": [],
             "limiteCaracteres": 100,
             "antiTrava": true,
             "tempoComando": 0,
-            "antiNotas": false
+            "antiNotas": false,
+            "linkSalvo": "https://chat.whatsapp.com/GLoDCTxKKQBE55vccgw8qH"
         }
     }
 }
