@@ -137,11 +137,7 @@ if(
     ){
 
         await ctx.replyNYX(
-`〘 👑 𝖣𝖮𝖭𝖮 〙
-
-👑 ɴãᴏ ᴘᴏssᴏ ᴀᴅᴠᴇʀᴛɪʀ ᴍᴇᴜ ᴄʀɪᴀᴅᴏʀ.
-
-> ${getBotName()}`,
+`👑 ɴãᴏ ᴘᴏssᴏ ᴀᴅᴠᴇʀᴛɪʀ ᴍᴇᴜ ᴄʀɪᴀᴅᴏʀ.`,
 
 "user"
 
@@ -304,39 +300,21 @@ minute:"2-digit"
 
 
 await ctx.replyNYX(
+    {
+        text:
+`╔═━✰『 ᴀᴅᴠᴇʀᴛᴇ̂ɴᴄɪᴀ 』═━✰
 
-{
+║╎⊹ ࣪ ˖ 👤 ▸ @${alvoReal.split("@")[0]}
+║╎⊹ ࣪ ˖ 📋 ▸ ᴀᴅᴠᴇʀᴛᴇ̂ɴᴄɪᴀs: *[ ${user.warnings}/3 ]*
+║╎⊹ ࣪ ˖ 📝 ▸ ᴍᴏᴛɪᴠᴏ: _${motivo}_
+║╎⊹ ࣪ ˖ 📅 ▸ ${data}
 
-text:
+║╎⊹ ࣪ ˖ ⚠️ ▸ ᴀᴏ ᴀᴛɪɴɢɪʀ 3 ᴀᴅᴠᴇʀᴛᴇ̂ɴᴄɪᴀs sᴇʀá ʀᴇᴍᴏᴠɪᴅᴏ.
 
-`╔═『⚠️』 𝑨𝑫𝑽𝑬𝑹𝑻𝑬̂𝑵𝑪𝑰𝑨 『⚠️』
-
-╠═════•
-
-⌬ 👤 @${alvoReal.split("@")[0]}
-
-⌬ 📋 𝑨𝒅𝒗𝒆𝒓𝒕𝒆̂𝒏𝒄𝒊𝒂𝒔: [ ${user.warnings}/3 ]
-
-⌬ 📝 𝑴𝒐𝒕𝒊𝒗𝒐: ${motivo}
-
-⌬ 📅 ${data}
-
-› Ao atingir 3 advertências será removido.
-
-╚═════•
-
-> ⚡ 𝑹𝒖𝒏𝒏𝒆𝒓 𝑫𝒆𝒗`,
-
-mentions:[
-
-    alvoReal
-
-]
-
-},
-
-"user"
-
+╚═━═━═━═━ ᴅᴇᴠ ᴇᴢ ━═━═━═━✰`,
+        mentions: [alvoReal]
+    },
+    "user"
 );
 
 

@@ -582,7 +582,8 @@
             "antiTrava": true,
             "tempoComando": 0,
             "antiNotas": false,
-            "linkSalvo": "https://chat.whatsapp.com/GLoDCTxKKQBE55vccgw8qH"
+            "linkSalvo": "https://chat.whatsapp.com/GLoDCTxKKQBE55vccgw8qH",
+            "x9": false
         }
     }
 }

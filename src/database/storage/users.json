@@ -26,7 +26,7 @@
         "level": 2,
         "messages": 42,
         "xpTotal": 433,
-        "messagesTotal": 307,
+        "messagesTotal": 320,
         "xpByGroup": {
             "120363427756624621@g.us": {
                 "xp": 27,
@@ -70,11 +70,11 @@
             "120363168388883230@g.us": 8,
             "120363411814433957@g.us": 1,
             "120363426613242513@g.us": 1,
-            "120363432197579234@g.us": 110
+            "120363432197579234@g.us": 123
         },
         "createdAt": "2026-10-27T04:09:00.605Z",
-        "lastActivity": "2026-11-04T01:16:21.731Z",
-        "lastCommand": "rank"
+        "lastActivity": "2026-11-04T01:43:06.385Z",
+        "lastCommand": "modox9"
     },
     "184662840344812@lid": {
         "name": "corvus",
@@ -595,7 +595,24 @@
         "jid": "553199114049@s.whatsapp.net",
         "lid": "31894460739781@lid",
         "warnings": 0,
-        "history": [],
+        "history": [
+            {
+                "reason": "Sem motivo",
+                "date": "03/11/2026, 22:18:53"
+            },
+            {
+                "reason": "Sem motivo",
+                "date": "03/11/2026, 22:25:34"
+            },
+            {
+                "reason": "Sem motivo",
+                "date": "03/11/2026, 22:36:23"
+            },
+            {
+                "reason": "Sem motivo",
+                "date": "03/11/2026, 22:37:14"
+            }
+        ],
         "xp": 37,
         "level": 1,
         "messages": 8,

@@ -1,194 +1,102 @@
 const {
-removeWarn,
-getUser
-}
-=
-require("../../utils/users");
+    removeWarn,
+    getUser
+} = require("../../utils/users");
 
-
-const resolveUser =
-require("../../utils/resolveUser");
-
+const resolveUser = require("../../utils/resolveUser");
 
 const {
     requireAdmin
 } = require("../../utils/checkPermission");
-
 
 const {
     podePunir,
     getTarget
 } = require("../../utils/checkTarget");
 
-
-const logger =
-require("../../utils/logger");
-
-
+const logger = require("../../utils/logger");
 
 module.exports = {
+    name: [
+        "rmadv",
+        "removeradv",
+        "tiraradv"
+    ],
 
+    execute: async (ctx) => {
+        requireAdmin(ctx);
 
-name:[
-"rmadv",
-"removeradv",
-"tiraradv"
-],
+        const alvo = getTarget(ctx);
 
+        if (!alvo) {
+            return ctx.replyNYX("⚠️ Marque o usuário que deseja remover a advertência.", "user");
+        }
 
+        const alvoReal = await resolveUser(
+            ctx.sock,
+            ctx.chat,
+            alvo
+        );
 
-execute: async(ctx)=>{
+        const protecao = podePunir(
+            ctx,
+            alvoReal
+        );
 
-requireAdmin(ctx);
+        if (!protecao.permitido) {
+            return ctx.replyNYX("❌ Não posso alterar advertências deste usuário.", "user");
+        }
 
+        const usuario = getUser(alvoReal);
 
+        if (usuario.warnings <= 0) {
+            return ctx.replyNYX(
+                "╔═━✰『 ᴀᴠɪsᴏ 』═━✰\n\n║╎⊹ ࣪ ˖ ⚠️ ▸ ᴇsᴛᴇ ᴜsᴜáʀɪᴏ ɴãᴏ ᴘᴏssᴜɪ ᴀᴅᴠᴇʀᴛᴇ̂ɴᴄɪᴀs.\n\n╚═━═━═━═━ ᴅᴇᴠ ᴇᴢ ━═━═━═━✰",
+                "bot"
+            );
+        }
 
-const alvo =
-getTarget(ctx);
+        const user = removeWarn(alvoReal);
 
+        // =========================================
+        // LOG PRIVADO
+        // =========================================
+        await logger.action(
+            ctx.sock,
+            {
+                acao: "⚠️ RMADV",
+                executor: ctx.sender,
+                alvo: alvoReal,
+                grupo: ctx.chat
+            }
+        );
 
+        // =========================================
+        // AVISO NO GRUPO
+        // =========================================
+        const data = new Date().toLocaleString("pt-BR", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        });
 
-if(!alvo){
+        await ctx.replyNYX(
+            {
+                text:
+`╔═━✰『 ᴀᴅᴠ ʀᴇᴍᴏᴠɪᴅᴀ 』═━✰
 
-return ctx.reply(
-"⚠️ Marque o usuário."
-);
+║╎⊹ ࣪ ˖ 👤 ▸ @${alvoReal.split("@")[0]}
+║╎⊹ ࣪ ˖ 📋 ▸ ᴀᴅᴠᴇʀᴛᴇ̂ɴᴄɪᴀs: *[ ${user.warnings}/3 ]*
+║╎⊹ ࣪ ˖ 📅 ▸ ${data}
 
-}
+║╎⊹ ࣪ ˖ 💠 ▸ ᴄᴏᴍᴘᴏʀᴛᴇ-sᴇ ɴᴏ ɢʀᴜᴘᴏ.
 
-
-
-const alvoReal =
-await resolveUser(
-    ctx.sock,
-    ctx.chat,
-    alvo
-);
-
-
-
-const protecao =
-    podePunir(
-        ctx,
-        alvoReal
-    );
-
-
-
-if(
-    !protecao.permitido
-){
-
-    return ctx.reply(
-        "❌ Não posso alterar advertências deste usuário."
-    );
-
-}
-
-
-
-const usuario =
-getUser(
-    alvoReal
-);
-
-
-
-if(
-    usuario.warnings <= 0
-){
-
-    return ctx.reply(
-
-`〘 ⚠️ 𝖠𝖵𝖨𝖲𝖮 〙
-
-ᴇsᴛᴇ ᴜsᴜáʀɪᴏ ɴãᴏ ᴘᴏssᴜɪ ᴀᴅᴠᴇʀᴛêɴᴄɪᴀs.`
-
-    );
-
-}
-
-
-
-const nomeAlvo =
-usuario.name ||
-alvoReal.split("@")[0];
-
-
-
-const user =
-removeWarn(
-    alvoReal
-);
-
-
-
-// =========================================
-// LOG PRIVADO
-// =========================================
-
-
-await logger.action(
-
-    ctx.sock,
-
-    {
-
-        acao:
-        "⚠️ RMADV",
-
-        executor:
-        ctx.sender,
-
-        alvo:
-        alvoReal,
-
-        grupo:
-        ctx.chat
-
+╚═━═━═━═━ ᴅᴇᴠ ᴇᴢ ━═━═━═━✰`,
+                mentions: [alvoReal]
+            },
+            "user"
+        );
     }
-
-);
-
-
-
-// =========================================
-// AVISO NO GRUPO
-// =========================================
-
-
-await ctx.replyNYX(
-
-{
-
-text:
-
-`╔═『✅』 𝑨𝑫𝑽 𝑹𝑬𝑴𝑶𝑽𝑰𝑫𝑨 『✅』
-
-╠═════•
-
-⌬ 👤 @${alvoReal.split("@")[0]}
-
-⌬ 📋 𝑨𝒅𝒗𝒆𝒓𝒕𝒆̂𝒏𝒄𝒊𝒂𝒔: [ ${user.warnings}/3 ]
-
-› 💠 Comporte-se no grupo.
-
-╚═════•
-
-> ⚡ 𝑹𝒖𝒏𝒏𝒆𝒓 𝑫𝒆𝒗`,
-
-mentions:[
-alvoReal
-]
-
-},
-
-"user"
-
-);
-
-
-}
-
-
 };
