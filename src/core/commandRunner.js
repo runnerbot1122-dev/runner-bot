@@ -88,17 +88,21 @@ if (!exclusivoVip) {
     try {
         const { isVipCommand } = require("../database/vipCommands");
         const nomesComandoVip = Array.isArray(cmd.name) ? cmd.name : [cmd.name, ctx.command];
-        exclusivoVip = [...new Set([...nomesComandoVip, ctx.command].filter(Boolean))]
-            .some(nome => isVipCommand(nome));
-    } catch (error) {
-        registrarErro({
-            command: ctx.command,
-            sender: ctx.sender,
-            chat: ctx.chat,
-            error: `Falha ao consultar comandos VIP: ${error.stack || error.message}`
+        
+        // CORREÇÃO: Filtra nomes com acentos/cedilha que quebram o normalizeCommandName
+        const nomesValidos = [...new Set([...nomesComandoVip, ctx.command].filter(Boolean))]
+            .filter(nome => /^[a-z0-9_-]{1,64}$/i.test(String(nome).trim().toLowerCase()));
+
+        exclusivoVip = nomesValidos.some(nome => {
+            try {
+                return isVipCommand(nome);
+            } catch (e) {
+                return false; // Ignora erro em nome específico em vez de travar tudo
+            }
         });
-        await ctx.replyNYX("❌ Não foi possível verificar as permissões VIP agora. Tente novamente mais tarde.", "bot");
-        return;
+    } catch (error) {
+        console.error(`[VIP_CHECK] Erro crítico ao verificar VIP: ${error.message}`);
+        // Em vez de bloquear o comando com "erro de VIP", deixa o comando rodar
     }
 }
 

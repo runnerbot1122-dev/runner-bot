@@ -465,10 +465,12 @@ async function handler(sock, m) {
         if (!prefixoUsado && texto.trim().toLowerCase() !== "prefixo") await applyAutomaticReplies(ctx, texto);
 
         if (texto.trim().toLowerCase() === "prefixo") {
-            await ctx.replyNYX(`·.💸:.      『 *${prefixoPrincipal}* 』*\n\nᴇsᴛᴏᴜ ᴄᴏɴғɪɢᴜʀᴀᴅᴏ ᴘᴀʀᴀ ʀᴇsᴘᴏɴᴅᴇʀ ᴀ\nᴇsᴛᴇ ᴘʀᴇғɪxᴏ`, "user");
-            await applyPrefixReaction(ctx);
-            return;
-        }
+    await ctx.replyNYX(`·.♟️:.      『 *${prefixoPrincipal}* 』
+
+ᴘʀᴇғɪxᴏ ᴄᴏɴғɪɢᴜʀᴀᴅᴏ. ᴏ ʀᴇsᴛᴏ ᴇ́ ᴄᴏɴsᴇǫᴜᴇ̂ɴᴄɪᴀ.`, "user");
+    await applyPrefixReaction(ctx);
+    return;
+}
 
         if (/^[sx](?:\d+)?$/.test(texto.toLowerCase())) texto = `${prefixoPrincipal}${texto.toLowerCase()}`;
 
