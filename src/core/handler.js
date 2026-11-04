@@ -121,6 +121,75 @@ async function handler(sock, m) {
                 }
             }
         }
+        
+        // =========================================
+        // INTERCEPTADOR DE JOGOS (QUIZ, ADIVINHA, FORCA)
+        // =========================================
+        if (textoBruto && chat.endsWith("@g.us")) {
+            const gameManager = require("./gameManager");
+            const remetenteJogo = m.key.participant || m.key.remoteJid;
+            const jogoAtivo = gameManager.getJogo(chat, remetenteJogo);
+
+            if (jogoAtivo) {
+                // Trava de segurança: ignora se a última interação foi há menos de 1.5 segundos
+                if (Date.now() - (jogoAtivo.ultimaInteracao || 0) < 1500) {
+                    return;
+                }
+                gameManager.atualizarInteracao(chat, remetenteJogo);
+
+                const respostaUsuario = textoBruto.trim().toLowerCase();
+
+                if (jogoAtivo.tipo === "quiz" || jogoAtivo.tipo === "adivinha") {
+                    if (respostaUsuario === jogoAtivo.dados.resposta.toLowerCase()) {
+                        gameManager.encerrarJogo(chat, remetenteJogo);
+                        await replyNYX({ sock, chat, message: m, sender: remetenteJogo }, `✅ *ACERTOU!*\n\nA resposta era *${jogoAtivo.dados.resposta}*.`, "bot");
+                    } else {
+                        gameManager.encerrarJogo(chat, remetenteJogo);
+                        await replyNYX({ sock, chat, message: m, sender: remetenteJogo }, `❌ *ERROU!*\n\nA resposta certa era *${jogoAtivo.dados.resposta}*.`, "bot");
+                    }
+                    return; 
+                }
+                
+                if (jogoAtivo.tipo === "forca") {
+                    const letra = respostaUsuario[0].toUpperCase();
+                    const jogo = jogoAtivo.dados;
+
+                    // Se já chutou essa letra
+                    if (jogo.letrasChutadas.includes(letra)) {
+                        await replyNYX({ sock, chat, message: m, sender: remetenteJogo }, `⚠️ Você já tentou a letra *${letra}*!`, "bot");
+                        return;
+                    }
+
+                    jogo.letrasChutadas.push(letra);
+
+                    // Monta o tabuleiro atualizado
+                    const tabuleiro = jogo.palavra.split("").map(l => jogo.letrasChutadas.includes(l) ? l : "_").join(" ");
+
+                    if (jogo.palavra.includes(letra)) {
+                        // Acertou a letra
+                        const venceu = jogo.palavra.split("").every(l => jogo.letrasChutadas.includes(l));
+                        
+                        if (venceu) {
+                            gameManager.encerrarJogo(chat, remetenteJogo);
+                            await replyNYX({ sock, chat, message: m, sender: remetenteJogo }, `🏆 *PARABÉNS!*\n\nVocê descobriu a palavra: *${jogo.palavra}*`, "bot");
+                        } else {
+                            await replyNYX({ sock, chat, message: m, sender: remetenteJogo }, `✅ Acertou a letra *${letra}*!\n\nPALAVRA: ${tabuleiro}\n❤️ Vidas: ${jogo.vidas}\n\nTente outra letra.`, "bot");
+                        }
+                    } else {
+                        // Errou a letra
+                        jogo.vidas--;
+                        
+                        if (jogo.vidas <= 0) {
+                            gameManager.encerrarJogo(chat, remetenteJogo);
+                            await replyNYX({ sock, chat, message: m, sender: remetenteJogo }, `💀 *VOCÊ PERDEU!*\n\nA palavra era: *${jogo.palavra}*\n\nSuas vidas acabaram.`, "bot");
+                        } else {
+                            await replyNYX({ sock, chat, message: m, sender: remetenteJogo }, `❌ A letra *${letra}* não existe.\n\nPALAVRA: ${tabuleiro}\n❤️ Vidas: ${jogo.vidas}\n\nTente outra letra.`, "bot");
+                        }
+                    }
+                    return;
+                }
+            }
+        }
 
         const buttonId = m.message.buttonsResponseMessage?.selectedButtonId || null;
         const templateButtonId = m.message.templateButtonReplyMessage?.selectedId || null;
@@ -530,7 +599,7 @@ async function handler(sock, m) {
         if (texto.trim().toLowerCase() === "prefixo") {
             await ctx.replyNYX(`·.♟️:.      『 *${prefixoPrincipal}* 』
 
-ᴘʀᴇфɪxᴏ ᴄᴏɴғɪɢᴜʀᴀᴅᴏ. ᴏ ʀᴇsᴛᴏ ᴇ́ ᴄᴏɴsᴇǫᴜᴇ̂ɴᴄɪᴀ.`, "user");
+ᴘʀᴇғɪxᴏ ᴄᴏɴғɪɢᴜʀᴀᴅᴏ. ᴏ ʀᴇsᴛᴏ ᴇ́ ᴄᴏɴsᴇǫᴜᴇ̂ɴᴄɪᴀ.`, "user");
             await applyPrefixReaction(ctx);
             return;
         }
