@@ -83,7 +83,7 @@ async function handler(sock, m) {
                 if (pedido) {
                     const prefixoPrincipal = chat.endsWith("@g.us") ? getSetting(chat, "prefix") || config.prefix : config.prefix;
                     
-                                        if (isSim) {
+                    if (isSim) {
                         familyDb.acceptProposal(pedido.id);
                         const textoAceite = 
 `╔═━✰『 💍 ɴᴏᴠᴏ ᴄᴀsᴀʟ 』═━✰
@@ -101,7 +101,7 @@ async function handler(sock, m) {
                             "bot"
                         );
                         return;
-                                        } else {
+                    } else {
                         familyDb.rejectProposal(pedido.id);
                         const textoRecusa = 
 `╔═━✰『 💔 ᴘᴇᴅɪᴅᴏ ʀᴇᴄᴜsᴀᴅᴏ 』═━✰
@@ -238,7 +238,6 @@ async function handler(sock, m) {
 
                 if (protecoes.antiTrava && (texto.length > 5000 || /[\u200B-\u200D\uFEFF]{10,}/.test(texto))) infracao = "Trava (Texto Suspeito)";
 
-                // 👇 NOVO: LIMITE DE CARACTERES
                 const limiteChar = getSetting(chat, "limiteCaracteres");
                 if (!infracao && limiteChar && limiteChar > 0 && texto.length > limiteChar) {
                     infracao = `Texto muito longo (${texto.length}/${limiteChar})`;
@@ -440,8 +439,21 @@ async function handler(sock, m) {
         const botOff = chat.endsWith("@g.us") ? getSetting(chat, "botOff") : false;
         if (botOff && !permissoes.owner) { console.log("Bot desligado neste grupo."); return; }
 
+        // CORREÇÃO: Transforma fig e tk em comandos ANTES de checar se é comando
+        if (!prefixoUsado) {
+            const txtLimpo = texto.trim().toLowerCase();
+            if (txtLimpo === "fig" && (m.message.imageMessage || m.message.videoMessage || m.message.extendedTextMessage?.contextInfo?.quotedMessage?.imageMessage)) {
+                texto = `${prefixoPrincipal}fig`;
+                prefixoUsado = prefixoPrincipal;
+            }
+            if ((txtLimpo === "tk" || txtLimpo === "take") && m.message.extendedTextMessage?.contextInfo?.quotedMessage?.stickerMessage) {
+                texto = `${prefixoPrincipal}tk`;
+                prefixoUsado = prefixoPrincipal;
+            }
+        }
+
         const mensagemInterna = Boolean(buttonId || interactiveId);
-        const atalhoSemPrefixo = /^(?:a|f|t(?:\s|$)|[sx]\d*|fig)$/i.test(texto.trim());
+        const atalhoSemPrefixo = /^(?:a|f|t(?:\s|$)|[sx]\d*|fig|tk|take)$/i.test(texto.trim());
         const ehComando = Boolean(prefixoUsado) || atalhoSemPrefixo;
 
         if (!mensagemInterna && chat.endsWith("@g.us")) {
@@ -513,16 +525,12 @@ async function handler(sock, m) {
             if (textoLower.startsWith("t ")) texto = `${prefixoPrincipal}totag ${texto.slice(2)}`;
         }
 
-        if (!prefixoUsado && texto.trim().toLowerCase() !== "prefixo" && !ehComando) {
-            if (texto.trim().toLowerCase() === "fig") texto = `${prefixoPrincipal}fig`;
-        }
-
         if (!prefixoUsado && texto.trim().toLowerCase() !== "prefixo") await applyAutomaticReplies(ctx, texto);
 
         if (texto.trim().toLowerCase() === "prefixo") {
             await ctx.replyNYX(`·.♟️:.      『 *${prefixoPrincipal}* 』
 
-ᴘʀᴇғɪxᴏ ᴄᴏɴғɪɢᴜʀᴀᴅᴏ. ᴏ ʀᴇsᴛᴏ ᴇ́ ᴄᴏɴsᴇǫᴜᴇ̂ɴᴄɪᴀ.`, "user");
+ᴘʀᴇфɪxᴏ ᴄᴏɴғɪɢᴜʀᴀᴅᴏ. ᴏ ʀᴇsᴛᴏ ᴇ́ ᴄᴏɴsᴇǫᴜᴇ̂ɴᴄɪᴀ.`, "user");
             await applyPrefixReaction(ctx);
             return;
         }
@@ -589,7 +597,10 @@ async function handler(sock, m) {
         }
 
         await executarComando(ctx);
-    } catch (e) { console.log("Erro handler:", e.message); }
+
+    } catch (e) { 
+        console.log("Erro handler:", e.message); 
+    }
 }
 
 module.exports = handler;

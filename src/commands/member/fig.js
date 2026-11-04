@@ -5,9 +5,11 @@ const { execFile } = require("child_process");
 const { promisify } = require("util");
 const { downloadMediaMessage } = require("@whiskeysockets/baileys");
 const sendNYXMedia = require("../../utils/sendNYXMedia");
+const replyNYX = require("../../utils/replyNYX");
 
 const execFileAsync = promisify(execFile);
 const MAX_VIDEO_SECONDS = 10;
+let ultimaFrase = -1;
 
 function desembrulharMensagem(mensagem) {
     let atual = mensagem;
@@ -20,12 +22,9 @@ function desembrulharMensagem(mensagem) {
 
 function localizarMidia(mensagem) {
     const atual = desembrulharMensagem(mensagem?.message || mensagem);
-    
-    // Verifica mídia direta
     if (atual.imageMessage) return { tipo: "image", conteudo: atual.imageMessage };
     if (atual.videoMessage) return { tipo: "video", conteudo: atual.videoMessage };
     
-    // Verifica mídia citada
     const citada = desembrulharMensagem(atual.extendedTextMessage?.contextInfo?.quotedMessage);
     if (citada.imageMessage) return { tipo: "image", conteudo: citada.imageMessage };
     if (citada.videoMessage) return { tipo: "video", conteudo: citada.videoMessage };
@@ -33,58 +32,69 @@ function localizarMidia(mensagem) {
     return null;
 }
 
-async function converterParaFigurinha(entrada, saida, tipo) {
-    // Usa o mesmo filtro do autosticker: crop para 512x512 (sem bordas) e FPS 15
-    const filtro = "scale=512:512:force_original_aspect_ratio=increase,crop=512:512";
-    const argumentos = ["-y", "-i", entrada];
-    
-    if (tipo === "video") {
-        argumentos.push("-t", String(MAX_VIDEO_SECONDS), "-vf", `${filtro},fps=15`, "-an");
+async function converterParaFigurinha(entrada, saida, tipo, bufferOriginal) {
+    if (tipo === "image") {
+        const sharp = require("sharp");
+        return await sharp(bufferOriginal)
+            .resize(512, 512, {
+                fit: "contain",
+                background: { r: 0, g: 0, b: 0, alpha: 0 }
+            })
+            .webp({ quality: 80 })
+            .toBuffer();
     } else {
-        argumentos.push("-vf", filtro);
+        // Filtro à prova de falhas pro ffmpeg no Termux (Estilo Cover)
+        const filtro = "scale=512:512:force_original_aspect_ratio=increase,crop=512:512";
+        const argumentos = [
+            "-y", "-i", entrada, 
+            "-t", String(MAX_VIDEO_SECONDS), 
+            "-vf", `${filtro},fps=15`, 
+            "-an", 
+            "-vcodec", "libwebp", 
+            "-lossless", "0", 
+            "-compression_level", "6", 
+            "-q:v", "50", 
+            "-loop", "0", 
+            saida
+        ];
+        await execFileAsync("ffmpeg", argumentos, { maxBuffer: 1024 * 1024 * 5 });
+        return fs.readFileSync(saida);
     }
-
-    argumentos.push(
-        "-vcodec", "libwebp",
-        "-lossless", "0",
-        "-compression_level", "6",
-        "-q:v", "50", // Qualidade boa e leve
-        ...(tipo === "video" ? ["-loop", "0"] : []),
-        saida
-    );
-
-    // maxBuffer aumentado para evitar erros em logs de vídeo
-    await execFileAsync("ffmpeg", argumentos, { maxBuffer: 1024 * 1024 });
 }
 
 module.exports = {
-    name: "fig",
+    name: ["fig", "sticker"],
     description: "Cria uma figurinha a partir de imagem ou vídeo curto",
     execute: async (ctx) => {
         const midia = localizarMidia(ctx.message);
+        
         if (!midia) {
-            return ctx.reply("🖼️ Responda a uma imagem ou vídeo de até 10 segundos com fig ou 7fig.");
+            return replyNYX(ctx, `╔═━✰『 ᴇʀʀᴏ 』═━✰\n\n║╎⊹ ࣪ ˖ 🖼️ ▸ ʀᴇsᴘᴏɴᴅᴀ ᴀ ᴜᴍᴀ ɪᴍᴀɢᴇᴍ ᴏᴜ ᴠíᴅᴇᴏ ᴅᴇ ᴀᴛé ${MAX_VIDEO_SECONDS}s ᴄᴏᴍ *${ctx.prefix}fig*.\n\n╚═━═━═━═━ ᴅᴇᴠ ᴇᴢ ━═━═━═━✰`, "bot");
         }
         
         if (midia.tipo === "video" && Number(midia.conteudo.seconds) > MAX_VIDEO_SECONDS) {
-            return ctx.reply(`⏱️ O vídeo precisa ter no máximo ${MAX_VIDEO_SECONDS} segundos.`);
+            return replyNYX(ctx, `╔═━✰『 ᴇʀʀᴏ 』═━✰\n\n║╎⊹ ࣪ ˖ ⏱️ ▸ ᴏ ᴠíᴅᴇᴏ ᴘʀᴇᴄɪsᴀ ᴛᴇʀ ɴᴏ ᴍáxɪᴍᴏ ${MAX_VIDEO_SECONDS} sᴇɢᴜɴᴅᴏs.\n\n╚═━═━═━═━ ᴅᴇᴠ ᴇᴢ ━═━═━═━✰`, "bot");
         }
 
         const frasesPreparacao = [
             "🛠️ Só um momento, já vou enviar sua figurinha.",
             "🛠️ Estou preparando sua figurinha, aguarde.",
             "🛠️ Convertendo sua mídia em figurinha. Já vai!",
-            "🛠️ Sua figurinha está quase pronta..."
+            "🛠️ Sua figurinha está quase pronta...",
+            "🎨 Cortando e colando os pedaços..."
         ];
-        const frase = frasesPreparacao[Math.floor(Math.random() * frasesPreparacao.length)];
-        await ctx.reply(frase);
+        
+        let indice;
+        do { indice = Math.floor(Math.random() * frasesPreparacao.length); } while (frasesPreparacao.length > 1 && indice === ultimaFrase);
+        ultimaFrase = indice;
+        
+        await ctx.reply(frasesPreparacao[indice]);
 
         const temporario = fs.mkdtempSync(path.join(os.tmpdir(), "runnerbot-fig-"));
         const entrada = path.join(temporario, midia.tipo === "video" ? "entrada.mp4" : "entrada.bin");
         const saida = path.join(temporario, "figurinha.webp");
 
         try {
-            // downloadMediaMessage é MUITO mais rápido que o mediaDownloader antigo
             const mensagemParaBaixar = {
                 key: ctx.message.key,
                 message: {
@@ -92,29 +102,21 @@ module.exports = {
                 }
             };
             
-            const buffer = await downloadMediaMessage(
-                mensagemParaBaixar, 
-                "buffer", 
-                {}, 
-                { logger: console, reuploadRequest: ctx.sock.updateMediaMessage }
-            );
-
+            const buffer = await downloadMediaMessage(mensagemParaBaixar, "buffer", {}, { logger: console, reuploadRequest: ctx.sock.updateMediaMessage });
             if (!buffer || buffer.length === 0) throw new Error("Mídia vazia.");
 
-            fs.writeFileSync(entrada, buffer);
-            await converterParaFigurinha(entrada, saida, midia.tipo);
+            if (midia.tipo === "video") fs.writeFileSync(entrada, buffer);
             
-            const figurinha = fs.readFileSync(saida);
-            if (figurinha.length === 0) throw new Error("Figurinha vazia.");
+            const figurinha = await converterParaFigurinha(entrada, saida, midia.tipo, buffer);
 
-            // Envia com Ver Canal
+            if (!figurinha || figurinha.length === 0) throw new Error("Figurinha vazia.");
+
             await sendNYXMedia(ctx.sock, ctx.chat, { sticker: figurinha }, ctx.message);
             
         } catch (erro) {
             console.error("[FIG] Erro:", erro.message);
-            await ctx.reply("❌ Não consegui criar a figurinha. Tente novamente com uma imagem válida ou vídeo curto.");
+            await replyNYX(ctx, `╔═━✰『 ᴇʀʀᴏ 』═━✰\n\n║╎⊹ ࣪ ˖ ❌ ▸ ɴãᴏ ᴄᴏɴsᴇɢᴜɪ ᴄʀɪᴀʀ ᴀ ғɪɢᴜʀɪɴʜᴀ.\n\n╚═━═━═━═━ ᴅᴇᴠ ᴇᴢ ━═━═━═━✰`, "bot");
         } finally {
-            // Limpa os arquivos temporários instantaneamente
             fs.rmSync(temporario, { recursive: true, force: true });
         }
     }

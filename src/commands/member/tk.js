@@ -1,6 +1,9 @@
 const { downloadMediaMessage } = require("@whiskeysockets/baileys");
 const sendNYXMedia = require("../../utils/sendNYXMedia");
 const { aplicarMetadados } = require("../../utils/stickerMetadata");
+const replyNYX = require("../../utils/replyNYX");
+
+let ultimaFrase = -1;
 
 function desembrulharMensagem(mensagem) {
     let atual = mensagem;
@@ -14,17 +17,13 @@ function desembrulharMensagem(mensagem) {
 function localizarFigurinha(mensagem) {
     const atual = desembrulharMensagem(mensagem?.message || mensagem);
     if (atual.stickerMessage) return atual.stickerMessage;
-
-    const citada = desembrulharMensagem(
-        atual.extendedTextMessage?.contextInfo?.quotedMessage
-    );
+    const citada = desembrulharMensagem(atual.extendedTextMessage?.contextInfo?.quotedMessage);
     return citada.stickerMessage || null;
 }
 
 function obterNomeExecutor(ctx) {
     const pushName = String(ctx.message?.pushName || "").trim();
     if (pushName) return pushName.slice(0, 64);
-
     const remetente = String(ctx.sender || "").split("@")[0].trim();
     return remetente.slice(0, 64) || "Usuário";
 }
@@ -34,21 +33,40 @@ module.exports = {
     description: "Renomeia uma figurinha citada com o nome do executor",
     execute: async (ctx) => {
         const figurinha = localizarFigurinha(ctx.message);
+        
         if (!figurinha) {
-            return ctx.reply("🏷️ Responda a uma figurinha com 7tk ou 7take.");
+            return replyNYX(ctx, 
+                `╔═━✰『 ᴇʀʀᴏ 』═━✰\n\n║╎⊹ ࣪ ˖ 🏷️ ▸ ʀᴇsᴘᴏɴᴅᴀ ᴀ ᴜᴍᴀ ғɪɢᴜʀɪɴʜᴀ ᴄᴏᴍ *${ctx.prefix}tk* ᴏᴜ *${ctx.prefix}take*.\n\n╚═━═━═━═━ ᴅᴇᴠ ᴇᴢ ━═━═━═━✰`, 
+                "bot");
         }
 
         const nome = obterNomeExecutor(ctx);
-        await ctx.reply("🏷️ Só um momento, estou preparando sua figurinha.");
+        
+        const frasesEspera = [
+            "🏷️ Só um momento, estou preparando sua figurinha.",
+            "🛠️ Tô tirando os créditos do criador original...",
+            "✂️ Cortando o nome antigo e colocando o seu.",
+            "🤏 Calma, tô roubando a figurinha pra você.",
+            "🎨 Aplicando os metadados...",
+            "🕵️ Trabalhando na arte, aguarde.",
+            "⚡ Já vai ficar com a sua marca!",
+            "📦 Desempacotando a figurinha...",
+            "🧬 Alterando o DNA da figurinha.",
+            "⏳ Um instante, a mágica tá rolando."
+        ];
+
+        let indice;
+        do { indice = Math.floor(Math.random() * frasesEspera.length); } while (frasesEspera.length > 1 && indice === ultimaFrase);
+        ultimaFrase = indice;
+
+        await ctx.reply(frasesEspera[indice]);
 
         try {
-            // Cria o objeto para download nativo
             const mensagemParaBaixar = {
                 key: ctx.message.key,
                 message: { stickerMessage: figurinha }
             };
 
-            // Baixa o buffer mais rápido
             const buffer = await downloadMediaMessage(
                 mensagemParaBaixar,
                 "buffer",
@@ -58,27 +76,20 @@ module.exports = {
 
             if (!buffer || buffer.length === 0) throw new Error("Figurinha vazia.");
 
-            // Aplica os metadados
-            const figurinhaRenomeada = await aplicarMetadados(
-                buffer,
-                nome,
-                nome
-            );
-            
+            // CORREÇÃO: Autor vazio pra não duplicar o nome
+            const figurinhaRenomeada = await aplicarMetadados(buffer, nome, "");
+
             if (!figurinhaRenomeada || figurinhaRenomeada.length === 0) {
                 throw new Error("Figurinha renomeada vazia.");
             }
 
-            // Envia com Ver Canal
-            await sendNYXMedia(ctx.sock, ctx.chat, {
-                sticker: figurinhaRenomeada,
-                packname: nome,
-                author: nome
-            }, ctx.message);
+            await sendNYXMedia(ctx.sock, ctx.chat, { sticker: figurinhaRenomeada }, ctx.message);
 
         } catch (erro) {
             console.error("[TK/TAKE] Erro:", erro.message);
-            await ctx.reply("❌ Não consegui renomear essa figurinha. Tente novamente.");
+            await replyNYX(ctx, 
+                `╔═━✰『 ᴇʀʀᴏ 』═━✰\n\n║╎⊹ ࣪ ˖ ❌ ▸ ɴãᴏ ᴄᴏɴsᴇɢᴜɪ ʀᴇɴᴏᴍᴇᴀʀ ᴇssᴀ ғɪɢᴜʀɪɴʜᴀ.\n\n╚═━═━═━═━ ᴅᴇᴠ ᴇᴢ ━═━═━═━✰`, 
+                "bot");
         }
     }
 };
