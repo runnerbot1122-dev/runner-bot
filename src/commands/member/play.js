@@ -1,13 +1,13 @@
-const path = require("path");
+const path = require("path");                                                           
 const fonteNYX = require("../../utils/fonteNYX");
-const criarPlayCard = require("../../utils/createPlayCard");
+const criarPlayCard = require("../../utils/createPlayCard");                            
 const sendNYXMedia = require("../../utils/sendNYXMedia");
-const { buscarEBaixarAudio } = require("../../utils/youtubeAudio");
+const { buscarEBaixarAudio } = require("../../utils/youtubeAudio");                     
 
 let ultimaFrase = -1;
 
-function nomeErroPlay(error) {
-    if (error?.code === "ENOENT") return "Não encontrei o yt-dlp na VPS.";
+function nomeErroPlay(error) {                                                              
+    if (error?.code === "ENOENT") return "Não encontrei o yt-dlp na VPS.";                  
     if (error?.code === "PLAY_BUSY") return "Aguarde, o play anterior ainda está rodando.";
     if (error?.code === "OOM") return "Hospedagem sem memória. Tente uma música mais curta.";
     if (error?.code === "TIMEOUT") return "O YouTube demorou muito. Tente novamente.";
@@ -25,10 +25,32 @@ module.exports = {
         }
 
         const frases = [
-            "Calma, tô preparando seu pedido.", "Separando o som, já vai tocar.",
-            "Buscando sua música, já volto.", "O próximo som está chegando."
+            "Calma, tô preparando seu pedido...",
+            "Separando o som, já vai tocar.",
+            "Buscando sua música, já volto.",
+            "O próximo som está chegando.",
+            "Aguenta aí, tô caçando esse hit.",
+            "Deixa comigo, já tô baixando.",
+            "Segura a ansiedade, a música já vem.",
+            "Tô no YouTube procurando...",
+            "Preparando a melhor playlist pra você.",
+            "Já tô convertendo aqui, calma.",
+            "Só um instante, o DJ tá trabalhando.",
+            "Achei o som! Só um pouco de paciência.",
+            "Tá quente, mas já vai sair do forno.",
+            "Tô caprichando na capa, aguarde.",
+            "O play tá no ar, só falta o áudio.",
+            "Pode ir preparando o fone de ouvido.",
+            "Essa vai ser boa, confia.",
+            "Buscando na base do YouTube...",
+            "Música a caminho, aguente firme.",
+            "Quase lá, não desliga o bot.",
+            "Tô fazendo a mágica acontecer.",
+            "Aguarde só mais um pouquinho.",
+            "Baixando o áudio, já vai chegar.",
+            "DJ Runner tá no comando."
         ];
-        
+
         let indice;
         do { indice = Math.floor(Math.random() * frases.length); } while (frases.length > 1 && indice === ultimaFrase);
         ultimaFrase = indice;
@@ -42,7 +64,8 @@ module.exports = {
                 return ctx.replyNYX("Não encontrei essa faixa.", "bot");
             }
 
-            const legenda = `🎵 ${fonteNYX(faixa.title)}\n👤 ${fonteNYX(faixa.artist)}\n🎼 ${fonteNYX("YouTube")}`;
+            // Legenda corrigida (sem "YOUTUBE" duplicado)
+            const legenda = `🎵 ${fonteNYX(faixa.title)}\n👤 ${fonteNYX(faixa.artist)}\n🎼 ${fonteNYX("Áudio do YouTube")}`;
 
             // Tenta enviar o card primeiro
             try {
