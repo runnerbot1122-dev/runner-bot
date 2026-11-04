@@ -22,11 +22,11 @@
         "lid": "48168561578043@lid",
         "warnings": 0,
         "history": [],
-        "xp": 59,
+        "xp": 68,
         "level": 1,
-        "messages": 49,
-        "xpTotal": 492,
-        "messagesTotal": 417,
+        "messages": 50,
+        "xpTotal": 501,
+        "messagesTotal": 422,
         "xpByGroup": {
             "120363427756624621@g.us": {
                 "xp": 27,
@@ -65,13 +65,13 @@
                 "lastMessageAt": "2026-11-01T19:37:10.806Z"
             },
             "120363432197579234@g.us": {
-                "xp": 59,
+                "xp": 68,
                 "level": 1,
-                "xpTotal": 59,
-                "messages": 7,
+                "xpTotal": 68,
+                "messages": 8,
                 "rewards": [],
                 "streak": 1,
-                "lastMessageAt": "2026-11-04T05:05:53.070Z"
+                "lastMessageAt": "2026-11-04T06:04:03.777Z"
             }
         },
         "messagesByGroup": {
@@ -79,11 +79,11 @@
             "120363168388883230@g.us": 8,
             "120363411814433957@g.us": 1,
             "120363426613242513@g.us": 1,
-            "120363432197579234@g.us": 220
+            "120363432197579234@g.us": 225
         },
         "createdAt": "2026-10-27T04:09:00.605Z",
-        "lastActivity": "2026-11-04T05:56:43.193Z",
-        "lastCommand": "fig",
+        "lastActivity": "2026-11-04T06:04:09.731Z",
+        "lastCommand": "meme",
         "melhorAmigo": "31894460739781@lid"
     },
     "184662840344812@lid": {
