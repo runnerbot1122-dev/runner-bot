@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const fonteNYX = require("../../utils/fonteNYX");
 
 module.exports = {
     name: ["ship", "shipar", "shippar", "shipo"],
@@ -64,6 +65,9 @@ module.exports = {
         else if (porcentagem <= 80) frase = "O amor está no ar! Vocês formam um lindo casal. 🥰";
         else if (porcentagem < 100) frase = "Almas gêmeas! Já pode casar no cartório. 💍";
         else frase = "PERFEITOS! O cosmos conspirou pra vocês ficarem juntos. 🌌";
+
+        // Aplica a fonte do bot na frase
+        frase = fonteNYX(frase);
 
         // Texto da legenda
         const legenda = `💘 *SHIP*\n\n@${numero1} + @${numero2}\n\n💖 Compatibilidade: *${porcentagem}%*\n\n_${frase}_`;

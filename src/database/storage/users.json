@@ -26,7 +26,7 @@
         "level": 1,
         "messages": 45,
         "xpTotal": 459,
-        "messagesTotal": 346,
+        "messagesTotal": 354,
         "xpByGroup": {
             "120363427756624621@g.us": {
                 "xp": 27,
@@ -79,11 +79,11 @@
             "120363168388883230@g.us": 8,
             "120363411814433957@g.us": 1,
             "120363426613242513@g.us": 1,
-            "120363432197579234@g.us": 149
+            "120363432197579234@g.us": 157
         },
         "createdAt": "2026-10-27T04:09:00.605Z",
-        "lastActivity": "2026-11-04T02:53:02.883Z",
-        "lastCommand": "baiano"
+        "lastActivity": "2026-11-04T03:20:19.374Z",
+        "lastCommand": "rankfofo"
     },
     "184662840344812@lid": {
         "name": "corvus",
@@ -91,20 +91,20 @@
         "lid": "184662840344812@lid",
         "warnings": 0,
         "history": [],
-        "xp": 10,
+        "xp": 18,
         "level": 2,
-        "messages": 19,
-        "xpTotal": 149,
-        "messagesTotal": 42,
+        "messages": 20,
+        "xpTotal": 157,
+        "messagesTotal": 43,
         "xpByGroup": {
             "120363168388883230@g.us": {
-                "xp": 10,
+                "xp": 18,
                 "level": 2,
-                "xpTotal": 110,
-                "messages": 14,
+                "xpTotal": 118,
+                "messages": 15,
                 "rewards": [],
                 "streak": 1,
-                "lastMessageAt": "2026-11-03T10:00:16.525Z"
+                "lastMessageAt": "2026-11-04T02:55:09.888Z"
             },
             "120363142999607164@g.us": {
                 "xp": 32,
@@ -126,7 +126,7 @@
             }
         },
         "messagesByGroup": {
-            "120363168388883230@g.us": 37,
+            "120363168388883230@g.us": 38,
             "120363142999607164@g.us": 4,
             "120363412532472529@g.us": 1
         },

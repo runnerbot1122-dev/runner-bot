@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { getTarget } = require("../../utils/checkTarget");
+const fonteNYX = require("../../utils/fonteNYX");
 
 module.exports = {
     name: ["beta"],
@@ -21,7 +22,8 @@ module.exports = {
             `O beta @${numAlvo} foi flagrado por @${numSender} jogando no easy! 👶`,
             `@${numSender} deu um esporro no beta @${numAlvo}! 💀`
         ];
-        const legenda = frases[Math.floor(Math.random() * frases.length)];
+        let legenda = frases[Math.floor(Math.random() * frases.length)];
+legenda = fonteNYX(legenda);
 
         const gifPath = path.join(__dirname, "..", "..", "..", "assets", "gifs", "beta.mp4");
         const fallbackPath = path.join(__dirname, "..", "..", "..", "assets", "gifs", "beijo.mp4");

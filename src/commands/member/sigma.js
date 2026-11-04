@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { getTarget } = require("../../utils/checkTarget");
+const fonteNYX = require("../../utils/fonteNYX");
 
 module.exports = {
     name: ["sigma"],
@@ -21,7 +22,8 @@ module.exports = {
             `O nível de @${numAlvo} é tão alto que @${numSender} precisou de binóculos! 📈`,
             `@${numSender} tentou competir com @${numAlvo}, mas descobriu que ele é um sigma! 🐺`
         ];
-        const legenda = frases[Math.floor(Math.random() * frases.length)];
+        let legenda = frases[Math.floor(Math.random() * frases.length)];
+legenda = fonteNYX(legenda);
 
         const gifPath = path.join(__dirname, "..", "..", "..", "assets", "gifs", "sigma.mp4");
         const fallbackPath = path.join(__dirname, "..", "..", "..", "assets", "gifs", "beijo.mp4");

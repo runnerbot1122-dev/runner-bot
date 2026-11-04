@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { getTarget } = require("../../utils/checkTarget");
+const fonteNYX = require("../../utils/fonteNYX");
 
 module.exports = {
     name: ["lindo", "linda"],
@@ -21,7 +22,8 @@ module.exports = {
             `@${numSender} olhou pra @${numAlvo} e se apaixonou na hora. 😳`,
             `@${numAlvo} é tão lindo(a) que @${numSender} até esqueceu de respirar! 🥰`
         ];
-        const legenda = frases[Math.floor(Math.random() * frases.length)];
+        let legenda = frases[Math.floor(Math.random() * frases.length)];
+legenda = fonteNYX(legenda);
 
         const gifPath = path.join(__dirname, "..", "..", "..", "assets", "gifs", "lindo.mp4");
         const fallbackPath = path.join(__dirname, "..", "..", "..", "assets", "gifs", "beijo.mp4");
