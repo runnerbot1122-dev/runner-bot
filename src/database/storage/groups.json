@@ -584,7 +584,8 @@
             "antiNotas": false,
             "linkSalvo": "https://chat.whatsapp.com/GLoDCTxKKQBE55vccgw8qH",
             "x9": false,
-            "legendabv": "Olá #numero, seja bem-vindo ao #grupo! aproveite. 👑"
+            "legendabv": "Olá #numero, seja bem-vindo ao #grupo! aproveite. 👑",
+            "aprovacaoEntrada": true
         }
     }
 }

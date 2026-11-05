@@ -29,7 +29,6 @@ async function executarComando(ctx){
                 if (modoAluguelAtivo) {
                     const aluguel = rentals.getRental(ctx.chat);
                     if (!aluguel) {
-                        // Grupo não tem aluguel registrado ou já expirou
                         await replyNYX(ctx, 
                             `╔═━✰『 ᴀʟᴜɢᴜᴇʟ ᴇxᴘɪʀᴀᴅᴏ 』═━✰\n\n║╎⊹ ࣪ ˖ ⚠️ ▸ ᴏ ᴀʟᴜɢᴜᴇʟ ᴅᴇssᴇ ɢʀᴜᴘᴏ ᴇxᴘɪʀᴏᴜ ᴏᴜ ɴãᴏ ғᴏɪ ʀᴇɢɪsᴛʀᴀᴅᴏ.\n║╎⊹ ࣪ ˖ 💳 ▸ ᴘᴀʀᴀ ʀᴇɴᴏᴠᴀʀ, ᴄᴏɴᴛᴀᴛᴇ ᴏ ᴅᴏɴᴏ ᴅᴏ ʙᴏᴛ.\n\n╚═━═━═━═━ ᴅᴇᴠ ᴇᴢ ━═━═━═━✰`, 
                             "bot");
@@ -38,7 +37,6 @@ async function executarComando(ctx){
                 }
             } catch (error) {
                 console.error("[ALUGUEL] Erro ao verificar:", error.message);
-                // Se der erro na leitura do banco, não bloqueia o bot (fail-open pra não derrubar o grupo)
             }
         }
 

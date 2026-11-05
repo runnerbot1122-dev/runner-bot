@@ -3,7 +3,8 @@ const {
 } = require("../../utils/checkPermission");
 
 const {
-    getTarget
+    getTarget,
+    podePunir
 } = require("../../utils/checkTarget");
 
 const config = require("../../config/config");
@@ -15,7 +16,6 @@ async function responderFalha(ctx, mensagem, codigo, usarReplyNYX = true) {
     } else {
         await ctx.reply(mensagem);
     }
-    // O runner transforma rejeições em reação de erro e não aplica a reação de sucesso.
     throw new Error(codigo);
 }
 
@@ -63,28 +63,16 @@ module.exports = {
         }
 
         // =========================================================
-        // 🛡️ CORREÇÃO DA PROTEÇÃO DO DONO
+        // 🛡️ PROTEÇÃO DO DONO / MESTRE (Usando a função oficial)
         // =========================================================
-        const numeroAlvo = alvo.split("@")[0];
-        const donoConfig = config.owner ? String(config.owner).split("@")[0] : "";
-        const botNumero = ctx.sock.user.id.split(":")[0].split("@")[0];
-
-        // Se o alvo for o próprio bot ou o dono configurado
-        if (numeroAlvo === botNumero || numeroAlvo === donoConfig) {
-            // Se quem está tentando banir for o próprio dono, avisa que não pode banir a si mesmo
-            if (ctx.isOwner) {
-                return responderFalha(
-                    ctx,
-                    "❌ Você não pode remover a si mesmo nem o bot.",
-                    "BAN_TARGET_PROTECTED"
-                );
-            }
-            // Se for um admin comum tentando banir o dono, barra
-            return responderFalha(
-                ctx,
-                "❌ Não é possível remover o dono do bot ou o próprio bot.",
-                "BAN_TARGET_PROTECTED"
-            );
+        const protecao = podePunir(ctx, alvo);
+        if (!protecao.permitido) {
+            let motivo = "❌ Não é possível remover este usuário.";
+            if (protecao.motivo === "dono") motivo = "❌ Não é possível remover o Dono do bot.";
+            if (protecao.motivo === "bot") motivo = "❌ Não é possível remover o próprio bot.";
+            if (protecao.motivo === "subdono_ou_dono_grupo") motivo = "❌ Não é possível remover um Subdono ou Dono do grupo.";
+            
+            return responderFalha(ctx, motivo, "BAN_TARGET_PROTECTED");
         }
         // =========================================================
 

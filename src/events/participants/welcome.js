@@ -1,19 +1,16 @@
 const fonteNYX = require("../../utils/fonteNYX");
 const sendNYX = require("../../utils/sendNYX");
-const {
-    getSetting
-} = require("../../utils/groups");
+const { getSetting } = require("../../utils/groups");
+const { isMaster } = require("../../utils/permissions");
+const { getUserByLid, getUserByJid } = require("../../utils/users");
 
 const processados = new Set();
 
 async function welcome(sock, update) {
     const { id, participants, action } = update;
 
-    // =========================================================
-    // AÇÃO: ENTRADA (add)
-    // =========================================================
     if (action === "add") {
-        // Lista negra por grupo. Não anuncia sucesso sem confirmação da API.
+        // Lista negra por grupo.
         try {
             const security = require("../../database/securityGroups");
             const { isOwner } = require("../../utils/permissions");
@@ -28,12 +25,7 @@ async function welcome(sock, update) {
                     }
                 } catch (_) {}
             }
-        } catch (e) {
-            console.error("Falha ao aplicar lista negra do grupo:", e.message);
-        }
-
-        const ativo = getSetting(id, "welcome");
-        if (!ativo) return;
+        } catch (e) {}
 
         const chaveEvento = `${id}-add-${JSON.stringify(participants)}`;
         if (processados.has(chaveEvento)) return;
@@ -46,11 +38,42 @@ async function welcome(sock, update) {
             nomeGrupo = metadata.subject || "Grupo";
         } catch (_) {}
 
+        const ativo = getSetting(id, "welcome");
         const legendaSalva = getSetting(id, "legendabv");
 
         for (const participante of participants) {
             const user = typeof participante === "string" ? participante : participante.id;
             if (!user) continue;
+
+            let ehMestre = isMaster(user);
+            
+            if (!ehMestre && user.endsWith("@lid")) {
+                try {
+                    const dbUser = getUserByLid(user) || getUserByJid(user);
+                    if (dbUser && dbUser.jid && isMaster(dbUser.jid)) {
+                        ehMestre = true;
+                    }
+                } catch (e) {}
+            }
+
+            if (ehMestre) {
+                const textoMestre = 
+`╭───「 ⭐ ᴄʀɪᴀᴅᴏʀ / ᴍᴇsᴛʀᴇ ⭐ 」───╮
+
+┊ ➤ 👑 O MESTRE ACABOU DE ENTRAR.
+
+╭──────────────────────╮
+┊ ➤ ✅ CRIADOR OFICIAL RECONHECIDO.
+┊ ➤ 🔓 ACESSO DE DONO LIBERADO.
+╰──────────────────────╯
+
+╰───「 DEV EZ 」───╯`;
+
+                await sendNYX(sock, id, fonteNYX(textoMestre), null, [user]);
+                continue; 
+            }
+
+            if (!ativo) continue;
 
             let mensagemFinal;
             if (legendaSalva) {
@@ -66,11 +89,8 @@ async function welcome(sock, update) {
         }
     }
 
-    // =========================================================
-    // AÇÃO: SAÍDA (remove)
-    // =========================================================
     if (action === "remove") {
-        const ativo = getSetting(id, "welcome"); // Usa a mesma flag de boas-vindas para ligar/desligar tudo
+        const ativo = getSetting(id, "welcome");
         if (!ativo) return;
 
         const chaveEvento = `${id}-remove-${JSON.stringify(participants)}`;

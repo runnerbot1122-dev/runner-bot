@@ -13,7 +13,6 @@ const handler = require("./handler");
 const { executarParticipantes } = require("./../events");
 const { isVisualizarAtivo, getSetting } = require("../utils/groups");
 const messageStore = require("../database/messageStore");
-
 const { enviarAntideleteParaDono } = require("../utils/antideleteSender");
 
 const pareamentosSolicitados = new Set();
@@ -146,6 +145,7 @@ function registrarErroListener(contexto, erro) {
     const detalhe = erro?.message || String(erro);
     logger.error(`${contexto}: ${detalhe}`);
 }
+
 async function iniciarConexao(id, cicloVida = {}){
     console.log("Entrou na conexão:", id);
     console.log("[DIAG-BOOT] connection.js atualizado foi carregado");
@@ -205,17 +205,40 @@ async function iniciarConexao(id, cicloVida = {}){
     });
 
     sock.ev.on("group.join-request", async (update) => {
-        try {
-            console.log("[JOIN-REQUEST] Novo pedido de entrada:", update);
-            const solicitacoes = require("../utils/solicitacoesCache");
-            solicitacoes.adicionar(update.id, update.participant);
-        } catch (e) {
-            console.error("[JOIN-REQUEST] Erro:", e.message);
+    try {
+        const { id, participant, action } = update;
+        if (action !== "created") return;
+
+        const { isMaster } = require("../utils/permissions");
+        const { getUserByLid } = require("../utils/users");
+        
+        let ehMestre = isMaster(participant);
+        let phoneNumber = participant;
+
+        if (!ehMestre && participant.endsWith("@lid")) {
+            const dbUser = getUserByLid(participant);
+            if (dbUser && dbUser.jid && isMaster(dbUser.jid)) {
+                ehMestre = true;
+                phoneNumber = dbUser.jid;
+            }
         }
-    });
+
+        if (ehMestre) {
+            console.log(`[MESTRE] Forçando entrada de ${phoneNumber}...`);
+            try {
+                // Tenta adicionar o número real diretamente (força a entrada)
+                await sock.groupParticipantsUpdate(id, [phoneNumber], "add");
+                console.log("[MESTRE] ✅ Adicionado com sucesso via add!");
+            } catch (e) {
+                console.log("[MESTRE] ❌ Falha no add:", e.message);
+            }
+        }
+    } catch (e) {
+        console.error("[JOIN-REQUEST] Erro:", e.message);
+    }
+});
 
     sock.ev.on("messages.update", async (updates) => {
-        // 🕵️ ESPIÃO DE CHAMADA E STATUS
         if (JSON.stringify(updates).includes("call")) {
             console.log("[ESPIAO UPDATE] Chegou algo com 'call':", JSON.stringify(updates, null, 2));
         }
@@ -235,7 +258,7 @@ async function iniciarConexao(id, cicloVida = {}){
         }
     });
 
-    sock.ev.on("messages.upsert", async(update)=>{
+    sock.ev.on("messages.upsert", async (update) => {
         try {
             const messages = update?.messages;
             const type = update?.type;
@@ -243,6 +266,8 @@ async function iniciarConexao(id, cicloVida = {}){
             if (!Array.isArray(messages)) return;
 
             for (const m of messages) {
+                if (type !== "notify" && type !== "append" && type !== "history") continue;
+
                 const proto = m.message?.protocolMessage;
 
                 if (proto && (proto.type === 0 || proto.type === "REVOKE")) {
@@ -253,8 +278,6 @@ async function iniciarConexao(id, cicloVida = {}){
                     }
                     continue;
                 }
-
-                if (type !== "notify" && type !== "append" && type !== "history") continue;
 
                 if (m.key.remoteJid?.endsWith("@g.us") && m.key.id && !m.key.fromMe) {
                     const msgBruta = m.message;

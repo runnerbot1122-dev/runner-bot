@@ -131,7 +131,6 @@ async function handler(sock, m) {
             const jogoAtivo = gameManager.getJogo(chat, remetenteJogo);
 
             if (jogoAtivo) {
-                // Trava de segurança: ignora se a última interação foi há menos de 1.5 segundos
                 if (Date.now() - (jogoAtivo.ultimaInteracao || 0) < 1500) {
                     return;
                 }
@@ -154,19 +153,15 @@ async function handler(sock, m) {
                     const letra = respostaUsuario[0].toUpperCase();
                     const jogo = jogoAtivo.dados;
 
-                    // Se já chutou essa letra
                     if (jogo.letrasChutadas.includes(letra)) {
                         await replyNYX({ sock, chat, message: m, sender: remetenteJogo }, `⚠️ Você já tentou a letra *${letra}*!`, "bot");
                         return;
                     }
 
                     jogo.letrasChutadas.push(letra);
-
-                    // Monta o tabuleiro atualizado
                     const tabuleiro = jogo.palavra.split("").map(l => jogo.letrasChutadas.includes(l) ? l : "_").join(" ");
 
                     if (jogo.palavra.includes(letra)) {
-                        // Acertou a letra
                         const venceu = jogo.palavra.split("").every(l => jogo.letrasChutadas.includes(l));
                         
                         if (venceu) {
@@ -176,7 +171,6 @@ async function handler(sock, m) {
                             await replyNYX({ sock, chat, message: m, sender: remetenteJogo }, `✅ Acertou a letra *${letra}*!\n\nPALAVRA: ${tabuleiro}\n❤️ Vidas: ${jogo.vidas}\n\nTente outra letra.`, "bot");
                         }
                     } else {
-                        // Errou a letra
                         jogo.vidas--;
                         
                         if (jogo.vidas <= 0) {
@@ -461,7 +455,6 @@ async function handler(sock, m) {
         const extras = chat.endsWith("@g.us") ? (getSetting(chat, "extrasPrefixos") || []) : [];
         const todosPrefixos = [prefixoPrincipal, ...extras];
 
-        // Descobre qual prefixo foi usado
         let prefixoUsado = null;
         for (const p of todosPrefixos) {
             if (texto.startsWith(p)) {
@@ -508,7 +501,6 @@ async function handler(sock, m) {
         const botOff = chat.endsWith("@g.us") ? getSetting(chat, "botOff") : false;
         if (botOff && !permissoes.owner) { console.log("Bot desligado neste grupo."); return; }
 
-        // CORREÇÃO: Transforma fig e tk em comandos ANTES de checar se é comando
         if (!prefixoUsado) {
             const txtLimpo = texto.trim().toLowerCase();
             if (txtLimpo === "fig" && (m.message.imageMessage || m.message.videoMessage || m.message.extendedTextMessage?.contextInfo?.quotedMessage?.imageMessage)) {
@@ -599,7 +591,7 @@ async function handler(sock, m) {
         if (texto.trim().toLowerCase() === "prefixo") {
             await ctx.replyNYX(`·.♟️:.      『 *${prefixoPrincipal}* 』
 
-ᴘʀᴇғɪxᴏ ᴄᴏɴғɪɢᴜʀᴀᴅᴏ. ᴏ ʀᴇsᴛᴏ ᴇ́ ᴄᴏɴsᴇǫᴜᴇ̂ɴᴄɪᴀ.`, "user");
+ᴘʀᴇфɪxᴏ ᴄᴏɴғɪɢᴜʀᴀᴅᴏ. ᴏ ʀᴇsᴛᴏ ᴇ́ ᴄᴏɴsᴇǫᴜᴇ̂ɴᴄɪᴀ.`, "user");
             await applyPrefixReaction(ctx);
             return;
         }
@@ -633,7 +625,6 @@ async function handler(sock, m) {
             cooldownCache.set(`${chat}_${remetente}`, agora);
         }
 
-        // Agora usa o prefixoUsado (se encontrado) para cortar o texto
         const prefixoParaCortar = prefixoUsado || prefixoPrincipal;
         const args = texto.slice(prefixoParaCortar.length).trim().split(/\s+/);
         
