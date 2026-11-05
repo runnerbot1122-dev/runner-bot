@@ -12,41 +12,20 @@ ${comandos.map(cmd => `${linha}${prefixo}${cmd}`).join("\n")}
     return `
 ╔═━✰『 ᴍᴇɴᴜ-ᴅᴏᴡɴʟᴏᴀᴅs 』═━✰
 
-${secao("ᴠɪ́ᴅᴇᴏs", [
-    "youtube",
+${secao("ᴠíᴅᴇᴏs", [
+    "ytmp4",
     "tiktok",
     "instagram",
     "facebook",
-    "kwai",
-    "twitter",
-    "pinterest",
-    "threads"
+    "twitter"
 ])}
 
-${secao("ᴍᴜ́sɪᴄᴀs", [
-    "play",
-    "play2",
-    "spotify",
-    "soundcloud",
-    "lyrics",
-    "ytmp3",
-    "ytmp4"
+${secao("ᴍúꜱɪᴄᴀꜱ", [
+    "play"
 ])}
 
-${secao("ɪᴍᴀɢᴇɴs", [
-    "pinterest",
-    "wallpaper",
-    "googleimg",
-    "imgsearch"
-])}
-
-${secao("ᴏᴜᴛʀᴏs ᴅᴏᴡɴʟᴏᴀᴅs", [
-    "mediafire",
-    "gdrive",
-    "apk",
-    "tiktokmp3",
-    "instagramdl",
-    "facebookdl"
+${secao("ᴇxᴛʀᴀꜱ", [
+    "pinterest"
 ])}
 
 ╠═ • ${nomeBot}
