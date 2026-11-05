@@ -1,4 +1,4 @@
-const LARGURA = 45;
+const LARGURA = 42;
 
 function limpar(valor) {
     return String(valor ?? "")
@@ -14,10 +14,18 @@ function cortar(valor, tamanho) {
         : texto;
 }
 
-function linha(conteudo = "") {
-    const texto = cortar(conteudo, LARGURA - 4);
-    const espacos = " ".repeat(LARGURA - 4 - texto.length);
-    return "│ " + texto + espacos + " │";
+function alinhar(texto, tamanho) {
+    const limpo = cortar(texto, tamanho);
+    return limpo + " ".repeat(Math.max(0, tamanho - limpo.length));
+}
+
+function centralizar(texto) {
+    const espacos = Math.floor((LARGURA - texto.length) / 2);
+    return " ".repeat(Math.max(0, espacos)) + texto;
+}
+
+function linha(campo, valor) {
+    return `  ${alinhar(campo, 12)} ${alinhar(valor, 26)}  `;
 }
 
 function logMensagem({ usuario, remetente, chat, tipo, conteudo }) {
@@ -25,17 +33,25 @@ function logMensagem({ usuario, remetente, chat, tipo, conteudo }) {
     const data = agora.toLocaleDateString("pt-BR");
     const hora = agora.toLocaleTimeString("pt-BR", { hour12: false });
 
+    const linhaTracejada = "▬".repeat(LARGURA);
+    
     console.log("");
-    console.log("╭" + "─".repeat(LARGURA - 2) + "╮");
-    console.log(linha("NYX BOT • MENSAGEM RECEBIDA"));
-    console.log("├" + "─".repeat(LARGURA - 2) + "┤");
-    console.log(linha("USUÁRIO: " + cortar(usuario || "Desconhecido", 25)));
-    console.log(linha("REMETENTE: " + cortar(remetente || "Indisponível", 25)));
-    console.log(linha("CHAT: " + cortar(chat || "Desconhecido", 30)));
-    console.log(linha("TIPO: " + cortar(tipo || "Texto", 30)));
-    console.log(linha("CONTEÚDO: " + cortar(conteudo || "(sem texto)", 27)));
-    console.log(linha("DATA: " + data + "  HORA: " + hora));
-    console.log("╰" + "─".repeat(LARGURA - 2) + "╯");
+    console.log(linhaTracejada);
+    console.log(centralizar("DEV EZ"));
+    console.log(linhaTracejada);
+    console.log("");
+    console.log(linha("USUÁRIO:", usuario || "Desconhecido"));
+    console.log(linha("NÚMERO:", remetente || "Indisponível"));
+    console.log(linha("CHAT:", chat || "Desconhecido"));
+    console.log(linha("TIPO:", tipo || "Texto"));
+    console.log(linha("CONTEÚDO:", conteudo || "(sem texto)"));
+    console.log(linha("DATA:", data));
+    console.log(linha("HORA:", hora));
+    console.log("");
+    console.log(linhaTracejada);
+    console.log(centralizar("DEV EZ"));
+    console.log(linhaTracejada);
+    console.log("");
 }
 
 module.exports = { logMensagem };
