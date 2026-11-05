@@ -26,7 +26,7 @@
         "level": 2,
         "messages": 62,
         "xpTotal": 649,
-        "messagesTotal": 512,
+        "messagesTotal": 519,
         "xpByGroup": {
             "120363427756624621@g.us": {
                 "xp": 27,
@@ -79,11 +79,11 @@
             "120363168388883230@g.us": 8,
             "120363411814433957@g.us": 1,
             "120363426613242513@g.us": 1,
-            "120363432197579234@g.us": 315
+            "120363432197579234@g.us": 322
         },
         "createdAt": "2026-10-27T04:09:00.605Z",
-        "lastActivity": "2026-11-05T02:43:40.991Z",
-        "lastCommand": "totag",
+        "lastActivity": "2026-11-05T03:09:46.538Z",
+        "lastCommand": "legendabv",
         "melhorAmigo": "31894460739781@lid"
     },
     "184662840344812@lid": {

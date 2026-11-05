@@ -563,7 +563,7 @@
     },
     "120363432197579234@g.us": {
         "settings": {
-            "welcome": false,
+            "welcome": true,
             "antilink": false,
             "antiSpam": false,
             "antiFlood": false,
@@ -583,7 +583,8 @@
             "tempoComando": 0,
             "antiNotas": false,
             "linkSalvo": "https://chat.whatsapp.com/GLoDCTxKKQBE55vccgw8qH",
-            "x9": false
+            "x9": false,
+            "legendabv": "Olá #numero, seja bem-vindo ao #grupo! aproveite. 👑"
         }
     }
 }
