@@ -15,7 +15,87 @@ async function executarComando(ctx){
     const cmd = comandos.get(ctx.command);
 
     if(!cmd){
-        await reactNYX(ctx, "❌");
+        await reactNYX(ctx, "💸");
+        
+        // =========================================
+        // SE MANDAR SÓ O PREFIXO (OU VAZIO)
+        // =========================================
+        if (!ctx.command || ctx.command.trim() === "") {
+            const textoPrefixo = 
+`╭─━━━━━━━━━━╮
+   🥀 ── • ─────── • ── 🥀
+   *COMANDO NÃO ENCONTRADO*
+   *DICA:* Tente usar *${ctx.prefix}menu* para ver os comandos.
+   🥀 ── • ─────── • ── 🥀
+╰╌╌╌╌╌ ⚠ ╌╌╌╌╌╯`;
+
+            await replyNYX(ctx, textoPrefixo, "bot");
+            return;
+        }
+
+        // =========================================
+        // CÉREBRO DE AUTOCOMPLETE (COMANDO NÃO ENCONTRADO)
+        // =========================================
+        const comandoDigitado = ctx.command.toLowerCase();
+        const todosComandos = Array.from(comandos.keys ? comandos.keys() : []);
+        
+        let melhorSugestao = null;
+        let menorDistancia = Infinity;
+
+        // Função pra calcular a distância entre as palavras (Levenshtein)
+        function calcularDistancia(a, b) {
+            a = a.toLowerCase(); b = b.toLowerCase();
+            const matriz = [];
+            for (let i = 0; i <= a.length; i++) matriz[i] = [i];
+            for (let j = 0; j <= b.length; j++) matriz[0][j] = j;
+            for (let i = 1; i <= a.length; i++) {
+                for (let j = 1; j <= b.length; j++) {
+                    matriz[i][j] = Math.min(
+                        matriz[i-1][j] + 1,
+                        matriz[i][j-1] + 1,
+                        matriz[i-1][j-1] + (a[i-1] === b[j-1] ? 0 : 1)
+                    );
+                }
+            }
+            return matriz[a.length][b.length];
+        }
+
+        // Limite de erro baseado no tamanho da palavra digitada
+        const limiteDistancia = comandoDigitado.length <= 3 ? 1 : (comandoDigitado.length <= 6 ? 2 : 3);
+
+        // Procura na lista de comandos carregados
+        if (todosComandos && todosComandos.length > 0) {
+            for (const nome of todosComandos) {
+                if (typeof nome !== 'string') continue;
+                const dist = calcularDistancia(comandoDigitado, nome);
+                
+                if (dist < menorDistancia && dist <= limiteDistancia && dist > 0) {
+                    menorDistancia = dist;
+                    melhorSugestao = nome;
+                }
+            }
+        }
+
+        // Monta a resposta com o layout
+        let textoErro = "";
+        if (melhorSugestao) {
+            textoErro = 
+`╭─━━━━━━━━━━╮
+   🥀 ── • ─────── • ── 🥀
+   *COMANDO NÃO ENCONTRADO*
+   *COMANDO SEMELHANTE:* "${ctx.prefix}${melhorSugestao}"
+   🥀 ── • ─────── • ── 🥀
+╰╌╌╌╌╌ ⚠ ╌╌╌╌╌╯`;
+        } else {
+            textoErro = 
+`╭─━━━━━━━━━━╮
+   🥀 ── • ─────── • ── 🥀
+   *COMANDO NÃO ENCONTRADO*
+   🥀 ── • ─────── • ── 🥀
+╰╌╌╌╌╌ ⚠ ╌╌╌╌╌╯`;
+        }
+
+        await replyNYX(ctx, textoErro, "bot");
         return;
     }
 

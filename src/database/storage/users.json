@@ -1090,11 +1090,11 @@
         "lid": "208125542027345@lid",
         "warnings": 0,
         "history": [],
-        "xp": 7,
+        "xp": 13,
         "level": 1,
-        "messages": 3,
-        "xpTotal": 32,
-        "messagesTotal": 23,
+        "messages": 4,
+        "xpTotal": 45,
+        "messagesTotal": 39,
         "xpByGroup": {
             "553196214809-1562431350@g.us": {
                 "xp": 25,
@@ -1113,16 +1113,25 @@
                 "rewards": [],
                 "streak": 1,
                 "lastMessageAt": "2026-11-01T14:56:32.420Z"
+            },
+            "120363432197579234@g.us": {
+                "xp": 13,
+                "level": 1,
+                "xpTotal": 13,
+                "messages": 1,
+                "rewards": [],
+                "streak": 1,
+                "lastMessageAt": "2026-11-05T06:05:13.228Z"
             }
         },
         "messagesByGroup": {
             "553196214809-1562431350@g.us": 3,
             "120363427756624621@g.us": 8,
-            "120363432197579234@g.us": 12
+            "120363432197579234@g.us": 28
         },
         "createdAt": "2026-10-29T19:14:24.755Z",
-        "lastActivity": "2026-11-05T04:44:37.633Z",
-        "lastCommand": "ban"
+        "lastActivity": "2026-11-05T06:14:33.950Z",
+        "lastCommand": "abrir"
     },
     "208842818375846@lid": {
         "name": "Brunna",
