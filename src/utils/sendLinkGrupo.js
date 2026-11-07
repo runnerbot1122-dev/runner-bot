@@ -1,261 +1,52 @@
 const { getBotName } = require("./botNameStore");
+const fonteNYX = require("./fonteNYX");
 
-const {
-    proto,
-    generateWAMessageFromContent,
-    prepareWAMessageMedia
-} = require("@whiskeysockets/baileys");
+async function sendLinkGrupo(ctx, link) {
+    const { sock, chat, message } = ctx;
 
-const sendNYX = require("./sendNYX");
+    // Tenta pegar a foto do grupo
+    let fotoGrupo = null;
+    try {
+        fotoGrupo = await sock.profilePictureUrl(chat, "image");
+    } catch (e) {}
 
+    let nomeGrupo = "Grupo";
+    try {
+        const metadata = await sock.groupMetadata(chat);
+        nomeGrupo = metadata.subject || "Grupo";
+    } catch (e) {}
 
-const fs =
-    require("fs");
+    // Layout formatado bonito
+    const legenda = 
+`╭─━━━━━━━━━━╮
+   🦇 ── • ─────── • ── 🦇
+   *LINK DO GRUPO*
+   🦇 ── • ─────── • ── 🦇
+╰╌╌╌╌╌ ⚠ ╌╌╌╌╌╯
 
-const path =
-    require("path");
+*${fonteNYX(nomeGrupo)}*
 
+> ${getBotName()}
 
+${link}`; // O link puro aqui faz o WhatsApp criar o card nativo.
 
-async function sendLinkGrupo(
-    ctx,
-    link
-){
-
-
-
-const arquivo =
-    path.join(
-        process.cwd(),
-        "assets",
-        "link.jpg"
-    );
-
-
-
-const media =
-    await prepareWAMessageMedia(
-
-        {
-            image:
-                fs.readFileSync(
-                    arquivo
-                )
-        },
-
-        {
-            upload:
-                ctx.sock.waUploadToServer
+    try {
+        if (fotoGrupo) {
+            await sock.sendMessage(chat, {
+                image: { url: fotoGrupo },
+                caption: legenda
+            }, { quoted: message });
+        } else {
+            await sock.sendMessage(chat, {
+                text: legenda
+            }, { quoted: message });
         }
-
-    );
-
-
-
-
-const botaoCopiar =
-    proto.Message
-        .InteractiveMessage
-        .NativeFlowMessage
-        .NativeFlowButton
-        .create({
-
-            name:
-                "cta_copy",
-
-            buttonParamsJson:
-
-                JSON.stringify({
-
-                    display_text:
-                        "  𝘊𝘖𝘗𝘐𝘈𝘙 𝘓𝘐𝘕𝘒",
-
-                    copy_code:
-                        link
-
-                })
-
-        });
-
-
-const botaoApagar =
-    proto.Message
-        .InteractiveMessage
-        .NativeFlowMessage
-        .NativeFlowButton
-        .create({
-
-            name:
-                "quick_reply",
-
-            buttonParamsJson:
-                JSON.stringify({
-
-                    display_text:
-                    " 𝘈𝘗𝘈𝘎𝘈𝘙",
-
-                    id:
-                    "delete_link"
-
-                })
-
-        });
-
-
-
-const card =
-    proto.Message
-        .InteractiveMessage
-        .create({
-
-            header:
-
-                proto.Message
-                .InteractiveMessage
-                .Header
-                .create({
-
-                    hasMediaAttachment:
-                        true,
-
-                    ...media
-
-                }),
-
-
-
-            body:
-
-                proto.Message
-                .InteractiveMessage
-                .Body
-                .create({
-
-                    text:
-
-` `
-
-                }),
-
-
-
-            footer:
-
-                proto.Message
-                .InteractiveMessage
-                .Footer
-                .create({
-
-                    text:
-
-`> ${getBotName()}`
-
-                }),
-
-
-
-            nativeFlowMessage:
-
-                proto.Message
-                .InteractiveMessage
-                .NativeFlowMessage
-                .create({
-
-                   buttons:[
-
-    botaoCopiar,
-
-    botaoApagar
-
-],
-
-                    messageVersion:
-                    1
-
-                })
-
-        });
-
-
-
-const interactiveMessage =
-    proto.Message
-        .InteractiveMessage
-        .create({
-
-            body:
-
-                proto.Message
-                .InteractiveMessage
-                .Body
-                .create({
-
-                    text:
-                    "🔗"
-
-                }),
-
-
-            carouselMessage:
-
-                proto.Message
-                .InteractiveMessage
-                .CarouselMessage
-                .create({
-
-                    cards:[
-
-                        card
-
-                    ]
-
-                })
-
-        });
-
-
-
-const mensagem =
-    generateWAMessageFromContent(
-
-        ctx.chat,
-
-        {
-            interactiveMessage
-        },
-
-        {
-            userJid:
-            ctx.sock.user.id
-        }
-
-    );
-
-
-sendNYX.attachNewsletterContext(mensagem.message);
-
-
-
-await ctx.sock.relayMessage(
-
-    ctx.chat,
-
-    mensagem.message,
-
-    {
-
-        messageId:
-        mensagem.key.id
-
+    } catch (error) {
+        // Se a foto do grupo falhar, manda só o texto
+        await sock.sendMessage(chat, {
+            text: legenda
+        }, { quoted: message });
     }
-
-);
-
-
-
 }
 
-
-
-module.exports =
-sendLinkGrupo;
+module.exports = sendLinkGrupo;

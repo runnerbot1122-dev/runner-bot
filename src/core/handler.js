@@ -189,6 +189,13 @@ async function handler(sock, m) {
         const templateButtonId = m.message.templateButtonReplyMessage?.selectedId || null;
         const nativeButtonId = buttonId || templateButtonId;
 
+        // AQUI ESTÁ A CORREÇÃO PARA O BOTÃO COPIAR
+        if (nativeButtonId && nativeButtonId.startsWith("copiar_")) {
+            const linkCopiado = nativeButtonId.replace("copiar_", "");
+            await replyNYX({ sock, chat, message: m, sender: m.key.participant || m.key.remoteJid }, `📋 *Link para copiar:*\n\n${linkCopiado}`, "bot");
+            return;
+        }
+
         if (nativeButtonId === "delete_link") {
             const mensagemOriginal = m.message.templateButtonReplyMessage?.contextInfo?.stanzaId;
             if (mensagemOriginal) {
@@ -208,6 +215,8 @@ async function handler(sock, m) {
             "";
 
         let interactiveId = null;
+        
+        // 1. LÊ OS BOTÕES NORMAIS (NATIVE FLOW)
         const paramsJson = m.message.interactiveResponseMessage?.nativeFlowResponseMessage?.paramsJson;
         if (paramsJson) {
             try {
@@ -215,6 +224,42 @@ async function handler(sock, m) {
                 interactiveId = params.id || null;
             } catch (erro) { console.log("Erro ao ler resposta do menu:", erro.message); }
         }
+
+        // 2. LÊ OS CLIQUES DO MENU DE LISTA (SINGLE SELECT)
+        if (m.message.listResponseMessage?.singleSelectReply?.selectedRowId) {
+            interactiveId = m.message.listResponseMessage.singleSelectReply.selectedRowId;
+        }
+
+        // =========================================
+        // INTERCEPTA O CLIQUE NO BOTÃO DO YTSEARCH (ENVIA COMO ÁUDIO) - CORRIGIDO AQUI
+        // =========================================
+        if (interactiveId && interactiveId.startsWith("ytsearch_audio|")) {
+            const urlVideo = interactiveId.split("|")[1];
+            
+            await sock.sendMessage(chat, { text: "🎵 Baixando seu áudio, aguarde..." }, { quoted: m });
+            
+            try {
+                const { buscarEBaixarAudio } = require("../utils/youtubeAudio");
+                const faixa = await buscarEBaixarAudio(urlVideo);
+                
+                if (faixa && faixa.audioBuffer) {
+                    // ENVIA COMO ÁUDIO NORMAL (ptt: false)
+                    await sock.sendMessage(chat, {
+                        audio: faixa.audioBuffer,
+                        mimetype: "audio/mpeg",
+                        ptt: false,
+                        fileName: `${faixa.title.replace(/[\\/:*?"<>|]/g, '_')}.mp3`
+                    }, { quoted: m });
+                } else {
+                    throw new Error("Áudio não encontrado.");
+                }
+            } catch (err) {
+                console.error("[YTSEARCH DOWNLOAD] Erro:", err.message);
+                await sock.sendMessage(chat, { text: "❌ Erro ao baixar o áudio. Tente novamente." }, { quoted: m });
+            }
+            return;
+        }
+        // =========================================
 
         texto = texto.trim();
 
@@ -450,7 +495,7 @@ async function handler(sock, m) {
         // =========================================================
         // LÓGICA DE MÚLTIPLOS PREFIXOS
         // =========================================================
-        const menusNativos = ["menudono", "menuadm", "menuia", "menudownload", "menubrincadeiras"];
+        const menusNativos = ["menudono", "menuadm", "menuia", "menudownload", "menubrincadeiras", "menuprincipal", "status", "criador"];
         const prefixoPrincipal = chat.endsWith("@g.us") ? getSetting(chat, "prefix") || config.prefix : config.prefix;
         const extras = chat.endsWith("@g.us") ? (getSetting(chat, "extrasPrefixos") || []) : [];
         const todosPrefixos = [prefixoPrincipal, ...extras];
@@ -511,10 +556,14 @@ async function handler(sock, m) {
                 texto = `${prefixoPrincipal}tk`;
                 prefixoUsado = prefixoPrincipal;
             }
+            if (txtLimpo === "l" || txtLimpo === "link") {
+                texto = `${prefixoPrincipal}link`;
+                prefixoUsado = prefixoPrincipal;
+            }
         }
 
         const mensagemInterna = Boolean(buttonId || interactiveId);
-        const atalhoSemPrefixo = /^(?:a|f|t(?:\s|$)|[sx]\d*|fig|tk|take)$/i.test(texto.trim());
+        const atalhoSemPrefixo = /^(?:a|f|t(?:\s|$)|[sx]\d*|fig|tk|take|l|link)$/i.test(texto.trim());
         const ehComando = Boolean(prefixoUsado) || atalhoSemPrefixo;
 
         if (!mensagemInterna && chat.endsWith("@g.us")) {
@@ -591,7 +640,7 @@ async function handler(sock, m) {
         if (texto.trim().toLowerCase() === "prefixo") {
             await ctx.replyNYX(`·.♟️:.      『 *${prefixoPrincipal}* 』
 
-ᴘʀᴇфɪxᴏ ᴄᴏɴғɪɢᴜʀᴀᴅᴏ. ᴏ ʀᴇsᴛᴏ ᴇ́ ᴄᴏɴsᴇǫᴜᴇ̂ɴᴄɪᴀ.`, "user");
+ᴘʀᴇꜰɪxᴏ ᴄᴏɴꜰɪɢᴜʀᴀᴅᴏ. ᴏ ʀᴇꜱᴛᴏ é ᴄᴏɴꜱᴇǫᴜᴇ̂ɴᴄɪᴀ.`, "user");
             await applyPrefixReaction(ctx);
             return;
         }
