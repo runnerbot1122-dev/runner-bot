@@ -627,7 +627,7 @@
         "level": 1,
         "messages": 8,
         "xpTotal": 85,
-        "messagesTotal": 163,
+        "messagesTotal": 181,
         "xpByGroup": {
             "120363427756624621@g.us": {
                 "xp": 48,
@@ -641,11 +641,11 @@
         },
         "messagesByGroup": {
             "120363427756624621@g.us": 38,
-            "120363432197579234@g.us": 125
+            "120363432197579234@g.us": 143
         },
         "createdAt": "2026-10-29T01:51:24.334Z",
-        "lastActivity": "2026-11-07T06:19:01.613Z",
-        "lastCommand": "letra"
+        "lastActivity": "2026-11-07T06:44:30.108Z",
+        "lastCommand": "filme"
     },
     "25418488881207@lid": {
         "name": "mayzokaaadaass",
