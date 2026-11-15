@@ -123,28 +123,84 @@ async function handler(sock, m) {
         }
         
         // =========================================
-        // INTERCEPTADOR DE JOGOS (QUIZ, ADIVINHA, FORCA)
+        // INTERCEPTADOR DE JOGOS
         // =========================================
+        const identidade = obterIdentidadeMensagem(m);
+        const remetente = identidade.remetente;
+
         if (textoBruto && chat.endsWith("@g.us")) {
             const gameManager = require("./gameManager");
-            const remetenteJogo = m.key.participant || m.key.remoteJid;
-            const jogoAtivo = gameManager.getJogo(chat, remetenteJogo);
+            
+            // 1. JOGO DA VELHA (PvP)
+            const jogoVelha = gameManager.getJogoAtivoNoGrupo(chat, "jogodavelha");
+            if (jogoVelha) {
+                const jogo = jogoVelha.dados;
+                const jogada = parseInt(textoBruto.trim());
 
+                if (!isNaN(jogada) && jogada >= 1 && jogada <= 9) {
+                    const index = jogada - 1;
+
+                    // Verifica de quem é a vez comparando o JID real que já vem mastigado
+                    if (remetente !== jogo.turno) {
+                        await replyNYX({ sock, chat, message: m, sender: remetente }, `⏳ Calma! Não é a sua vez ainda.`, "bot");
+                        return;
+                    }
+
+                    if (jogo.board[index] !== "") {
+                        await replyNYX({ sock, chat, message: m, sender: remetente }, `⚠️ Essa posição já está ocupada! Escolha outra.`, "bot");
+                        return;
+                    }
+
+                    const cmdVelha = require("../commands/brincadeiras/jogodavelha");
+                    const { renderBoard, checkWin } = cmdVelha;
+
+                    const isJogador1 = remetente === jogo.jogador1;
+                    const simbolo = isJogador1 ? "X" : "O";
+                    jogo.board[index] = simbolo;
+
+                    if (checkWin(jogo.board, simbolo)) {
+                        gameManager.encerrarJogo(chat, jogo.jogador1);
+                        await replyNYX({ sock, chat, message: m, sender: remetente }, 
+                            `🏆 *VITÓRIA!*\n\n@${remetente.split("@")[0]} (${simbolo === 'X' ? '❌' : '⭕'}) ganhou o jogo!\n\n${renderBoard(jogo.board)}`, 
+                            "bot", [remetente]
+                        );
+                        return;
+                    }
+
+                    if (!jogo.board.includes("")) {
+                        gameManager.encerrarJogo(chat, jogo.jogador1);
+                        await replyNYX({ sock, chat, message: m, sender: remetente }, `🤝 *DEU VELHA (EMPATE)!*\n\n${renderBoard(jogo.board)}`, "bot");
+                        return;
+                    }
+
+                    // Passa a vez para o outro jogador
+                    jogo.turno = isJogador1 ? jogo.jogador2 : jogo.jogador1;
+
+                    await replyNYX({ sock, chat, message: m, sender: remetente }, 
+                        `${renderBoard(jogo.board)}\n🎮 É a vez de @${jogo.turno.split("@")[0]} (${jogo.turno === jogo.jogador1 ? '❌' : '⭕'}). Digite um número.`, 
+                        "bot", [jogo.turno]
+                    );
+                    return;
+                }
+            }
+
+            // 2. OUTROS JOGOS (Quiz, Adivinha, Forca)
+            const jogoAtivo = gameManager.getJogo(chat, remetente);
             if (jogoAtivo) {
                 if (Date.now() - (jogoAtivo.ultimaInteracao || 0) < 1500) {
                     return;
                 }
-                gameManager.atualizarInteracao(chat, remetenteJogo);
+                gameManager.atualizarInteracao(chat, remetente);
 
                 const respostaUsuario = textoBruto.trim().toLowerCase();
 
                 if (jogoAtivo.tipo === "quiz" || jogoAtivo.tipo === "adivinha") {
                     if (respostaUsuario === jogoAtivo.dados.resposta.toLowerCase()) {
-                        gameManager.encerrarJogo(chat, remetenteJogo);
-                        await replyNYX({ sock, chat, message: m, sender: remetenteJogo }, `✅ *ACERTOU!*\n\nA resposta era *${jogoAtivo.dados.resposta}*.`, "bot");
+                        gameManager.encerrarJogo(chat, remetente);
+                        await replyNYX({ sock, chat, message: m, sender: remetente }, `✅ *ACERTOU!*\n\nA resposta era *${jogoAtivo.dados.resposta}*.`, "bot");
                     } else {
-                        gameManager.encerrarJogo(chat, remetenteJogo);
-                        await replyNYX({ sock, chat, message: m, sender: remetenteJogo }, `❌ *ERROU!*\n\nA resposta certa era *${jogoAtivo.dados.resposta}*.`, "bot");
+                        gameManager.encerrarJogo(chat, remetente);
+                        await replyNYX({ sock, chat, message: m, sender: remetente }, `❌ *ERROU!*\n\nA resposta certa era *${jogoAtivo.dados.resposta}*.`, "bot");
                     }
                     return; 
                 }
@@ -154,7 +210,7 @@ async function handler(sock, m) {
                     const jogo = jogoAtivo.dados;
 
                     if (jogo.letrasChutadas.includes(letra)) {
-                        await replyNYX({ sock, chat, message: m, sender: remetenteJogo }, `⚠️ Você já tentou a letra *${letra}*!`, "bot");
+                        await replyNYX({ sock, chat, message: m, sender: remetente }, `⚠️ Você já tentou a letra *${letra}*!`, "bot");
                         return;
                     }
 
@@ -165,19 +221,19 @@ async function handler(sock, m) {
                         const venceu = jogo.palavra.split("").every(l => jogo.letrasChutadas.includes(l));
                         
                         if (venceu) {
-                            gameManager.encerrarJogo(chat, remetenteJogo);
-                            await replyNYX({ sock, chat, message: m, sender: remetenteJogo }, `🏆 *PARABÉNS!*\n\nVocê descobriu a palavra: *${jogo.palavra}*`, "bot");
+                            gameManager.encerrarJogo(chat, remetente);
+                            await replyNYX({ sock, chat, message: m, sender: remetente }, `🏆 *PARABÉNS!*\n\nVocê descobriu a palavra: *${jogo.palavra}*`, "bot");
                         } else {
-                            await replyNYX({ sock, chat, message: m, sender: remetenteJogo }, `✅ Acertou a letra *${letra}*!\n\nPALAVRA: ${tabuleiro}\n❤️ Vidas: ${jogo.vidas}\n\nTente outra letra.`, "bot");
+                            await replyNYX({ sock, chat, message: m, sender: remetente }, `✅ Acertou a letra *${letra}*!\n\nPALAVRA: ${tabuleiro}\n❤️ Vidas: ${jogo.vidas}\n\nTente outra letra.`, "bot");
                         }
                     } else {
                         jogo.vidas--;
                         
                         if (jogo.vidas <= 0) {
-                            gameManager.encerrarJogo(chat, remetenteJogo);
-                            await replyNYX({ sock, chat, message: m, sender: remetenteJogo }, `💀 *VOCÊ PERDEU!*\n\nA palavra era: *${jogo.palavra}*\n\nSuas vidas acabaram.`, "bot");
+                            gameManager.encerrarJogo(chat, remetente);
+                            await replyNYX({ sock, chat, message: m, sender: remetente }, `💀 *VOCÊ PERDEU!*\n\nA palavra era: *${jogo.palavra}*\n\nSuas vidas acabaram.`, "bot");
                         } else {
-                            await replyNYX({ sock, chat, message: m, sender: remetenteJogo }, `❌ A letra *${letra}* não existe.\n\nPALAVRA: ${tabuleiro}\n❤️ Vidas: ${jogo.vidas}\n\nTente outra letra.`, "bot");
+                            await replyNYX({ sock, chat, message: m, sender: remetente }, `❌ A letra *${letra}* não existe.\n\nPALAVRA: ${tabuleiro}\n❤️ Vidas: ${jogo.vidas}\n\nTente outra letra.`, "bot");
                         }
                     }
                     return;
@@ -231,7 +287,7 @@ async function handler(sock, m) {
         }
 
         // =========================================
-        // INTERCEPTA O CLIQUE NO BOTÃO DO YTSEARCH (ENVIA COMO ÁUDIO) - CORRIGIDO AQUI
+        // INTERCEPTA O CLIQUE NO BOTÃO DO YTSEARCH (ENVIA COMO ÁUDIO)
         // =========================================
         if (interactiveId && interactiveId.startsWith("ytsearch_audio|")) {
             const urlVideo = interactiveId.split("|")[1];
@@ -243,7 +299,6 @@ async function handler(sock, m) {
                 const faixa = await buscarEBaixarAudio(urlVideo);
                 
                 if (faixa && faixa.audioBuffer) {
-                    // ENVIA COMO ÁUDIO NORMAL (ptt: false)
                     await sock.sendMessage(chat, {
                         audio: faixa.audioBuffer,
                         mimetype: "audio/mpeg",
@@ -262,9 +317,6 @@ async function handler(sock, m) {
         // =========================================
 
         texto = texto.trim();
-
-        const identidade = obterIdentidadeMensagem(m);
-        const remetente = identidade.remetente;
 
         const permissoes = await getPermissions(sock, chat, remetente, [identidade.jid, identidade.lid]);
         const isAdmin = permissoes.admin || permissoes.owner;
@@ -638,7 +690,7 @@ async function handler(sock, m) {
         if (!prefixoUsado && texto.trim().toLowerCase() !== "prefixo") await applyAutomaticReplies(ctx, texto);
 
         if (texto.trim().toLowerCase() === "prefixo") {
-            await ctx.replyNYX(`·.♟️:.      『 *${prefixoPrincipal}* 』
+            await ctx.replyNYX(`·.♟️:.      『 *${prefixoPrincipal}*  』
 
 ᴘʀᴇꜰɪxᴏ ᴄᴏɴꜰɪɢᴜʀᴀᴅᴏ. ᴏ ʀᴇꜱᴛᴏ é ᴄᴏɴꜱᴇǫᴜᴇ̂ɴᴄɪᴀ.`, "user");
             await applyPrefixReaction(ctx);

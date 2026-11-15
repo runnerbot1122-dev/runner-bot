@@ -4,3 +4,5 @@ sessions/
 .env
 *.log
 *.bak-*
+src/database/storage/
+*.tgz
