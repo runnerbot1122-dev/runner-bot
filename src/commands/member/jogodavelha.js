@@ -47,13 +47,15 @@ module.exports = {
             board, 
             jogador1, 
             jogador2, 
-            turno: jogador1
+            turno: jogador1 // Jogador 1 começa
         });
         
+        const textoDesafio = `${renderBoard(board)}\n@${jogador1.split("@")[0]} (❌) desafiou @${jogador2.split("@")[0]} (⭕)!\n\n🎮 É a vez de @${jogador1.split("@")[0]}. Digite um número de 1 a 9.`;
+        
+        // Envia no formato de objeto para as menções funcionarem
         await replyNYX(ctx, 
-            `${renderBoard(board)}\n@${jogador1.split("@")[0]} (❌) desafiou @${jogador2.split("@")[0]} (⭕)!\n\n🎮 É a vez de @${jogador1.split("@")[0]}. Digite um número de 1 a 9.`, 
-            "bot", 
-            [jogador1, jogador2]
+            { text: textoDesafio, mentions: [jogador1, jogador2] }, 
+            "bot"
         );
     },
     

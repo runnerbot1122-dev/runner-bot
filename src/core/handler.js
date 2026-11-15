@@ -131,7 +131,7 @@ async function handler(sock, m) {
         if (textoBruto && chat.endsWith("@g.us")) {
             const gameManager = require("./gameManager");
             
-            // 1. JOGO DA VELHA (PvP)
+            // --- 1. JOGO DA VELHA (PvP) ---
             const jogoVelha = gameManager.getJogoAtivoNoGrupo(chat, "jogodavelha");
             if (jogoVelha) {
                 const jogo = jogoVelha.dados;
@@ -139,8 +139,15 @@ async function handler(sock, m) {
 
                 if (!isNaN(jogada) && jogada >= 1 && jogada <= 9) {
                     const index = jogada - 1;
+                    
+                    // AQUI ESTÁ A CORREÇÃO: Usando o remetente exato mastigado pelo bot
+                    const isJogador1 = remetente === jogo.jogador1;
+                    const isJogador2 = remetente === jogo.jogador2;
 
-                    // Verifica de quem é a vez comparando o JID real que já vem mastigado
+                    // Se não for jogador, ignora
+                    if (!isJogador1 && !isJogador2) return; 
+
+                    // Verifica de quem é a vez
                     if (remetente !== jogo.turno) {
                         await replyNYX({ sock, chat, message: m, sender: remetente }, `⏳ Calma! Não é a sua vez ainda.`, "bot");
                         return;
@@ -151,19 +158,17 @@ async function handler(sock, m) {
                         return;
                     }
 
-                    const cmdVelha = require("../commands/brincadeiras/jogodavelha");
+                    const cmdVelha = require("../commands/member/jogodavelha");
                     const { renderBoard, checkWin } = cmdVelha;
 
-                    const isJogador1 = remetente === jogo.jogador1;
                     const simbolo = isJogador1 ? "X" : "O";
                     jogo.board[index] = simbolo;
 
                     if (checkWin(jogo.board, simbolo)) {
                         gameManager.encerrarJogo(chat, jogo.jogador1);
+                        const textoVitoria = `🏆 *VITÓRIA!*\n\n@${remetente.split("@")[0]} (${simbolo === 'X' ? '❌' : '⭕'}) ganhou o jogo!\n\n${renderBoard(jogo.board)}`;
                         await replyNYX({ sock, chat, message: m, sender: remetente }, 
-                            `🏆 *VITÓRIA!*\n\n@${remetente.split("@")[0]} (${simbolo === 'X' ? '❌' : '⭕'}) ganhou o jogo!\n\n${renderBoard(jogo.board)}`, 
-                            "bot", [remetente]
-                        );
+                            { text: textoVitoria, mentions: [remetente] }, "bot");
                         return;
                     }
 
@@ -176,15 +181,16 @@ async function handler(sock, m) {
                     // Passa a vez para o outro jogador
                     jogo.turno = isJogador1 ? jogo.jogador2 : jogo.jogador1;
 
+                    const simboloProximo = isJogador1 ? "⭕" : "❌";
+                    const textoTurno = `${renderBoard(jogo.board)}\n🎮 É a vez de @${jogo.turno.split("@")[0]} (${simboloProximo}). Digite um número.`;
+                    
                     await replyNYX({ sock, chat, message: m, sender: remetente }, 
-                        `${renderBoard(jogo.board)}\n🎮 É a vez de @${jogo.turno.split("@")[0]} (${jogo.turno === jogo.jogador1 ? '❌' : '⭕'}). Digite um número.`, 
-                        "bot", [jogo.turno]
-                    );
+                        { text: textoTurno, mentions: [jogo.turno] }, "bot");
                     return;
                 }
             }
 
-            // 2. OUTROS JOGOS (Quiz, Adivinha, Forca)
+            // --- 2. OUTROS JOGOS (Quiz, Adivinha, Forca) ---
             const jogoAtivo = gameManager.getJogo(chat, remetente);
             if (jogoAtivo) {
                 if (Date.now() - (jogoAtivo.ultimaInteracao || 0) < 1500) {
@@ -245,10 +251,9 @@ async function handler(sock, m) {
         const templateButtonId = m.message.templateButtonReplyMessage?.selectedId || null;
         const nativeButtonId = buttonId || templateButtonId;
 
-        // AQUI ESTÁ A CORREÇÃO PARA O BOTÃO COPIAR
         if (nativeButtonId && nativeButtonId.startsWith("copiar_")) {
             const linkCopiado = nativeButtonId.replace("copiar_", "");
-            await replyNYX({ sock, chat, message: m, sender: m.key.participant || m.key.remoteJid }, `📋 *Link para copiar:*\n\n${linkCopiado}`, "bot");
+            await replyNYX({ sock, chat, message: m, sender: remetente }, `📋 *Link para copiar:*\n\n${linkCopiado}`, "bot");
             return;
         }
 
@@ -272,7 +277,6 @@ async function handler(sock, m) {
 
         let interactiveId = null;
         
-        // 1. LÊ OS BOTÕES NORMAIS (NATIVE FLOW)
         const paramsJson = m.message.interactiveResponseMessage?.nativeFlowResponseMessage?.paramsJson;
         if (paramsJson) {
             try {
@@ -281,23 +285,16 @@ async function handler(sock, m) {
             } catch (erro) { console.log("Erro ao ler resposta do menu:", erro.message); }
         }
 
-        // 2. LÊ OS CLIQUES DO MENU DE LISTA (SINGLE SELECT)
         if (m.message.listResponseMessage?.singleSelectReply?.selectedRowId) {
             interactiveId = m.message.listResponseMessage.singleSelectReply.selectedRowId;
         }
 
-        // =========================================
-        // INTERCEPTA O CLIQUE NO BOTÃO DO YTSEARCH (ENVIA COMO ÁUDIO)
-        // =========================================
         if (interactiveId && interactiveId.startsWith("ytsearch_audio|")) {
             const urlVideo = interactiveId.split("|")[1];
-            
             await sock.sendMessage(chat, { text: "🎵 Baixando seu áudio, aguarde..." }, { quoted: m });
-            
             try {
                 const { buscarEBaixarAudio } = require("../utils/youtubeAudio");
                 const faixa = await buscarEBaixarAudio(urlVideo);
-                
                 if (faixa && faixa.audioBuffer) {
                     await sock.sendMessage(chat, {
                         audio: faixa.audioBuffer,
@@ -314,16 +311,12 @@ async function handler(sock, m) {
             }
             return;
         }
-        // =========================================
 
         texto = texto.trim();
 
         const permissoes = await getPermissions(sock, chat, remetente, [identidade.jid, identidade.lid]);
         const isAdmin = permissoes.admin || permissoes.owner;
 
-        // =========================================================
-        // 🔒 MODO SÓ ADMIN (Bloqueia comandos de membros comuns)
-        // =========================================================
         if (chat.endsWith("@g.us") && soadm.status(chat) && !isAdmin) {
             const prefixoPrincipal = getSetting(chat, "prefix") || config.prefix;
             const extras = getSetting(chat, "extrasPrefixos") || [];
@@ -333,15 +326,12 @@ async function handler(sock, m) {
             if (tentouComando || buttonId || interactiveId) {
                 await replyNYX({ sock, chat, message: m, sender: remetente }, 
                     `🔒 *SÓ ADMIN ATIVADO*\n\n@${remetente.split("@")[0]}, apenas administradores podem usar os comandos do bot agora.`, 
-                    "bot",
-                    [remetente]
+                    "bot", [remetente]
                 );
             }
             return; 
         }
-        // =========================================================
 
-        // 🛡️ SISTEMA DE PROTEÇÕES COMPLETO
         if (chat.endsWith("@g.us")) {
             const protecoes = {
                 antiImg: getSetting(chat, "antiImg") === true,
@@ -395,26 +385,19 @@ async function handler(sock, m) {
 
             if (!infracao && texto) {
                 const textoLower = texto.toLowerCase();
-
                 if (protecoes.antiTrava && (texto.length > 5000 || /[\u200B-\u200D\uFEFF]{10,}/.test(texto))) infracao = "Trava (Texto Suspeito)";
-
                 const limiteChar = getSetting(chat, "limiteCaracteres");
-                if (!infracao && limiteChar && limiteChar > 0 && texto.length > limiteChar) {
-                    infracao = `Texto muito longo (${texto.length}/${limiteChar})`;
-                }
-
+                if (!infracao && limiteChar && limiteChar > 0 && texto.length > limiteChar) infracao = `Texto muito longo (${texto.length}/${limiteChar})`;
                 if (protecoes.antiPalavra) {
                     const palavrasProibidas = ["caralho", "porra", "merda", "foder", "puta", "viado", "arrombado", "desgraçado"];
                     if (palavrasProibidas.some(p => textoLower.includes(p))) infracao = "Palavrão";
                 }
-
                 if (protecoes.antiPay && (textoLower.includes("pix") || textoLower.includes("pagamento") || textoLower.includes("transferência") || textoLower.includes("copiar chave"))) {
                     if (!isAdmin) infracao = "Pedido de Pagamento";
                 }
             }
 
             if (!infracao && protecoes.antiDdd && isDDDBloqueado(chat, remetente)) infracao = "Número com DDD Bloqueado";
-
             if (!infracao && protecoes.antiFake && remetente.endsWith("@s.whatsapp.net")) {
                 const numero = remetente.split("@")[0];
                 if (!numero.startsWith("55") || numero.length < 10) infracao = "Número Fake/Estrangeiro";
@@ -436,7 +419,6 @@ async function handler(sock, m) {
             }
         }
 
-        // 🛡️ PROTEÇÕES AVANÇADAS: ANTI-SPAM E ANTI-FLOOD
         if (chat.endsWith("@g.us") && texto && !isAdmin) {
             const textoLower = texto.toLowerCase();
             const agora = Date.now();
@@ -513,7 +495,6 @@ async function handler(sock, m) {
             }
         }
 
-        // 🤖 AUTOMAÇÕES
         if (chat.endsWith("@g.us")) {
             try {
                 const prefixoParaAuto = getSetting(chat, "prefix") || config.prefix;
@@ -521,7 +502,6 @@ async function handler(sock, m) {
             } catch (error) { console.error("[automacoes] Falha ao processar automações:", error.message); }
         }
 
-        // SALVAR NO CACHE PARA O ANTI-DELETE
         if (chat.endsWith("@g.us") && m.key.id) {
             const messageStore = require("../database/messageStore");
             const { downloadMediaMessage } = require("@whiskeysockets/baileys");
@@ -544,9 +524,6 @@ async function handler(sock, m) {
             messageStore.save(m.key.id, paraSalvar);
         }
 
-        // =========================================================
-        // LÓGICA DE MÚLTIPLOS PREFIXOS
-        // =========================================================
         const menusNativos = ["menudono", "menuadm", "menuia", "menudownload", "menubrincadeiras", "menuprincipal", "status", "criador"];
         const prefixoPrincipal = chat.endsWith("@g.us") ? getSetting(chat, "prefix") || config.prefix : config.prefix;
         const extras = chat.endsWith("@g.us") ? (getSetting(chat, "extrasPrefixos") || []) : [];
@@ -708,7 +685,6 @@ async function handler(sock, m) {
         }
         if (!temPrefixo) return;
 
-        // 🕒 COOLDOWN DE COMANDOS
         const tempoComando = getSetting(chat, "tempoComando");
         if (tempoComando && tempoComando > 0 && !isAdmin) {
             const agora = Date.now();
