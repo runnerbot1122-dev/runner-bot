@@ -4,44 +4,42 @@ const path = require("path");
 const comandos = new Map();
 
 function carregarComandos() {
+    comandos.clear();
+
     const pasta = path.join(__dirname, "../commands");
     const categorias = fs.readdirSync(pasta);
 
     for (const categoria of categorias) {
         const caminho = path.join(pasta, categoria);
-        
         if (!fs.statSync(caminho).isDirectory()) continue;
 
-        const arquivos = fs.readdirSync(caminho).filter(arquivo => arquivo.endsWith(".js"));
-
+        const arquivos = fs.readdirSync(caminho).filter(arq => arq.endsWith(".js"));
         for (const arquivo of arquivos) {
-            const caminhoCompleto = path.join(caminho, arquivo);
+            const caminhoArquivo = path.join(caminho, arquivo);
             
-            // Se der erro de sintaxe, o bot quebra aqui e mostra no log
-            const comando = require(caminhoCompleto);
-
-            if (!comando || !comando.name) {
-                console.log(`⚠️ ${arquivo} não tem 'name'`);
-                continue;
+            if (require.cache[require.resolve(caminhoArquivo)]) {
+                delete require.cache[require.resolve(caminhoArquivo)];
             }
 
-            if (!comando.category) {
+            const comando = require(caminhoArquivo);
+            
+            if (comando && typeof comando === "object" && !comando.category) {
                 comando.category = categoria;
             }
 
             if (Array.isArray(comando.name)) {
                 for (const nome of comando.name) {
-                    comandos.set(nome.toLowerCase(), comando);
+                    comandos.set(nome, comando);
                 }
             } else {
-                comandos.set(comando.name.toLowerCase(), comando);
+                comandos.set(comando.name, comando);
             }
-
-            console.log(`Comando carregado: ${comando.name}`);
         }
     }
+    return comandos.size;
 }
 
 carregarComandos();
+comandos.reload = carregarComandos;
 
 module.exports = comandos;

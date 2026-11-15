@@ -1,56 +1,71 @@
+const replyNYX = require("../../utils/replyNYX");
 const fs = require("fs");
 const path = require("path");
-const replyNYX = require("../../utils/replyNYX");
 
 module.exports = {
     name: ["reload", "recarregar"],
     description: "Recarrega os comandos sem reiniciar o bot",
     execute: async (ctx) => {
-        // Apenas o dono pode usar
         if (!ctx.isOwner && !ctx.isMaster) {
             return replyNYX(ctx, "❌ Apenas o dono pode usar este comando.", "bot");
         }
 
         try {
-            await ctx.react("🔄");
-
-            const commandsPath = path.join(process.cwd(), "src", "commands");
-            const loaderPath = path.join(process.cwd(), "src", "core", "loader.js");
-            const runnerPath = path.join(process.cwd(), "src", "core", "commandRunner.js");
-
-            let count = 0;
-
-            // Função para limpar o cache de um arquivo
-            const clearCache = (filePath) => {
-                if (fs.existsSync(filePath)) {
-                    delete require.cache[require.resolve(filePath)];
-                    count++;
-                }
-            };
-
-            // Limpa o cache de todos os arquivos .js dentro da pasta de comandos
-            const getAllFiles = (dir) => {
-                const files = fs.readdirSync(dir);
-                for (const file of files) {
-                    const fullPath = path.join(dir, file);
-                    if (fs.statSync(fullPath).isDirectory()) {
-                        getAllFiles(fullPath);
-                    } else if (file.endsWith(".js")) {
-                        clearCache(fullPath);
+            await ctx.react("⚡");
+            
+            const loaderPath = require.resolve("../../core/loader");
+            const comandos = require(loaderPath);
+            
+            // Limpa o cache de TODOS os arquivos dentro da pasta commands
+            const limparCache = (dir) => {
+                const arquivos = fs.readdirSync(dir);
+                for (const arquivo of arquivos) {
+                    const caminho = path.join(dir, arquivo);
+                    if (fs.statSync(caminho).isDirectory()) {
+                        limparCache(caminho);
+                    } else if (arquivo.endsWith(".js")) {
+                        if (require.cache[require.resolve(caminho)]) {
+                            delete require.cache[require.resolve(caminho)];
+                        }
                     }
                 }
             };
-
-            getAllFiles(commandsPath);
             
-            // Limpa o cache do loader e do runner
-            clearCache(loaderPath);
-            clearCache(runnerPath);
+            limparCache(path.join(process.cwd(), "src", "commands"));
 
-            // Dá um pequeno delay para garantir que o processo de limpeza terminou
-            setTimeout(async () => {
-                await replyNYX(ctx, `✅ *RELOAD CONCLUÍDO!*\n\n🔄 ${count} arquivos recarregados com sucesso.\n📡 O bot já está usando as versões mais recentes.`, "bot");
-            }, 500);
+            let total = 0;
+            // Se o loader tiver a função, usa
+            if (typeof comandos.reload === "function") {
+                total = comandos.reload();
+            } else {
+                // Se não tiver, ele mesmo limpa o Map e repopula
+                if (typeof comandos.clear === "function") comandos.clear();
+                else for (let key in comandos) delete comandos[key];
+
+                const pasta = path.join(process.cwd(), "src", "commands");
+                const pastas = fs.readdirSync(pasta);
+                
+                for (const p of pastas) {
+                    const caminhoPasta = path.join(pasta, p);
+                    if (!fs.statSync(caminhoPasta).isDirectory()) continue;
+                    
+                    const arquivos = fs.readdirSync(caminhoPasta).filter(a => a.endsWith(".js"));
+                    for (const a of arquivos) {
+                        const cmd = require(path.join(caminhoPasta, a));
+                        if (cmd.category === undefined) cmd.category = p;
+                        const nomes = Array.isArray(cmd.name) ? cmd.name : [cmd.name];
+                        for (const n of nomes) {
+                            if (n) {
+                                if (typeof comandos.set === "function") comandos.set(n, cmd);
+                                else comandos[n] = cmd;
+                                total++;
+                            }
+                        }
+                    }
+                }
+            }
+
+            await replyNYX(ctx, `✅ *RELOAD CONCLUÍDO!*\n\n🔄 ${total} comandos carregados na memória.`, "bot");
 
         } catch (error) {
             console.error("[RELOAD] Erro:", error.message);
