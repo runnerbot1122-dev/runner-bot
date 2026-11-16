@@ -229,6 +229,16 @@ async function executarComando(ctx){
                 );
             }
         }
+        
+        // 🛠️ TRADUTOR GLOBAL: Padroniza on/off para 1/0
+        if (ctx.args && ctx.args.length > 0) {
+            const arg0 = String(ctx.args[0]).toLowerCase();
+            if (["on", "ativar", "ligar", "enable"].includes(arg0)) {
+                ctx.args[0] = "1";
+            } else if (["off", "desativar", "desligar", "disable"].includes(arg0)) {
+                ctx.args[0] = "0";
+            }
+        }
 
         await cmd.execute(ctx);
 

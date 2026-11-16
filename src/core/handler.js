@@ -140,14 +140,11 @@ async function handler(sock, m) {
                 if (!isNaN(jogada) && jogada >= 1 && jogada <= 9) {
                     const index = jogada - 1;
                     
-                    // AQUI ESTÁ A CORREÇÃO: Usando o remetente exato mastigado pelo bot
                     const isJogador1 = remetente === jogo.jogador1;
                     const isJogador2 = remetente === jogo.jogador2;
 
-                    // Se não for jogador, ignora
                     if (!isJogador1 && !isJogador2) return; 
 
-                    // Verifica de quem é a vez
                     if (remetente !== jogo.turno) {
                         await replyNYX({ sock, chat, message: m, sender: remetente }, `⏳ Calma! Não é a sua vez ainda.`, "bot");
                         return;
@@ -178,7 +175,6 @@ async function handler(sock, m) {
                         return;
                     }
 
-                    // Passa a vez para o outro jogador
                     jogo.turno = isJogador1 ? jogo.jogador2 : jogo.jogador1;
 
                     const simboloProximo = isJogador1 ? "⭕" : "❌";
@@ -332,7 +328,10 @@ async function handler(sock, m) {
             return; 
         }
 
-        if (chat.endsWith("@g.us")) {
+        // =========================================================
+        // CORREÇÃO AQUI: Adicionado o '&& !isAdmin' para os admins não serem punidos
+        // =========================================================
+        if (chat.endsWith("@g.us") && !isAdmin) {
             const protecoes = {
                 antiImg: getSetting(chat, "antiImg") === true,
                 antiVideo: getSetting(chat, "antiVideo") === true,
@@ -669,7 +668,7 @@ async function handler(sock, m) {
         if (texto.trim().toLowerCase() === "prefixo") {
             await ctx.replyNYX(`·.♟️:.      『 *${prefixoPrincipal}*  』
 
-ᴘʀᴇꜰɪxᴏ ᴄᴏɴꜰɪɢᴜʀᴀᴅᴏ. ᴏ ʀᴇꜱᴛᴏ é ᴄᴏɴꜱᴇǫᴜᴇ̂ɴᴄɪᴀ.`, "user");
+ᴘʀᴇꜰɪxᴏ ᴄᴏɴꜰɪɢᴜʀᴀᴅᴏ. ᴏ ʀᴇsᴛᴏ é ᴄᴏɴsᴇǫᴜᴇ̂ɴᴄɪᴀ.`, "user");
             await applyPrefixReaction(ctx);
             return;
         }

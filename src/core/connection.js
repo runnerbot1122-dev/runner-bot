@@ -19,6 +19,9 @@ const pareamentosSolicitados = new Set();
 const numerosPareamento = new Map();
 const leiturasNumeroPareamento = new Map();
 
+// 🛡️ FILTRO ANTI-DUPLICAÇÃO GLOBAL
+const mensagensProcessadas = new Set();
+
 function erroConfiguracaoPareamento(mensagem){
     const erro = new Error(mensagem);
     erro.pairingConfiguration = true;
@@ -266,7 +269,24 @@ async function iniciarConexao(id, cicloVida = {}){
             if (!Array.isArray(messages)) return;
 
             for (const m of messages) {
-                if (type !== "notify" && type !== "append" && type !== "history") continue;
+                if (!m.key || !m.key.id) continue;
+
+                // 🛡️ FILTRO ANTI-DUPLICAÇÃO
+                if (mensagensProcessadas.has(m.key.id)) {
+                    // console.log(`[ANTI-DUPLICATA] Ignorando mensagem repetida: ${m.key.id}`);
+                    continue;
+                }
+                
+                if (type !== "notify") continue;
+
+                // Se passou pelo filtro e é notify, guarda no cache
+                mensagensProcessadas.add(m.key.id);
+
+                // Limpa o cache para não estourar a memória (mantém as últimas 2000)
+                if (mensagensProcessadas.size > 2000) {
+                    const primeiro = mensagensProcessadas.values().next().value;
+                    mensagensProcessadas.delete(primeiro);
+                }
 
                 const proto = m.message?.protocolMessage;
 

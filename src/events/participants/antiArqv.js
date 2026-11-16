@@ -120,9 +120,9 @@ async function antiArqv(sock, update) {
     }
 
     // 🚨 BLINDAGEM DO DONO/MESTRE: Se for o dono, não faz nada.
-    if (perm?.master || perm?.owner || donoDoGrupo) {
-        return;
-    }
+if (perm?.master || perm?.owner || donoDoGrupo) {
+    return;
+}
 
     const alvos = [];
     for (const participanteInformado of participantesAlterados) {
