@@ -1,73 +1,31 @@
-const path = require("path");                                                           
+const path = require("path");
 const fonteNYX = require("../../utils/fonteNYX");
-const criarPlayCard = require("../../utils/createPlayCard");                            
+const criarPlayCard = require("../../utils/createPlayCard");
 const sendNYXMedia = require("../../utils/sendNYXMedia");
-const { buscarEBaixarAudio } = require("../../utils/youtubeAudio");                     
-
-let ultimaFrase = -1;
-
-function nomeErroPlay(error) {                                                              
-    if (error?.code === "ENOENT") return "Não encontrei o yt-dlp na VPS.";                  
-    if (error?.code === "PLAY_BUSY") return "Aguarde, o play anterior ainda está rodando.";
-    if (error?.code === "OOM") return "Hospedagem sem memória. Tente uma música mais curta.";
-    if (error?.code === "TIMEOUT") return "O YouTube demorou muito. Tente novamente.";
-    return "Não consegui buscar ou enviar a música. Tente novamente.";
-}
+const { buscarEBaixarAudio } = require("../../utils/youtubeAudio");
 
 module.exports = {
     name: "play",
-    description: "Pesquisa músicas no YouTube e envia o áudio MP3",
-    execute: async ctx => {
+    description: "Pesquisa músicas no YouTube e envia o áudio",
+    execute: async (ctx) => {
         const pesquisa = (Array.isArray(ctx.args) ? ctx.args : []).join(" ").trim();
-
         if (!pesquisa) {
             return ctx.replyNYX(`${fonteNYX("PESQUISAR MÚSICA")}\n\nUso: 7play nome da música`, "bot");
         }
 
-        const frases = [
-            "Calma, tô preparando seu pedido...",
-            "Separando o som, já vai tocar.",
-            "Buscando sua música, já volto.",
-            "O próximo som está chegando.",
-            "Aguenta aí, tô caçando esse hit.",
-            "Deixa comigo, já tô baixando.",
-            "Segura a ansiedade, a música já vem.",
-            "Tô no YouTube procurando...",
-            "Preparando a melhor playlist pra você.",
-            "Já tô convertendo aqui, calma.",
-            "Só um instante, o DJ tá trabalhando.",
-            "Achei o som! Só um pouco de paciência.",
-            "Tá quente, mas já vai sair do forno.",
-            "Tô caprichando na capa, aguarde.",
-            "O play tá no ar, só falta o áudio.",
-            "Pode ir preparando o fone de ouvido.",
-            "Essa vai ser boa, confia.",
-            "Buscando na base do YouTube...",
-            "Música a caminho, aguente firme.",
-            "Quase lá, não desliga o bot.",
-            "Tô fazendo a mágica acontecer.",
-            "Aguarde só mais um pouquinho.",
-            "Baixando o áudio, já vai chegar.",
-            "DJ Runner tá no comando."
-        ];
-
-        let indice;
-        do { indice = Math.floor(Math.random() * frases.length); } while (frases.length > 1 && indice === ultimaFrase);
-        ultimaFrase = indice;
-
-        await ctx.replyNYX(frases[indice], "bot");
+        await ctx.replyNYX("🔍 Buscando e preparando a música...", "bot");
 
         try {
+            console.time("⏱️ 1. Download (Denzy)");
             const faixa = await buscarEBaixarAudio(pesquisa);
+            console.timeEnd("⏱️ 1. Download (Denzy)");
 
-            if (!faixa || !faixa.audioBuffer || faixa.audioBuffer.length === 0) {
+            if (!faixa || !faixa.audioBuffer) {
                 return ctx.replyNYX("Não encontrei essa faixa.", "bot");
             }
 
-            // Legenda corrigida (sem "YOUTUBE" duplicado)
-            const legenda = `🎵 ${fonteNYX(faixa.title)}\n👤 ${fonteNYX(faixa.artist)}\n🎼 ${fonteNYX("Áudio do YouTube")}`;
+            const legenda = ` ${fonteNYX(faixa.title)}\n ${fonteNYX(faixa.artist)}\n ${fonteNYX("Áudio do YouTube")}`;
 
-            // Tenta enviar o card primeiro
             try {
                 if (faixa.thumbnailUrl) {
                     const cartao = await criarPlayCard({
@@ -76,21 +34,15 @@ module.exports = {
                         titulo: faixa.title,
                         artista: faixa.artist
                     });
-                    await sendNYXMedia(ctx.sock, ctx.chat, {
-                        image: cartao,
-                        mimetype: "image/png",
-                        caption: legenda
-                    }, ctx.message);
+                    await sendNYXMedia(ctx.sock, ctx.chat, { image: cartao, mimetype: "image/png", caption: legenda }, ctx.message);
                 } else {
                     await ctx.replyNYX(legenda, "bot");
                 }
             } catch (cardErro) {
                 console.error("[PLAY CARD FALHOU]", cardErro.message);
-                // Se o card falhar, envia só a legenda por texto
                 await ctx.replyNYX(legenda, "bot");
             }
 
-            // Envia o áudio depois
             const audio = {
                 audio: faixa.audioBuffer,
                 mimetype: "audio/mpeg",
@@ -98,8 +50,10 @@ module.exports = {
                 fileName: faixa.fileName || "runner-play.mp3"
             };
 
+            console.time("⏱️ 2. Envio pro WhatsApp");
             try {
                 await sendNYXMedia(ctx.sock, ctx.chat, audio, ctx.message);
+                console.timeEnd("⏱️ 2. Envio pro WhatsApp");
             } catch (e) {
                 console.error("[PLAY AUDIO FALHOU]", e.message);
                 await ctx.reply(audio);
@@ -107,7 +61,7 @@ module.exports = {
 
         } catch (error) {
             console.error("[PLAY]", error);
-            return ctx.replyNYX(nomeErroPlay(error), "bot");
+            return ctx.replyNYX("Não consegui buscar ou enviar a música. Tente novamente.", "bot");
         }
     }
 };
