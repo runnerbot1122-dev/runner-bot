@@ -1,7 +1,6 @@
 const security = require("../../database/securityGroups");
 const permissions = require("../../utils/permissions");
 const { enviarCartaoAntiRoubo } = require("../../utils/antiArqvCard");
-
 const {
     normalizarIdentificador,
     identidadesDoParticipante,
@@ -10,13 +9,13 @@ const {
     resultadoConfirmado
 } = require("../../utils/participantIdentity");
 
-// 🛡️ CACHE DE AUTORES (Para quando o WhatsApp não manda o author)
+// 🛡️ CACHE DE AUTORES
 const ultimoAutorCache = new Map();
 
 function salvarUltimoAutor(groupId, jid) {
     if (!groupId || !jid) return;
     ultimoAutorCache.set(groupId, jid);
-    setTimeout(() => ultimoAutorCache.delete(groupId), 10000); // Limpa após 10s
+    setTimeout(() => ultimoAutorCache.delete(groupId), 10000);
 }
 
 function obterUltimoAutor(groupId) {
@@ -58,13 +57,6 @@ function obterIdentidadesBot(sock) {
 }
 
 async function antiArqv(sock, update) {
-    console.log("[ANTI-ARQV] Evento recebido:", {
-        id: update?.id,
-        action: update?.action,
-        author: update?.author,
-        participants: update?.participants
-    });
-
     const groupId = update?.id;
     const acao = update?.action;
 
@@ -75,16 +67,21 @@ async function antiArqv(sock, update) {
     const participantesAlterados = Array.isArray(update.participants) ? update.participants : [];
     if (!participantesAlterados.length) return;
 
-    // 🚨 NOVO: Se o author veio vazio, busca do cache
     let authorReal = update.author;
     if (!authorReal) {
         authorReal = obterUltimoAutor(groupId);
-        if (authorReal) {
-            console.log("[ANTI-ARQV] Author vazio, recuperado do cache:", authorReal);
-        } else {
-            console.warn("[ANTI-ARQV] Evento sem autor identificável e sem cache.");
+        if (!authorReal) {
+            console.warn("[ANTI-ARQV] Evento sem autor identificável.");
             return;
         }
+    }
+
+    const autorInformado = normalizarIdentificador(authorReal);
+    
+    // 🚨 BLINDAGEM ANTI-SUICÍDIO: Se o autor for o próprio bot, ignora!
+    const identidadesBot = obterIdentidadesBot(sock);
+    if (identidadesBot.includes(autorInformado)) {
+        return; // O bot tem passe livre para fazer o que quiser
     }
 
     let metadata;
@@ -95,7 +92,6 @@ async function antiArqv(sock, update) {
         return;
     }
 
-    const autorInformado = normalizarIdentificador(authorReal);
     const autorInfo = encontrarParticipante(metadata, [autorInformado]);
 
     if (!autorInfo) {
@@ -106,11 +102,7 @@ async function antiArqv(sock, update) {
     const identidadesAutor = identidadesDoParticipante(autorInfo);
     const autorJid = jidTelefonico(autorInfo);
 
-    if (!autorJid || !["admin", "superadmin"].includes(autorInfo.admin)) {
-        console.warn("[ANTI-ARQV] Autor sem identidade telefônica mapeada ou sem cargo administrativo.");
-        return;
-    }
-
+    // Verifica permissões (Master, Owner do Bot, Dono do Grupo)
     let perm;
     try {
         perm = await permissions.getPermissions(sock, groupId, autorInformado, identidadesAutor);
@@ -127,8 +119,8 @@ async function antiArqv(sock, update) {
         return;
     }
 
+    // 🚨 BLINDAGEM DO DONO/MESTRE: Se for o dono, não faz nada.
     if (perm?.master || perm?.owner || donoDoGrupo) {
-        console.log("[ANTI-ARQV] Autor autorizado. Nenhuma punição executada.");
         return;
     }
 
@@ -144,6 +136,10 @@ async function antiArqv(sock, update) {
         if (!participante) continue;
 
         const ids = identidadesDoParticipante(participante);
+        
+        // Se o alvo for o próprio bot, ignora também
+        if (ids.some(id => identidadesBot.includes(id))) continue;
+        
         if (ids.some(id => identidadesAutor.includes(id))) continue;
         if (!jidTelefonico(participante)) continue;
 
@@ -153,10 +149,7 @@ async function antiArqv(sock, update) {
         if (!duplicado) alvos.push(participante);
     }
 
-    if (!alvos.length) {
-        console.warn("[ANTI-ARQV] Nenhum participante pôde ser identificado com segurança.");
-        return;
-    }
+    if (!alvos.length) return;
 
     // PROMOÇÃO NÃO AUTORIZADA
     if (acao === "promote") {
@@ -187,7 +180,6 @@ async function antiArqv(sock, update) {
     // REBAIXAMENTO NÃO AUTORIZADO
     if (acao === "demote") {
         console.warn("[ANTI-ARQV] Rebaixamento não autorizado detectado.");
-        const identidadesBot = obterIdentidadesBot(sock);
         const botInfo = encontrarParticipante(metadata, identidadesBot);
 
         const botFoiAlvo = Boolean(
@@ -202,7 +194,6 @@ async function antiArqv(sock, update) {
         let botProtegido = true;
         const resultadosRestauracao = [];
 
-        // CASO ESPECIAL: TENTARAM REBAIXAR O PRÓPRIO BOT
         if (botFoiAlvo) {
             console.warn("[ANTI-ARQV] Tentativa de remover o ADM do próprio bot!");
             const botJaAdmin = ["admin", "superadmin"].includes(botInfo.admin);
