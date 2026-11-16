@@ -5,7 +5,6 @@ const comandos = new Map();
 
 function carregarComandos() {
     comandos.clear();
-
     const pasta = path.join(__dirname, "../commands");
     const categorias = fs.readdirSync(pasta);
 
@@ -21,18 +20,23 @@ function carregarComandos() {
                 delete require.cache[require.resolve(caminhoArquivo)];
             }
 
-            const comando = require(caminhoArquivo);
-            
-            if (comando && typeof comando === "object" && !comando.category) {
-                comando.category = categoria;
-            }
-
-            if (Array.isArray(comando.name)) {
-                for (const nome of comando.name) {
-                    comandos.set(nome, comando);
+            try {
+                // O TRY/CATCH AQUI SALVA O BOT DE CRASH
+                const comando = require(caminhoArquivo);
+                
+                if (comando && typeof comando === "object" && !comando.category) {
+                    comando.category = categoria;
                 }
-            } else {
-                comandos.set(comando.name, comando);
+
+                if (Array.isArray(comando.name)) {
+                    for (const nome of comando.name) {
+                        comandos.set(nome, comando);
+                    }
+                } else if (comando.name) {
+                    comandos.set(comando.name, comando);
+                }
+            } catch (error) {
+                console.error(`\n[ERRO NO COMANDO] Falha ao carregar ${arquivo}:`, error.message, "\n");
             }
         }
     }
@@ -41,5 +45,4 @@ function carregarComandos() {
 
 carregarComandos();
 comandos.reload = carregarComandos;
-
 module.exports = comandos;
