@@ -17,46 +17,38 @@ module.exports = {
         await replyNYX(ctx, "🔍 Buscando informações no Spotify...", "bot");
 
         try {
-            // 1. Faz o scraping da página do Spotify para pegar o título
-            // O Spotify bloqueia bots, então enviamos um User-Agent de navegador real
-            const response = await axios.get(link, {
-                headers: {
-                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-                }
-            });
-
-            // Extrai a tag <title> da página do Spotify (geralmente é: Nome da Música - song by Artista | Spotify)
-            const match = response.data.match(/<title>(.*?)<\/title>/);
-            let nomeMusica = "";
+            // 1. Usa a API OEmbed do Spotify (Nunca bloqueia e retorna o JSON certinho)
+            const oembedUrl = `https://open.spotify.com/oembed?url=${encodeURIComponent(link)}`;
+            const response = await axios.get(oembedUrl);
+            
+            const tituloCompleto = response.data.title; // Vem no formato: "Nome da Música"
+            
+            // O título as vezes vem como "Música - song by Artista" ou só o nome da música
+            let nomeMusica = tituloCompleto;
             let nomeArtista = "";
 
-            if (match && match[1]) {
-                const tituloCompleto = match[1];
-                // Separa "Música - song by Artista" ou similar
+            if (tituloCompleto.includes(" - song by ")) {
                 const partes = tituloCompleto.split(" - song by ");
-                if (partes.length === 2) {
-                    nomeMusica = partes[0];
-                    nomeArtista = partes[1].replace(" | Spotify", "").trim();
-                } else {
-                    nomeMusica = tituloCompleto.replace(" | Spotify", "").trim();
-                }
+                nomeMusica = partes[0];
+                nomeArtista = partes[1].trim();
             }
 
             if (!nomeMusica) {
                 return replyNYX(ctx, "❌ Não consegui ler as informações dessa música no Spotify.", "bot");
             }
 
-            await replyNYX(ctx, `🎵 Encontrei: *${nomeMusica}*\n👤 Artista: *${nomeArtista}*\n\n⬇️ Baixando do YouTube, aguarde...`, "bot");
+            await replyNYX(ctx, `🎵 Encontrei: *${nomeMusica}*\n👤 Artista: *${nomeArtista || 'Desconhecido'}*\n\n⬇️ Baixando do Spotify, aguarde...`, "bot");
 
-            // 2. Pesquisa no YouTube para achar o áudio
+            // 2. Pesquisa no YouTube
             const termoBusca = `${nomeMusica} ${nomeArtista} audio`;
             const search = await yts(termoBusca);
             
             if (!search || !search.videos || search.videos.length === 0) {
-                return replyNYX(ctx, "❌ Não consegui encontrar essa música no YouTube.", "bot");
+                return replyNYX(ctx, "❌ Não consegui encontrar essa música no Spotify.", "bot");
             }
 
-            const video = search.videos[0];
+            // Pega o primeiro vídeo (que não seja um shorts ou compilado gigante)
+            const video = search.videos.find(v => v.seconds < 600) || search.videos[0];
 
             // 3. Usa a API do Denzy para pegar o link do MP3
             const apiRes = await yt.ytmp3(video.url);
@@ -81,7 +73,7 @@ module.exports = {
 
         } catch (error) {
             console.error("[SPOTIFY] Erro:", error.message);
-            await replyNYX(ctx, "❌ Erro ao baixar do Spotify. Verifique se o link é válido.", "bot");
+            await replyNYX(ctx, "❌ Erro ao baixar do Spotify. Verifique se o link é de uma música válida.", "bot");
         }
     }
 };
