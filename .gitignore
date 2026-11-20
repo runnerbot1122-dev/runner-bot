@@ -6,3 +6,6 @@ sessions/
 *.bak-*
 src/database/storage/
 *.tgz
+*.bak
+*.tgz
+temp_backup/
