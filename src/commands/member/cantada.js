@@ -1,5 +1,5 @@
 module.exports = {
-    name: "cantada",
+    name: ["cantada", "cantadas"],
     description: "Envia uma cantada leve",
     execute: async (ctx) => {
         const cantadas = [

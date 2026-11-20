@@ -11,7 +11,7 @@ const { downloadMediaMessage } = require("@whiskeysockets/baileys");
 const REMOVE_BG_API_KEY = "mGP9kKxSznHwhsn8vzeM4er5"; 
 
 module.exports = {
-    name: ["figfundo", "removebg"],
+    name: ["figfundo", "removebg", "figusemfundo"],
     description: "Remove o fundo de uma imagem e cria uma figurinha",
     execute: async (ctx) => {
         const quoted = ctx.message.message?.extendedTextMessage?.contextInfo?.quotedMessage;

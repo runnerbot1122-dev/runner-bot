@@ -10,7 +10,8 @@ module.exports = {
 
 
 name:[
-"menubrincadeiras"
+"menubrincadeiras",
+"menubn"
 ],
 
 

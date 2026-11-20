@@ -27,7 +27,7 @@ function quebrarTexto(texto, limite = 8) {
 }
 
 module.exports = {
-    name: ["brat"],
+    name: ["brat", "brat1", "brat3", "brat4", "bratteste"],
     description: "Cria uma figurinha estilo Brat localmente",
     execute: async (ctx) => {
         const texto = ctx.args.join(" ").trim();

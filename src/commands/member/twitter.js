@@ -10,7 +10,7 @@ const { getBotName } = require("../../utils/botNameStore");
 const execFileAsync = promisify(execFile);
 
 module.exports = {
-    name: ["twitter", "x", "xvideo"],
+    name: ["twitter", "x", "xvideo", "twitter_video"],
     description: "Baixa vídeos do Twitter/X via link",
     execute: async (ctx) => {
         const link = ctx.args[0];

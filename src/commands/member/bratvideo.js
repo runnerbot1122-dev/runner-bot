@@ -9,7 +9,7 @@ const sendNYXMedia = require("../../utils/sendNYXMedia");
 const execFileAsync = promisify(execFile);
 
 module.exports = {
-    name: ["bratvideo", "bratv"],
+    name: ["bratvideo", "bratv", "bratvteste"],
     description: "Cria uma figurinha animada estilo Brat",
     execute: async (ctx) => {
         const texto = ctx.args.join(" ").trim();

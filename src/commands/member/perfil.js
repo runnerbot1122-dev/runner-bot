@@ -21,7 +21,8 @@ module.exports = {
 
 name:[
     "perfil",
-    "profile"
+    "profile",
+    "perfil2"
 ],
 
 

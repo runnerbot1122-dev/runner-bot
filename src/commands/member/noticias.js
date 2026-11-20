@@ -2,7 +2,7 @@ const axios = require("axios");
 const replyNYX = require("../../utils/replyNYX");
 
 module.exports = {
-    name: ["noticias", "gnews"],
+    name: ["noticias", "gnews", "getnoticias", "googlenews"],
     description: "Mostra as últimas notícias do G1",
     execute: async (ctx) => {
         try { await ctx.react("📰"); } catch (e) {}
