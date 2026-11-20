@@ -21,8 +21,9 @@ module.exports = {
         const enigmaSorteado = enigmas[Math.floor(Math.random() * enigmas.length)];
 
         // Inicia o jogo como "adivinha" para o handler capturar automaticamente
-        iniciarJogo(ctx.chat, ctx.sender, "adivinha", { 
-            resposta: enigmaSorteado.resposta 
+        iniciarJogo(ctx.chat, ctx.sender, "adivinha", {
+            pergunta: enigmaSorteado.pergunta,
+            resposta: enigmaSorteado.resposta
         });
 
         const texto = `🧩 *ENIGMA*\n\n"${enigmaSorteado.pergunta}"\n\n💡 Digite a resposta (ou use ${ctx.prefix}desistir para desistir).`;

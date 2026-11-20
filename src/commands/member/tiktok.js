@@ -10,7 +10,7 @@ const { getBotName } = require("../../utils/botNameStore");
 const execFileAsync = promisify(execFile);
 
 module.exports = {
-    name: ["tiktok", "tt", "tik", "tk-video"],
+    name: ["tiktok", "tt", "tik", "tk-video", "tiktok_video", "tiktok_video2"],
     description: "Baixa um vídeo do TikTok via link",
     execute: async (ctx) => {
         const link = ctx.args[0];

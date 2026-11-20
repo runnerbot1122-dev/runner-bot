@@ -27,13 +27,13 @@ function quebrarTexto(texto, limite = 8) {
 }
 
 module.exports = {
-    name: ["brat"],
+    name: ["brat", "brat1", "brat3", "brat4", "bratteste"],
     description: "Cria uma figurinha estilo Brat localmente",
     execute: async (ctx) => {
         const texto = ctx.args.join(" ").trim();
-        if (!texto) return replyNYX(ctx, `🟩 *BRAT*\n\nUso: ${ctx.prefix}brat [texto]`, "bot");
+        if (!texto) return replyNYX(ctx, `🎭 *BRAT*\n\nUso: ${ctx.prefix}brat [texto]`, "bot");
 
-        try { await ctx.react("🟩"); } catch (e) {}
+        try { await ctx.react("🎭"); } catch (e) {}
 
         const temp = fs.mkdtempSync(path.join(os.tmpdir(), "brat-"));
         const textFile = path.join(temp, "texto.txt");

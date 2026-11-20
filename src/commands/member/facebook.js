@@ -10,7 +10,7 @@ const { getBotName } = require("../../utils/botNameStore");
 const execFileAsync = promisify(execFile);
 
 module.exports = {
-    name: ["facebook", "fb", "face"],
+    name: ["facebook", "fb", "face", "face_video"],
     description: "Baixa vídeos do Facebook via link",
     execute: async (ctx) => {
         const link = ctx.args[0];

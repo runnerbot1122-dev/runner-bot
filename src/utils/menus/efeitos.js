@@ -1,17 +1,16 @@
 module.exports = function (prefixo = "7") {
     const nomeBot = require("../../utils/botNameStore").getBotName();
-    return `╔═━✰『 ᴇғᴇɪᴛᴏs ɪᴍɢ 』═━✰
+    const emoji = "💸";
+    const linha = `║╎⊹ ࣪ ˖ ${emoji} ▸ `;
+    const secao = (titulo, comandos) => `╠═✰『 ${titulo} 』✰
 ║╭━━━━──────━━━━╮
-║╎⊹ ࣪ ˖ 💸 ▸ ${prefixo}attp
-║╎⊹ ࣪ ˖ 💸 ▸ ${prefixo}attp2
-║╎⊹ ࣪ ˖ 💸 ▸ ${prefixo}attp_white
-║╎⊹ ࣪ ˖ 💸 ▸ ${prefixo}attp_brat
-║╎⊹ ࣪ ˖ 💸 ▸ ${prefixo}brat1
-║╎⊹ ࣪ ˖ 💸 ▸ ${prefixo}brat2
-║╎⊹ ࣪ ˖ 💸 ▸ ${prefixo}brat3
-║╎⊹ ࣪ ˖ 💸 ▸ ${prefixo}brat4
-║╎⊹ ࣪ ˖ 💸 ▸ ${prefixo}bratvideo
-║╰━━━━──────━━━━╯
+${comandos.map(cmd => `${linha}${prefixo}${cmd}`).join("\n")}
+║╰━━━━──────━━━━╯`;
+
+    return `
+╔═━✰『 ᴇғᴇɪᴛᴏs ɪᴍɢ 』═━✰
+${secao("Stickers de Texto", ["attp", "attp2", "attp_white", "attp_brat", "brat1", "brat2", "brat3", "brat4", "bratvideo"])}
+${secao("Texto & Mídia", ["fancy", "efeito", "imgfiltro", "figfundo", "togif"])}
 ╠═ • ${nomeBot}
 ╚═━═━═━═━ ᴅᴇᴠ ᴇᴢ ━═━═━═━✰
 `;

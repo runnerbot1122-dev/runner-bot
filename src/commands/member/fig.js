@@ -63,7 +63,7 @@ async function converterParaFigurinha(entrada, saida, tipo, bufferOriginal) {
 }
 
 module.exports = {
-    name: ["fig", "sticker"],
+    name: ["fig", "sticker", "st", "fsticker", "figvideo", "stk"],
     description: "Cria uma figurinha a partir de imagem ou vídeo curto",
     execute: async (ctx) => {
         const midia = localizarMidia(ctx.message);

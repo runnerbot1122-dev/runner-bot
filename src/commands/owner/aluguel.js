@@ -62,7 +62,7 @@ async function reject(ctx, message, code) {
 }
 
 module.exports = {
-    name: "aluguel",
+    name: ["aluguel", "alugar"],
     description: "Registra o grupo atual por uma duração definida",
 
     execute: async ctx => {

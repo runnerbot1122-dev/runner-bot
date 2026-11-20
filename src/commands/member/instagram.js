@@ -10,7 +10,7 @@ const { getBotName } = require("../../utils/botNameStore");
 const execFileAsync = promisify(execFile);
 
 module.exports = {
-    name: ["instagram", "insta", "ig", "reels"],
+    name: ["instagram", "instagram2", "insta", "ig", "reels"],
     description: "Baixa vídeos e fotos do Instagram via link",
     execute: async (ctx) => {
         const link = ctx.args[0];

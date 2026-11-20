@@ -3,7 +3,7 @@ const familyDb = require("../../database/families");
 const fonteNYX = require("../../utils/fonteNYX");
 
 module.exports = {
-    name: ["minhadupla", "dupla", "meupar", "meucasal"],
+    name: ["minhadupla", "dupla", "meupar", "meucasal", "casal"],
     description: "Mostra informações sobre o seu relacionamento",
     execute: async (ctx) => {
         const familia = familyDb.getFamilyOf(ctx.sender);

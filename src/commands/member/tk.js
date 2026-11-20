@@ -29,7 +29,7 @@ function obterNomeExecutor(ctx) {
 }
 
 module.exports = {
-    name: ["tk", "take"],
+    name: ["tk", "take", "roubar"],
     description: "Renomeia uma figurinha citada com o nome do executor",
     execute: async (ctx) => {
         const figurinha = localizarFigurinha(ctx.message);
