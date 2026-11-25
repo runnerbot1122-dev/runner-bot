@@ -247,6 +247,10 @@ async function handler(sock, m) {
         const templateButtonId = m.message.templateButtonReplyMessage?.selectedId || null;
         const nativeButtonId = buttonId || templateButtonId;
 
+        // Dependendo do cliente WhatsApp, quick_reply pode chegar como botão
+        // comum/template em vez de interactiveResponseMessage.
+        let interactiveButtonId = nativeButtonId;
+
         if (nativeButtonId && nativeButtonId.startsWith("copiar_")) {
             const linkCopiado = nativeButtonId.replace("copiar_", "");
             await replyNYX({ sock, chat, message: m, sender: remetente }, `📋 *Link para copiar:*\n\n${linkCopiado}`, "bot");
@@ -277,12 +281,16 @@ async function handler(sock, m) {
         if (paramsJson) {
             try {
                 const params = JSON.parse(paramsJson);
-                interactiveId = params.id || null;
+                interactiveId = params.id || params.selectedId || params.button_id || null;
             } catch (erro) { console.log("Erro ao ler resposta do menu:", erro.message); }
         }
 
         if (m.message.listResponseMessage?.singleSelectReply?.selectedRowId) {
             interactiveId = m.message.listResponseMessage.singleSelectReply.selectedRowId;
+        }
+
+        if (!interactiveId && interactiveButtonId) {
+            interactiveId = interactiveButtonId;
         }
 
         if (interactiveId && interactiveId.startsWith("ytsearch_audio|")) {
@@ -538,6 +546,14 @@ async function handler(sock, m) {
 
         if (interactiveId && menusNativos.includes(interactiveId)) {
             texto = `${prefixoPrincipal}${interactiveId}`;
+            prefixoUsado = prefixoPrincipal;
+        }
+
+        if (interactiveId && /^play_(?:document|audio|video)\|/i.test(interactiveId)) {
+            const separador = interactiveId.indexOf("|");
+            const tipo = interactiveId.slice(5, separador).toLowerCase();
+            const urlCodificada = interactiveId.slice(separador + 1);
+            texto = `${prefixoPrincipal}play_opcao_interno ${tipo} ${urlCodificada}`;
             prefixoUsado = prefixoPrincipal;
         }
 

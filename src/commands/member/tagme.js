@@ -1,7 +1,7 @@
 const replyNYX = require("../../utils/replyNYX");
 
 module.exports = {
-    name: ["tagme"],
+    name: ["tagme", "mytag"],
     description: "Menciona o próprio usuário",
 
     execute: async ctx => {

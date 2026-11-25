@@ -2,6 +2,8 @@ const axios = require("axios");
 const replyNYX = require("../../utils/replyNYX");
 
 const historicos = new Map();
+const NEXRAY_GEMINI_URL = "https://api.nexray.web.id/ai/gemini";
+const NVIDIA_URL = "https://integrate.api.nvidia.com/v1/chat/completions";
 
 module.exports = {
     name: ["gemini", "ia", "gpt", "deepseek"],
@@ -10,13 +12,6 @@ module.exports = {
         const pergunta = ctx.args.join(" ");
         if (!pergunta) {
             return replyNYX(ctx, `🧠 *INTELIGÊNCIA ARTIFICIAL*\n\nUso: ${ctx.prefix}gemini [sua pergunta]\nEx: ${ctx.prefix}gemini quem descobriu o brasil?`, "bot");
-        }
-
-        // COLE SUA CHAVE AQUI
-        const apiKey = "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"; 
-        
-        if (!apiKey || apiKey.includes("SUA_CHAVE_AQUI")) {
-            return replyNYX(ctx, "❌ A chave da API não foi configurada no código.", "bot");
         }
 
         try { await ctx.react("🤖"); } catch (e) {}
@@ -35,24 +30,63 @@ module.exports = {
                 { role: "user", content: pergunta }
             ];
 
-            const response = await axios.post(
-                "https://integrate.api.nvidia.com/v1/chat/completions",
-                {
-                    model: "nvidia/nemotron-3.5-lightning-30b-a3b", // MODELO NOVO
-                    messages: mensagens,
-                    max_tokens: 300,
-                    temperature: 0.7
-                },
-                {
-                    headers: {
-                        "Authorization": `Bearer ${apiKey}`,
-                        "Content-Type": "application/json"
-                    },
-                    timeout: 60000
-                }
-            );
+            let textoResposta;
 
-            const textoResposta = response.data.choices[0].message.content;
+            try {
+                const contexto = mensagens
+                    .map(mensagem => `${mensagem.role === "user" ? "Usuário" : "NYX"}: ${mensagem.content}`)
+                    .join("\n");
+
+                const response = await axios.get(NEXRAY_GEMINI_URL, {
+                    params: { text: contexto },
+                    timeout: 30000,
+                    maxContentLength: 2 * 1024 * 1024,
+                    validateStatus: () => true,
+                    headers: {
+                        Accept: "application/json",
+                        "User-Agent": "runner-bot-nexray/1.0"
+                    }
+                });
+
+                const result = response.data?.result;
+                const textoNexray = typeof result === "string" ? result : result?.text;
+
+                if (response.status < 200 || response.status >= 300 || response.data?.status === false || !textoNexray) {
+                    throw new Error(`NexRay HTTP ${response.status}`);
+                }
+
+                textoResposta = textoNexray;
+                console.log("[IA] Resposta obtida pela NexRay.");
+            } catch (nexrayError) {
+                console.warn("[IA] NexRay indisponível:", nexrayError.message);
+
+                const apiKey = process.env.NVIDIA_API_KEY;
+                if (!apiKey) {
+                    throw new Error("NexRay indisponível e NVIDIA_API_KEY não configurada");
+                }
+
+                const response = await axios.post(
+                    NVIDIA_URL,
+                    {
+                        model: "nvidia/nemotron-3.5-lightning-30b-a3b",
+                        messages: mensagens,
+                        max_tokens: 300,
+                        temperature: 0.7
+                    },
+                    {
+                        headers: {
+                            "Authorization": `Bearer ${apiKey}`,
+                            "Content-Type": "application/json"
+                        },
+                        timeout: 60000,
+                        maxContentLength: 2 * 1024 * 1024
+                    }
+                );
+
+                textoResposta = response.data?.choices?.[0]?.message?.content;
+                if (!textoResposta) throw new Error("Resposta vazia da NVIDIA");
+                console.log("[IA] Resposta obtida pela NVIDIA (fallback).");
+            }
 
             chatHistory.push({ role: "user", text: pergunta, timestamp: Date.now() });
             chatHistory.push({ role: "assistant", text: textoResposta, timestamp: Date.now() });
