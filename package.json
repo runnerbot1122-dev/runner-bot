@@ -17,6 +17,7 @@
     "@google/generative-ai": "^0.24.1",
     "@img/sharp-wasm32": "^0.35.5",
     "@whiskeysockets/baileys": "6.7.24",
+    "api-nexray": "^1.0.3",
     "axios": "^1.21.1",
     "bebytdl": "^1.0.0",
     "brat-codex": "^0.0.1-security",
