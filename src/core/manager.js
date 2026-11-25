@@ -91,9 +91,6 @@ function agendarConexao(id, tipo) {
                 const geracaoTentativa = estado.geracao;
 
                 if (tipo === "manual") {
-                    // Keep duplicate manual requests coalesced during socket
-                    // creation, but release the lock when this generation's
-                    // attempt settles; Baileys may never emit "open".
                     return Promise.resolve(operacao).finally(() => {
                         if (
                             estado.geracao === geracaoTentativa &&
@@ -303,11 +300,36 @@ function reiniciarBot(id) {
     return Promise.resolve(null);
 }
 
-// A inicialização é iniciada ao carregar o manager; o erro é absorvido e
-// registrado dentro de criarBot, evitando rejeições não tratadas.
-criarBot(config.sessionName).catch((erro) => {
-    console.error("Falha ao iniciar bot:", erro.message);
+// 🆕 NOVO: Lê a pasta de sessões e inicia todos os bots salvos (resolve o problema do restart)
+async function carregarSessoesSalvas() {
+    const sessionsDir = path.join(__dirname, "..", "sessions");
+    
+    if (!fs.existsSync(sessionsDir)) {
+        console.log("[BOOT] Pasta de sessões não encontrada.");
+        return;
+    }
+
+    const pastas = fs.readdirSync(sessionsDir, { withFileTypes: true });
+    for (const pasta of pastas) {
+        if (pasta.isDirectory()) {
+            const id = pasta.name;
+            console.log(`[BOOT] Iniciando sessão salva: ${id}`);
+            criarBot(id).catch(err => console.error(`Falha ao iniciar sessão ${id}:`, err.message));
+        }
+    }
+}
+
+// Inicia as sessões salvas
+carregarSessoesSalvas().catch(erro => {
+    console.error("Falha ao carregar sessões salvas:", erro.message);
 });
+
+// Mantém o boot original do bot principal, caso o .env esteja configurado
+if (config.sessionName) {
+    criarBot(config.sessionName).catch((erro) => {
+        console.error("Falha ao iniciar bot principal:", erro.message);
+    });
+}
 
 // 🤖 NOVO: Inicia a checagem de atualização do yt-dlp em background (não trava o bot)
 setTimeout(() => {
