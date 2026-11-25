@@ -11,7 +11,7 @@ const { nexrayDownload } = require("../../utils/nexrayDownloader");
 const execFileAsync = promisify(execFile);
 
 module.exports = {
-    name: ["tiktok", "tt", "tik", "tk-video", "tiktok_video", "tiktok_video2"],
+    name: ["tiktok", "tiktok2", "tt", "tik", "tk-video", "tiktok_video", "tiktok_video2"],
     description: "Baixa um vídeo do TikTok via link",
     execute: async (ctx) => {
         const link = ctx.args[0];

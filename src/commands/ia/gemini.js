@@ -60,7 +60,7 @@ module.exports = {
             } catch (nexrayError) {
                 console.warn("[IA] NexRay indisponível:", nexrayError.message);
 
-                const apiKey = process.env.NVIDIA_API_KEY;
+                const apiKey = process.env.NVIDIA_API_KEY?.trim();
                 if (!apiKey) {
                     throw new Error("NexRay indisponível e NVIDIA_API_KEY não configurada");
                 }
