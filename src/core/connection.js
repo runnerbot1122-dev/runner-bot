@@ -108,13 +108,18 @@ async function solicitarPareamento(id, sock, state, cicloVida, geracao){
         return;
     }
     if(pareamentosSolicitados.has(id)) return;
-    if(!process.stdin?.isTTY || !process.stdout?.isTTY){
+
+    // 🆕 Só exige TTY quando o número NÃO vier do cicloVida (modo servidor)
+    const numeroExterno = Boolean(cicloVida.numeroPareamento);
+    if(!numeroExterno && (!process.stdin?.isTTY || !process.stdout?.isTTY)){
         throw erroConfiguracaoPareamento("Pareamento numérico exige terminal interativo local; operação interrompida");
     }
+
     if(!socketAindaAtual(sock, geracao, cicloVida)){
         pareamentosSolicitados.delete(id);
         return;
     }
+
     pareamentosSolicitados.add(id);
     let numero, codigo;
     try{
@@ -127,16 +132,26 @@ async function solicitarPareamento(id, sock, state, cicloVida, geracao){
     }
     catch(erro){
         pareamentosSolicitados.delete(id);
+        // 🆕 avisa o servidor que falhou
+        if(typeof cicloVida.aoFalhar === "function"){
+            try{ cicloVida.aoFalhar(erro); } catch(e){}
+        }
         if(erro?.pairingConfiguration === true) throw erro;
         logger.error("Falha ao solicitar código de pareamento");
         return;
     }
+
     try{
         if(!socketAindaAtual(sock, geracao, cicloVida)){
             pareamentosSolicitados.delete(id);
             return;
         }
-        process.stdout.write(`\nCódigo de pareamento: ${codigo}\n`);
+        // 🆕 entrega via callback se existir; senão, imprime no terminal
+        if(typeof cicloVida.aoReceberCodigo === "function"){
+            cicloVida.aoReceberCodigo(codigo, numero);
+        } else {
+            process.stdout.write(`\nCódigo de pareamento: ${codigo}\n`);
+        }
     }
     catch(erro){
         pareamentosSolicitados.delete(id);

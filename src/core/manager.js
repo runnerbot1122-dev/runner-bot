@@ -147,7 +147,7 @@ function tratarFechamento(id, geracao, sock, loggedOut) {
     agendarConexao(id, "auto");
 }
 
-function criarBot(id) {
+function criarBot(id, opcoes = {}) {
     const estado = obterEstado(id);
 
     if (estado.tentativa) return estado.tentativa;
@@ -166,6 +166,10 @@ function criarBot(id) {
     tentativa = Promise.resolve()
         .then(() => iniciarConexao(id, {
             geracao,
+            // 🆕 Repassa as opções de pareamento para o connection.js
+            numeroPareamento: opcoes.pairingNumber,
+            aoReceberCodigo: opcoes.aoReceberCodigo,
+            aoFalhar: opcoes.aoFalhar,
             registrarSocket(sock, geracaoCallback = geracao) {
                 if (
                     geracaoCallback !== geracao ||
