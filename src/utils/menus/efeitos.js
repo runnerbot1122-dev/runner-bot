@@ -1,16 +1,19 @@
+const { getBotEmoji } = require("../../utils/botEmoji");
+
 module.exports = function (prefixo = "7") {
     const nomeBot = require("../../utils/botNameStore").getBotName();
-    const emoji = "💸";
-    const linha = `║╎⊹ ࣪ ˖ ${emoji} ▸ `;
-    const secao = (titulo, comandos) => `╠═✰『 ${titulo} 』✰
+    return `╔═━✰『 ᴇғᴇɪᴛᴏs ɪᴍɢ 』═━✰
 ║╭━━━━──────━━━━╮
-${comandos.map(cmd => `${linha}${prefixo}${cmd}`).join("\n")}
-║╰━━━━──────━━━━╯`;
-
-    return `
-╔═━✰『 ᴇғᴇɪᴛᴏs ɪᴍɢ 』═━✰
-${secao("Stickers de Texto", ["attp", "attp2", "attp_white", "attp_brat", "brat1", "brat2", "brat3", "brat4", "bratvideo"])}
-${secao("Texto & Mídia", ["fancy", "efeito", "imgfiltro", "figfundo", "togif"])}
+║╎⊹ ࣪ ˖ ${getBotEmoji()} ▸ ${prefixo}attp
+║╎⊹ ࣪ ˖ ${getBotEmoji()} ▸ ${prefixo}attp2
+║╎⊹ ࣪ ˖ ${getBotEmoji()} ▸ ${prefixo}attp_white
+║╎⊹ ࣪ ˖ ${getBotEmoji()} ▸ ${prefixo}attp_brat
+║╎⊹ ࣪ ˖ ${getBotEmoji()} ▸ ${prefixo}brat1
+║╎⊹ ࣪ ˖ ${getBotEmoji()} ▸ ${prefixo}brat2
+║╎⊹ ࣪ ˖ ${getBotEmoji()} ▸ ${prefixo}brat3
+║╎⊹ ࣪ ˖ ${getBotEmoji()} ▸ ${prefixo}brat4
+║╎⊹ ࣪ ˖ ${getBotEmoji()} ▸ ${prefixo}bratvideo
+║╰━━━━──────━━━━╯
 ╠═ • ${nomeBot}
 ╚═━═━═━═━ ᴅᴇᴠ ᴇᴢ ━═━═━═━✰
 `;

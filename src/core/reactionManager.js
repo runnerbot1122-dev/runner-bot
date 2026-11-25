@@ -69,9 +69,9 @@ const COMMAND_REACTIONS = {
     admin: "🛡️",
     ativadms: "📊",
     play: "🎵",
-    fig: "🖼️",
+    fig: "💱",
     regras: "📜",
-    menu: "📋",
+    menu: "🐺",
     menuadm: "🛡️",
     menudono: "👑",
     menudownload: "📥",
@@ -254,14 +254,16 @@ function getCommandReaction(command){
     if (/^(block|unblock|ban|unban|bangp|unbangp)/.test(nome)) return "🛡️";
     if (/^(set|reset|config|prefix|nome|audio|on$|off$)/.test(nome)) return "⚙️";
     if (/^(menu|list|lista)/.test(nome)) return "📋";
-    return DEFAULT_SUCCESS_REACTION;
+    // Comandos sem reação definida não recebem mais um ✅ genérico.
+    // Isso evita substituir a reação personalizada enviada pelo próprio comando.
+    return null;
 
 }
 
 
 async function applyCommandSuccessReaction(ctx){
 
-    if(!ctx || !ctx.command){
+    if(!ctx || !ctx.command || ctx.customReactionSent){
 
         return false;
 

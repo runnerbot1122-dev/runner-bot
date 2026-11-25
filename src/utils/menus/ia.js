@@ -1,6 +1,6 @@
 module.exports = function (prefixo = "7") {
     const nomeBot = require("../../utils/botNameStore").getBotName();
-    const emoji = "💸";
+    const emoji = require("../../utils/botEmoji").getBotEmoji();
     const linha = `║╎⊹ ࣪ ˖ ${emoji} ▸ `;
 
     const secao = (titulo, comandos) =>

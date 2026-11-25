@@ -624,13 +624,17 @@ async function handler(sock, m) {
 
         const ctx = {
             sock, message: m, chat, sender: remetente, args: [], command: null,
+            customReactionSent: false,
             prefix: prefixoAtual, text: texto, level: permissoes.level,
             isOwner: permissoes.owner,
             isMaster: isMaster(remetente) || isMaster(identidade.jid) || isMaster(identidade.lid),
             isAdmin: permissoes.admin, isGroup: chat.endsWith("@g.us"),
             reply(conteudo) { return sendNYX.sendCommandReply(this, conteudo); },
             replyNYX(texto, modo = "user") { return replyNYX(this, texto, modo); },
-            react(emoji) { return sock.sendMessage(chat, { react: { text: emoji, key: m.key } }); },
+            react(emoji) {
+                this.customReactionSent = Boolean(emoji);
+                return sock.sendMessage(chat, { react: { text: emoji, key: m.key } });
+            },
             delete() { return sock.sendMessage(chat, { delete: { remoteJid: chat, fromMe: m.key.fromMe, id: m.key.id, participant: m.key.participant } }); }
         };
 

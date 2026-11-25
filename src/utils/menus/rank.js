@@ -1,16 +1,18 @@
+const { getBotEmoji } = require("../../utils/botEmoji");
+
 module.exports = function (prefixo = "7") {
     const nomeBot = require("../../utils/botNameStore").getBotName();
     
     return `╔═━✰『 ᴍᴇɴᴜ-ʀᴀɴᴋs 』═━✰
 ║╭━━━━──────━━━━╮
-║╎⊹ ࣪ ˖ 💸 ▸ ${prefixo}rank
-║╎⊹ ࣪ ˖ 💸 ▸ ${prefixo}rankgay
-║╎⊹ ࣪ ˖ 💸 ▸ ${prefixo}rankgado
-║╎⊹ ࣪ ˖ 💸 ▸ ${prefixo}rankfofo
-║╎⊹ ࣪ ˖ 💸 ▸ ${prefixo}rankengracado
-║╎⊹ ࣪ ˖ 💸 ▸ ${prefixo}ranksortudo
-║╎⊹ ࣪ ˖ 💸 ▸ ${prefixo}rankinteligente
-║╎⊹ ࣪ ˖ 💸 ▸ ${prefixo}rankparceiro
+║╎⊹ ࣪ ˖ ${getBotEmoji()} ▸ ${prefixo}rank
+║╎⊹ ࣪ ˖ ${getBotEmoji()} ▸ ${prefixo}rankgay
+║╎⊹ ࣪ ˖ ${getBotEmoji()} ▸ ${prefixo}rankgado
+║╎⊹ ࣪ ˖ ${getBotEmoji()} ▸ ${prefixo}rankfofo
+║╎⊹ ࣪ ˖ ${getBotEmoji()} ▸ ${prefixo}rankengracado
+║╎⊹ ࣪ ˖ ${getBotEmoji()} ▸ ${prefixo}ranksortudo
+║╎⊹ ࣪ ˖ ${getBotEmoji()} ▸ ${prefixo}rankinteligente
+║╎⊹ ࣪ ˖ ${getBotEmoji()} ▸ ${prefixo}rankparceiro
 ║╰━━━━──────━━━━╯
 ╠═ • ${nomeBot}
 ╚═━═━═━═━ ᴅᴇᴠ ᴇᴢ ━═━═━═━✰

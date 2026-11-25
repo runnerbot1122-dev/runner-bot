@@ -1,3 +1,4 @@
+const { getBotEmoji } = require("../../utils/botEmoji");
 const replyNYX = require("../../utils/replyNYX");
 const config = require("../../config/config");
 
@@ -22,7 +23,7 @@ module.exports = {
         if (donosExtras.length > 0) {
             texto += `║╎⊹ ࣪ ˖ 🛡️ ▸ *Subdonos:*\n`;
             donosExtras.forEach(d => {
-                texto += `║╎⊹ ࣪ ˖ 💸 ▸ @${d}\n`;
+                texto += `║╎⊹ ࣪ ˖ ${getBotEmoji()} ▸ @${d}\n`;
             });
         }
 

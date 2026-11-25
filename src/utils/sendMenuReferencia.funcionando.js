@@ -1,3 +1,4 @@
+const { getBotEmoji } = require("./botEmoji");
 const fs = require("fs");
 const path = require("path");
 
@@ -118,7 +119,7 @@ async function sendMenuReferencia(ctx, imagem, ignorarFundo = false) {
             ...media
         }),
         footer: proto.Message.InteractiveMessage.Footer.create({
-            text: `╭━━━✦『 𝙼𝙴𝙽𝚄𝚂 』━━━╮✦\n┃       ─────────────\n┃\n┃ 💸 ⌁ ✧ 𝙿𝚁𝙴𝙵𝙸𝚇𝙾 » 7\n┃ 💸 ⌁ ✧ 𝚂𝚃𝙰𝚃𝚄𝚂 » 𝙾𝙽𝙻𝙸𝙽𝙴\n┃ 💸 ⌁ ✧ 𝙽𝙾𝙼𝙴 » ${require('./botNameStore').getBotName()}\n┃\n╰━━━━『 𝙳𝙴𝚅 𝙴𝚉  』━━━━╯\n       SELECIONE UMA CATEGORIA`
+            text: `╭━━━✦『 𝙼𝙴𝙽𝚄𝚂 』━━━╮✦\n┃       ─────────────\n┃\n┃ ${getBotEmoji()} ⌁ ✧ 𝙿𝚁𝙴𝙵𝙸𝚇𝙾 » 7\n┃ ${getBotEmoji()} ⌁ ✧ 𝚂𝚃𝙰𝚃𝚄𝚂 » 𝙾𝙽𝙻𝙸𝙽𝙴\n┃ ${getBotEmoji()} ⌁ ✧ 𝙽𝙾𝙼𝙴 » ${require('./botNameStore').getBotName()}\n┃\n╰━━━━『 𝙳𝙴𝚅 𝙴𝚉  』━━━━╯\n       SELECIONE UMA CATEGORIA`
         }),
         nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
             buttons: [botaoMenu],
@@ -132,7 +133,7 @@ async function sendMenuReferencia(ctx, imagem, ignorarFundo = false) {
     });
 
     const interactiveMessage = proto.Message.InteractiveMessage.create({
-        body: proto.Message.InteractiveMessage.Body.create({ text: "💸" }),
+        body: proto.Message.InteractiveMessage.Body.create({ text: getBotEmoji() }),
         carouselMessage
     });
 

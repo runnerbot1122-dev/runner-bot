@@ -1,3 +1,4 @@
+const { getBotEmoji } = require("../../utils/botEmoji");
 const replyNYX = require("../../utils/replyNYX");
 const { getUser } = require("../../utils/users");
 
@@ -17,7 +18,7 @@ module.exports = {
         const saldoAtual = user.xp || 0;
 
         if (saldoAtual < aposta) {
-            return replyNYX(ctx, `💸 Você não tem XP suficiente!\n\nSeu XP atual: *${saldoAtual}*`, "bot");
+            return replyNYX(ctx, `${getBotEmoji()} Você não tem XP suficiente!\n\nSeu XP atual: *${saldoAtual}*`, "bot");
         }
 
         try { await ctx.react("🎰"); } catch (e) {}

@@ -1,3 +1,4 @@
+const { getBotEmoji } = require("../../utils/botEmoji");
 const { getBotName } = require("../../utils/botNameStore");
 const fonteNYX = require("../../utils/fonteNYX");
 const { requireAdmin } = require("../../utils/checkPermission");
@@ -32,16 +33,16 @@ module.exports = {
         const descricao = metadata.desc || "Sem descrição";
 
         const texto = `
-╔═━✰『 💸 ${fonteNYX("INFO GRUPO")} 』━═╗
+╔═━✰『 ${getBotEmoji()} ${fonteNYX("INFO GRUPO")} 』━═╗
 
 ╠═✰『 ɪᴅᴇɴᴛɪғɪᴄᴀᴄ̧ᴀ̃ᴏ 』
-║╎⊹ ࣪ ˖ 💸 ▸ ${fonteNYX("NOME")}: ${nomeGrupo}
-║╎⊹ ࣪ ˖ 💸 ▸ ${fonteNYX("MEMBROS")}: ${membros}
-║╎⊹ ࣪ ˖ 💸 ▸ ${fonteNYX("ADMINS")}: ${admins}
+║╎⊹ ࣪ ˖ ${getBotEmoji()} ▸ ${fonteNYX("NOME")}: ${nomeGrupo}
+║╎⊹ ࣪ ˖ ${getBotEmoji()} ▸ ${fonteNYX("MEMBROS")}: ${membros}
+║╎⊹ ࣪ ˖ ${getBotEmoji()} ▸ ${fonteNYX("ADMINS")}: ${admins}
 
 ╠═✰『 ᴅᴇᴛᴀʟʜᴇs 』
-║╎⊹ ࣪ ˖ 💸 ▸ ${fonteNYX("ID")}: ${ctx.chat}
-║╎⊹ ࣪ ˖ 💸 ▸ ${fonteNYX("CRIADOR")}: ${criador}
+║╎⊹ ࣪ ˖ ${getBotEmoji()} ▸ ${fonteNYX("ID")}: ${ctx.chat}
+║╎⊹ ࣪ ˖ ${getBotEmoji()} ▸ ${fonteNYX("CRIADOR")}: ${criador}
 
 ╠═✰『 ᴅᴇsᴄʀɪᴄ̧ᴀ̃ᴏ 』
 ${descricao}

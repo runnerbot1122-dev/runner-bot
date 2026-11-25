@@ -1,10 +1,12 @@
+const { getBotEmoji } = require("../../utils/botEmoji");
+
 module.exports = function (prefixo = "7") {
     const nomeBot = require("../../utils/botNameStore").getBotName();
     
     const secao = (titulo, comandos) => {
         let bloco = `╠═✰『 ${titulo} 』✰\n║╭━━━━──────━━━━╮\n`;
         comandos.forEach(cmd => {
-            bloco += `║╎⊹ ࣪ ˖ 💸 ▸ ${prefixo}${cmd}\n`;
+            bloco += `║╎⊹ ࣪ ˖ ${getBotEmoji()} ▸ ${prefixo}${cmd}\n`;
         });
         bloco += `║╰━━━━──────━━━━╯\n`;
         return bloco;

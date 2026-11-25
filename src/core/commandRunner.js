@@ -1,3 +1,4 @@
+const { getBotEmoji } = require("../utils/botEmoji");
 const comandos = require("./loader");
 const { permissionMessage } = require("../utils/checkPermission");
 const { registrarLog } = require("../utils/botLogger");
@@ -15,7 +16,7 @@ async function executarComando(ctx){
     const cmd = comandos.get(ctx.command);
 
     if(!cmd){
-        await reactNYX(ctx, "💸");
+        await reactNYX(ctx, getBotEmoji());
         
         // =========================================
         // SE MANDAR SÓ O PREFIXO (OU VAZIO)
