@@ -1,5 +1,8 @@
 console.log("Manager carregado!");
 
+const fs = require("fs");
+const path = require("path");
+
 const iniciarConexao = require("./connection");
 const config = require("../config/config");
 const { obterEstado } = require("./restartState");
@@ -129,11 +132,25 @@ function tratarFechamento(id, geracao, sock, loggedOut) {
 
     if (loggedOut) {
         cancelarTemporizador(estado);
-        estado.deslogado = true;
         estado.status = "loggedOut";
         estado.reconexaoAposTentativa = false;
         estado.reinicioAposTentativa = false;
         estado.reinicioManualAtivo = false;
+
+        // 🆕 LIMPEZA AUTOMÁTICA DA SESSÃO CORROMPIDA (Erro 401)
+        try {
+            const sessionPath = path.join(__dirname, "..", "sessions", id);
+            if (fs.existsSync(sessionPath)) {
+                fs.rmSync(sessionPath, { recursive: true, force: true });
+                console.log(`[SESSÃO] Pasta da sessão ${id} apagada após logout (401).`);
+            }
+        } catch (e) {
+            console.error(`Erro ao limpar a pasta da sessão ${id}:`, e.message);
+        }
+
+        // Resetamos deslogado para false. Assim, quando o usuário clicar em 
+        // "Gerar Código" no site de novo, o bot vai iniciar do zero.
+        estado.deslogado = false; 
         return;
     }
 

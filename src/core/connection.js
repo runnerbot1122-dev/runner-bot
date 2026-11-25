@@ -128,6 +128,10 @@ async function solicitarPareamento(id, sock, state, cicloVida, geracao){
             pareamentosSolicitados.delete(id);
             return;
         }
+        
+        // 🆕 ATRASO CRUCIAL: Espera 3 segundos para o socket conectar no WhatsApp antes de pedir o código
+        await new Promise(resolve => setTimeout(resolve, 3000)); 
+        
         codigo = await sock.requestPairingCode(numero);
     }
     catch(erro){
