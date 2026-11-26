@@ -99,10 +99,15 @@ ${secao("ᴘᴇsǫᴜɪsᴀs", [
     "ip"
 ])}
 ${secao("ғɪɢᴜʀɪɴʜᴀs", [
+    "fig",
     "fsticker",
     "sticker",
     "st",
     "stk",
+    "circulo",
+    "redonda",
+    "saudio",
+    "somfig",
     "figvideo",
     "figfundo",
     "figusemfundo",
@@ -132,6 +137,14 @@ ${secao("ғɪɢᴜʀɪɴʜᴀs", [
     "qc",
     "ttps"
 ])}
+║╎⊹ ࣪ ˖ 🔊 ▸ *FIGURINHAS COM SOM*
+║╎⊹ ࣪ ˖ Responda um áudio com *${prefixo}saudio* ou use em um vídeo com som.
+║╎⊹ ࣪ ˖ *${prefixo}saudio 15* = até 15 segundos.
+║╎⊹ ࣪ ˖ *${prefixo}s 1:05 10* = começa em 1:05 e dura 10 segundos.
+║╎⊹ ࣪ ˖ *${prefixo}s mudo* = vídeo sem áudio; *${prefixo}s circulo* = redonda.
+║╎⊹ ࣪ ˖ Responda a uma mídia com *${prefixo}sc* para refazer em círculo; sem mídia, *sc* continua sendo SoundCloud.
+║╎⊹ ࣪ ˖ *${prefixo}somfig* = envia o áudio de uma figurinha com som como nota de voz.
+
 ${secao("ᴊᴏɢᴏs / ʙʀɪɴᴄᴀᴅᴇɪʀᴀs", [
     "forca",
     "jogodavelha",
