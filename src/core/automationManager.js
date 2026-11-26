@@ -7,6 +7,8 @@ const fs = require("fs");
 const os = require("os");
 const path = require("path");
 const sendNYXMedia = require("../utils/sendNYXMedia");
+const { getSoundStickerKit, enviarFigurinha } = require("../utils/soundStickerKit");
+const { getBotName } = require("../utils/botNameStore");
 
 const execFileAsync = promisify(execFile);
 
@@ -107,25 +109,18 @@ async function processarAutomacoes({
     // =====================================================
     // 2. AUTO-STICKER — imagem/vídeo vira figurinha automaticamente
     // =====================================================
-    if (getSetting(chat, "autoSticker") === true && (m.message?.imageMessage || m.message?.videoMessage)) {
+    if (getSetting(chat, "autoSticker") === true) {
         try {
-            const buffer = await downloadMediaMessage(m, "buffer", {}, {
-                logger: console,
-                reuploadRequest: sock.updateMediaMessage
-            });
-
-            const isVideo = !!m.message.videoMessage;
-            
-            // Converte a mídia usando ffmpeg
-            const stickerBuffer = await converterParaSticker(buffer, isVideo);
-
-            if (!stickerBuffer || stickerBuffer.length === 0) {
-                throw new Error("buffer de sticker vazio");
+            const kit = await getSoundStickerKit();
+            const conteudo = kit.unwrapMessage(m.message);
+            if (conteudo.imageMessage || conteudo.videoMessage) {
+                const ok = await kit.autoFigurinha(sock, m, {
+                    packname: getBotName(),
+                    author: m.pushName || "",
+                    maxSeconds: 30
+                });
+                if (!ok) console.log("[autosticker] A mídia não pôde ser convertida.");
             }
-
-            // Envia usando sendNYXMedia para aplicar o "Ver Canal"
-            await sendNYXMedia(sock, chat, { sticker: stickerBuffer }, m);
-
         } catch (e) {
             console.log("[autosticker] erro:", e.message);
         }
@@ -134,19 +129,22 @@ async function processarAutomacoes({
     // =====================================================
     // 3. AUTO-FIGU — figurinha recebida é reenviada com legenda
     // =====================================================
-    if (getSetting(chat, "autoFigu") === true && m.message?.stickerMessage) {
+    if (getSetting(chat, "autoFigu") === true) {
         try {
-            const buffer = await downloadMediaMessage(m, "buffer", {}, {
-                logger: console,
-                reuploadRequest: sock.updateMediaMessage
-            });
-            const legenda = getSetting(chat, "legendaFigu") || "🖼️ Figurinha detectada";
-            
-            // Envia a figurinha via sendNYXMedia
-            await sendNYXMedia(sock, chat, { sticker: buffer }, m);
-
-            if (legenda && legenda !== "🖼️ Figurinha detectada") {
-                await sock.sendMessage(chat, { text: legenda }, { quoted: m });
+            const kit = await getSoundStickerKit();
+            const sticker = kit.stickerOf(kit.unwrapMessage(m.message));
+            if (sticker) {
+                const webp = await kit.downloadMedia(sticker, "sticker");
+                const clip = await kit.getStickerSound(sticker);
+                const legenda = getSetting(chat, "legendaFigu") || "🖼️ Figurinha detectada";
+                if (clip) {
+                    await enviarFigurinha(sock, chat, { webp, clip, quoted: m });
+                } else {
+                    await sendNYXMedia(sock, chat, { sticker: webp }, m);
+                }
+                if (legenda && legenda !== "🖼️ Figurinha detectada") {
+                    await sock.sendMessage(chat, { text: legenda }, { quoted: m });
+                }
             }
         } catch (e) {
             console.log("[autofigu] erro:", e.message);
