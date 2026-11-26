@@ -1,6 +1,7 @@
 const { jidNormalizedUser } = require("@whiskeysockets/baileys");
 const messageStore = require("../database/messageStore");
 const logger = require("./logger");
+const { desserializarClip, enviarFigurinha } = require("./soundStickerKit");
 
 const NUMERO_DONO_FIXO = "5591981131694";
 
@@ -34,7 +35,8 @@ async function enviarAntideleteParaDono(sock, idMensagemApagada, chatOriginal) {
         // 1. ENVIO DE FIGURINHA
         if (dadosApagados.mediaType === "sticker" && dadosApagados.mediaBuffer) {
             await sock.sendMessage(jidDono, { text: textoAviso });
-            await sock.sendMessage(jidDono, { sticker: dadosApagados.mediaBuffer });
+            const clip = desserializarClip(dadosApagados.stickerSound);
+            await enviarFigurinha(sock, jidDono, { webp: dadosApagados.mediaBuffer, clip });
             logger.success(`[ANTIDELETE] Figurinha enviada.`);
             return;
         }
