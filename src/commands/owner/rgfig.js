@@ -7,6 +7,7 @@ const {
     downloadSticker,
     readStickerInfo
 } = require("../../utils/stickerTools");
+const { getSoundStickerKit } = require("../../utils/soundStickerKit");
 
 function safeName(value) {
     return String(value || "")
@@ -24,13 +25,15 @@ module.exports = {
     execute: async ctx => {
         ownerOnly(ctx);
 
-        const sticker = findSticker(ctx.message);
+        const sticker = await findSticker(ctx.message);
         if (!sticker) {
             return replyNYX(ctx, "📥 Responda a uma figurinha para salvá-la.", "bot");
         }
 
         try {
             const buffer = await downloadSticker(ctx, sticker);
+            const kit = await getSoundStickerKit();
+            const clip = await kit.getStickerSound(sticker);
             const info = await readStickerInfo(buffer);
             const nome = safeName(ctx.args.join(" ")) || `fig-${info.id}`;
             const pasta = path.join(process.cwd(), "assets", "stickers");
@@ -39,7 +42,18 @@ module.exports = {
             fs.mkdirSync(pasta, { recursive: true });
             fs.writeFileSync(arquivo, buffer);
 
-            return replyNYX(ctx, `✅ Figurinha salva como *${nome}.webp*.`, "bot");
+            const sidecar = `${arquivo}.sound.json`;
+            if (clip?.ogg?.length) {
+                fs.writeFileSync(sidecar, JSON.stringify({
+                    ogg: clip.ogg.toString("base64"),
+                    seconds: clip.seconds,
+                    waveform: Buffer.from(clip.waveform || []).toString("base64")
+                }, null, 2));
+            } else if (fs.existsSync(sidecar)) {
+                fs.unlinkSync(sidecar);
+            }
+
+            return replyNYX(ctx, `✅ Figurinha salva como *${nome}.webp*${clip ? " com o áudio original." : "."}`, "bot");
         } catch (error) {
             console.error("[RGFIG] Erro:", error.message);
             return replyNYX(ctx, "❌ Não consegui salvar essa figurinha.", "bot");
