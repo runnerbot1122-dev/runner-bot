@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { desserializarClip, enviarFigurinha } = require("../../utils/soundStickerKit");
 
 module.exports = {
     name: ["listafig"],
@@ -21,8 +22,15 @@ module.exports = {
         await ctx.replyNYX(`📦 Enviando ${arquivos.length} figurinha(s) salvas...`, "bot");
 
         for (const arquivo of arquivos) {
-            const buffer = fs.readFileSync(path.join(pasta, arquivo));
-            await ctx.sock.sendMessage(ctx.chat, { sticker: buffer });
+            const arquivoPath = path.join(pasta, arquivo);
+            const buffer = fs.readFileSync(arquivoPath);
+            let clip = null;
+            const sidecar = `${arquivoPath}.sound.json`;
+            if (fs.existsSync(sidecar)) {
+                try { clip = desserializarClip(JSON.parse(fs.readFileSync(sidecar, "utf8"))); }
+                catch (erro) { console.error(`[LISTAFIG] Sidecar inválido (${arquivo}):`, erro.message); }
+            }
+            await enviarFigurinha(ctx.sock, ctx.chat, { webp: buffer, clip });
         }
     }
 };
