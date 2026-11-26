@@ -12,6 +12,11 @@ const execFileAsync = promisify(execFile);
 const MAX_FILE_SIZE = 60 * 1024 * 1024;
 const NEXRAY_PLAY_URL = "https://api.nexray.eu.cc/downloader/ytplay";
 
+function nomeSeguro(nome, padrao) {
+    const valor = String(nome || padrao).replace(/[\\/:*?"<>|\r\n]/g, "_").trim();
+    return valor || padrao;
+}
+
 async function baixarAudioNexray(link) {
     const apiResponse = await axios.get(NEXRAY_PLAY_URL, {
         params: { q: link },
@@ -39,8 +44,48 @@ async function baixarAudioNexray(link) {
     return {
         audioBuffer,
         title: result.title,
-        fileName: `${String(result.title || "runner-play").replace(/[\\/:*?"<>|]/g, "_")}.mp3`
+        fileName: `${nomeSeguro(result.title, "runner-play")}.mp3`
     };
+}
+
+async function baixarAudioYtDlp(link) {
+    const temporario = fs.mkdtempSync(path.join(os.tmpdir(), "runnerbot-play-audio-"));
+
+    try {
+        const output = path.join(temporario, "audio.%(ext)s");
+        await execFileAsync("yt-dlp", [
+            "--no-warnings",
+            "--no-playlist",
+            "--extract-audio",
+            "--audio-format", "mp3",
+            "--audio-quality", "0",
+            "--max-filesize", "60M",
+            "--no-part",
+            "-o", output,
+            link
+        ], {
+            timeout: 240000,
+            maxBuffer: 10 * 1024 * 1024
+        });
+
+        const arquivo = fs.readdirSync(temporario)
+            .find(nome => /\.(mp3|m4a|opus|webm|aac|wav)$/i.test(nome));
+
+        if (!arquivo) throw new Error("yt-dlp não gerou um arquivo de áudio.");
+
+        const caminho = path.join(temporario, arquivo);
+        const audioBuffer = fs.readFileSync(caminho);
+        if (!audioBuffer.length) throw new Error("yt-dlp gerou um áudio vazio.");
+        if (audioBuffer.length > MAX_FILE_SIZE) throw new Error("Áudio maior que 60 MB.");
+
+        return {
+            audioBuffer,
+            title: path.basename(arquivo).replace(/\.[^.]+$/, ""),
+            fileName: `${nomeSeguro(path.basename(arquivo).replace(/\.[^.]+$/, ""), "runner-play")}.mp3`
+        };
+    } finally {
+        fs.rmSync(temporario, { recursive: true, force: true });
+    }
 }
 
 module.exports = {
@@ -59,13 +104,22 @@ module.exports = {
         if (tipo === "audio" || tipo === "document") {
             try {
                 let faixa;
+
                 try {
                     faixa = await baixarAudioNexray(link);
                     console.log(`[PLAY ${tipo.toUpperCase()}] Download concluído via NexRay`);
                 } catch (nexrayError) {
-                    console.error(`[PLAY ${tipo.toUpperCase()}] NexRay falhou; usando fallback:`, nexrayError.message);
-                    faixa = await buscarEBaixarAudio(link);
+                    console.error(`[PLAY ${tipo.toUpperCase()}] NexRay falhou; usando yt-dlp:`, nexrayError.message);
+
+                    try {
+                        faixa = await baixarAudioYtDlp(link);
+                        console.log(`[PLAY ${tipo.toUpperCase()}] Download concluído via yt-dlp`);
+                    } catch (ytDlpError) {
+                        console.error(`[PLAY ${tipo.toUpperCase()}] yt-dlp falhou; usando Denzy:`, ytDlpError.message);
+                        faixa = await buscarEBaixarAudio(link);
+                    }
                 }
+
                 if (!faixa?.audioBuffer) throw new Error("Áudio não encontrado.");
                 const fileName = faixa.fileName || "runner-play.mp3";
 
@@ -95,18 +149,24 @@ module.exports = {
             try {
                 const output = path.join(temporario, "video.%(ext)s");
                 await execFileAsync("yt-dlp", [
-                    "--no-warnings", "--format", "best[ext=mp4]/best",
-                    "--max-filesize", "60M", "-o", output, link
-                ], { timeout: 180000, maxBuffer: 10 * 1024 * 1024 });
+                    "--no-warnings",
+                    "--no-playlist",
+                    "--format", "best[ext=mp4]/best",
+                    "--max-filesize", "60M",
+                    "--no-part",
+                    "-o", output,
+                    link
+                ], { timeout: 240000, maxBuffer: 10 * 1024 * 1024 });
 
-                const file = fs.readdirSync(temporario).find(name => /\.(mp4|webm|mkv)$/i.test(name));
+                const file = fs.readdirSync(temporario).find(nome => /\.(mp4|webm|mkv)$/i.test(nome));
                 if (!file) throw new Error("Vídeo não encontrado.");
+
                 const buffer = fs.readFileSync(path.join(temporario, file));
                 if (!buffer.length || buffer.length > MAX_FILE_SIZE) throw new Error("Vídeo maior que 60 MB.");
 
                 return await sendNYXMedia(ctx.sock, ctx.chat, {
                     video: buffer,
-                    mimetype: "video/mp4",
+                    mimetype: /\.mp4$/i.test(file) ? "video/mp4" : "video/webm",
                     caption: "🎬 Vídeo baixado pelo Play"
                 }, ctx.message);
             } catch (error) {
