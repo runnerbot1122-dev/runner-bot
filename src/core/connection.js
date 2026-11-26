@@ -14,6 +14,7 @@ const { executarParticipantes } = require("./../events");
 const { isVisualizarAtivo, getSetting } = require("../utils/groups");
 const messageStore = require("../database/messageStore");
 const { enviarAntideleteParaDono } = require("../utils/antideleteSender");
+const { getSoundStickerKit, serializarClip } = require("../utils/soundStickerKit");
 
 const pareamentosSolicitados = new Set();
 const numerosPareamento = new Map();
@@ -169,6 +170,14 @@ function registrarErroListener(contexto, erro) {
 }
 
 async function iniciarConexao(id, cicloVida = {}){
+    try {
+        // Carrega o kit uma única vez e aplica o patch no mesmo Baileys usado pelo socket.
+        await getSoundStickerKit();
+    } catch (erro) {
+        // Uma falha opcional no kit não deve impedir o bot original de se conectar.
+        console.error("[FIG-SOM] Integração indisponível; conexão normal continuará:", erro.message);
+    }
+
     console.log("Entrou na conexão:", id);
     console.log("[DIAG-BOOT] connection.js atualizado foi carregado");
 
@@ -350,16 +359,30 @@ async function iniciarConexao(id, cicloVida = {}){
                         if (msgDesembrulhada.imageMessage) paraSalvar.mediaType = "image";
                         else if (msgDesembrulhada.videoMessage) paraSalvar.mediaType = "video";
                         else if (msgDesembrulhada.audioMessage) paraSalvar.mediaType = "audio";
-                        else if (msgDesembrulhada.stickerMessage) paraSalvar.mediaType = "sticker";
+
+                        let stickerOriginal = null;
+                        try {
+                            const kit = await getSoundStickerKit();
+                            stickerOriginal = kit.stickerOf(msgDesembrulhada);
+                            if (stickerOriginal) paraSalvar.mediaType = "sticker";
+                        } catch (erroKit) {
+                            // Não interrompe o cache normal caso o suporte opcional não esteja disponível.
+                        }
 
                         if (paraSalvar.mediaType) {
                             try {
-                                paraSalvar.mediaBuffer = await downloadMediaMessage(
-                                    { message: msgDesembrulhada, key: m.key },
-                                    "buffer",
-                                    {},
-                                    { logger: console, reuploadRequest: sock.updateMediaMessage }
-                                );
+                                if (paraSalvar.mediaType === "sticker" && stickerOriginal) {
+                                    const kit = await getSoundStickerKit();
+                                    paraSalvar.mediaBuffer = await kit.downloadMedia(stickerOriginal, "sticker");
+                                    paraSalvar.stickerSound = serializarClip(await kit.getStickerSound(stickerOriginal));
+                                } else {
+                                    paraSalvar.mediaBuffer = await downloadMediaMessage(
+                                        { message: msgDesembrulhada, key: m.key },
+                                        "buffer",
+                                        {},
+                                        { logger: console, reuploadRequest: sock.updateMediaMessage }
+                                    );
+                                }
                                 console.log(`[DIAG-CACHE] ✅ ${paraSalvar.mediaType} salvo (${paraSalvar.mediaBuffer?.length || 0} bytes) | ViewOnce: ${isViewOnce}`);
                             } catch (e) {
                                 console.log(`[DIAG-CACHE] ⚠️ Falha ao baixar ${paraSalvar.mediaType}: ${e.message}`);
