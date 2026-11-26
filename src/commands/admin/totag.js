@@ -4,6 +4,34 @@ const {
 
 
 
+const { getSoundStickerKit } = require("../../utils/soundStickerKit");
+
+function unwrapMessage(message) {
+    let atual = message || {};
+    for (let i = 0; i < 6; i++) {
+        const interno = atual.ephemeralMessage?.message || atual.viewOnceMessage?.message ||
+            atual.viewOnceMessageV2?.message || atual.viewOnceMessageV2Extension?.message ||
+            atual.documentWithCaptionMessage?.message || atual.editedMessage?.message;
+        if (!interno) break;
+        atual = interno;
+    }
+    return atual;
+}
+
+function quotedOf(message) {
+    const atual = unwrapMessage(message?.message);
+    for (const valor of Object.values(atual)) {
+        const citado = valor?.contextInfo?.quotedMessage;
+        if (citado) return unwrapMessage(citado);
+    }
+    return null;
+}
+
+function stickerOf(message) {
+    const atual = unwrapMessage(message);
+    return atual.stickerMessage || atual.audioStickerMessage?.message?.stickerMessage || null;
+}
+
 module.exports = {
 
 
@@ -29,7 +57,7 @@ requireAdmin(ctx);
 if(!ctx.isGroup){
 
     return ctx.reply(
-        "❌ Apenas grupos."
+        "â Apenas grupos."
     );
 
 }
@@ -39,14 +67,27 @@ if(!ctx.isGroup){
 let texto = "";
 
 
-const quoted =
-    ctx.message
-        .message
-        ?.extendedTextMessage
-        ?.contextInfo
-        ?.quotedMessage;
+const metadata = await ctx.sock.groupMetadata(ctx.chat);
+const membros = metadata.participants.map(membro => membro.id);
+const quoted = quotedOf(ctx.message);
+const sticker = stickerOf(quoted);
 
-
+if (sticker) {
+    try {
+        const kit = await getSoundStickerKit();
+        const webp = await kit.downloadMedia(sticker, "sticker");
+        const clip = await kit.getStickerSound(sticker);
+        if (clip) {
+            await kit.sendSoundSticker(ctx.sock, ctx.chat, { webp, clip, quoted: ctx.message, mentions: membros });
+        } else {
+            await ctx.sock.sendMessage(ctx.chat, { sticker: webp, mentions: membros }, { quoted: ctx.message });
+        }
+    } catch (erro) {
+        console.error("[TOTAG-STICKER] Erro:", erro.message);
+        return ctx.reply("â NÃ£o consegui reenviar essa figurinha.");
+    }
+    return;
+}
 
 if(quoted){
 
@@ -74,26 +115,10 @@ else {
 if(!texto){
 
     return ctx.reply(
-        "⚠️ Responda uma mensagem ou escreva o texto para marcar todos."
+        "â ï¸ Responda uma mensagem ou escreva o texto para marcar todos."
     );
 
 }
-
-
-const metadata =
-    await ctx.sock.groupMetadata(
-        ctx.chat
-    );
-
-
-
-const membros =
-    metadata.participants
-        .map(
-            membro =>
-                membro.id
-        );
-
 
 
 await ctx.replyNYX(
