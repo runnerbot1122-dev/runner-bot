@@ -11,7 +11,7 @@ module.exports = {
     description: "Identifica uma figurinha pelo hash",
 
     execute: async ctx => {
-        const sticker = findSticker(ctx.message);
+        const sticker = await findSticker(ctx.message);
         if (!sticker) {
             return replyNYX(ctx, "🆔 Responda a uma figurinha com este comando.", "bot");
         }
