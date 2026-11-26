@@ -1,62 +1,32 @@
-const { downloadMediaMessage } = require("@whiskeysockets/baileys");
 const replyNYX = require("../../utils/replyNYX");
-const { Image } = require("node-webpmux");
+const { findSticker, downloadSticker, readStickerInfo } = require("../../utils/stickerTools");
+const { getSoundStickerKit } = require("../../utils/soundStickerKit");
 
 module.exports = {
     name: ["stickerinfo", "figinfo"],
     description: "Mostra o nome e autor de uma figurinha",
     execute: async (ctx) => {
-        let stickerMessage = ctx.message.message?.stickerMessage;
-        if (!stickerMessage) {
-            const quoted = ctx.message.message?.extendedTextMessage?.contextInfo?.quotedMessage;
-            stickerMessage = quoted?.stickerMessage;
-        }
-
-        if (!stickerMessage) {
-            return replyNYX(ctx, "🏷️ Responda a uma figurinha com este comando.", "bot");
-        }
-
-        try { await ctx.react("🏷️"); } catch (e) {}
-
         try {
-            const mensagemParaBaixar = { key: ctx.message.key, message: { stickerMessage } };
-            const buffer = await downloadMediaMessage(mensagemParaBaixar, "buffer", {}, { logger: console });
-            
-            const img = new Image();
-            await img.load(buffer);
-            
-            let packname = "Desconhecido";
-            let author = "Desconhecido";
+            const sticker = await findSticker(ctx.message);
+            if (!sticker) return replyNYX(ctx, "🏷️ Responda a uma figurinha com este comando.", "bot");
+            try { await ctx.react("🏷️"); } catch (e) {}
 
-            if (img.exif) {
-                try {
-                    const exifStr = img.exif.toString("utf8");
-                    // Procura o JSON do EXIF de forma mais segura
-                    const match = exifStr.match(/\{.*"sticker-pack-name".*\}/);
-                    
-                    if (match) {
-                        const exifJson = JSON.parse(match[0]);
-                        packname = exifJson["sticker-pack-name"] || packname;
-                        author = exifJson["sticker-pack-publisher"] || author;
-                    }
-                } catch (e) {
-                    console.error("[STICKERINFO] Erro ao ler EXIF:", e.message);
-                }
-            }
+            const buffer = await downloadSticker(ctx, sticker);
+            const info = await readStickerInfo(buffer);
+            const kit = await getSoundStickerKit();
+            const clip = await kit.getStickerSound(sticker);
+            const texto =
+`╔═━✰『 ɪɴғᴏ ᴅᴀ ғɪɢᴜʀɪɴʜᴀ 』═━✰
 
-            const texto = 
-`╔═━✰『 ɪɴғᴏ ғɪɢᴜʀɪɴʜᴀ 』═━✰
-
-║╎⊹ ࣪ ˖ 📦 ▸ ᴘᴀᴄᴏᴛᴇ: *${packname}*
-║╎⊹ ࣪ ˖ ✍️ ▸ ᴀᴜᴛᴏʀ: *${author}*
+║╎⊹ ࣪ ˖ 📦 ▸ ᴘᴀᴄᴏᴛᴇ: *${info.packname}*
+║╎⊹ ࣪ ˖ ✍️ ▸ ᴀᴜᴛᴏʀ: *${info.author}*
+║╎⊹ ࣪ ˖ 🔊 ▸ sᴏᴍ: *${clip ? `${clip.seconds}s` : "Não"}*
 
 ╚═━═━═━═━ ᴅᴇᴠ ᴇᴢ ━═━═━═━✰`;
-
-            await replyNYX(ctx, texto, "bot");
-
+            return replyNYX(ctx, texto, "bot");
         } catch (error) {
             console.error("[STICKERINFO] Erro:", error.message);
-            await replyNYX(ctx, "❌ Não consegui ler as informações dessa figurinha.", "bot");
+            return replyNYX(ctx, "❌ Não consegui ler as informações dessa figurinha.", "bot");
         }
     }
 };
