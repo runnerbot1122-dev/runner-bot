@@ -48,7 +48,7 @@ async function executarFigurinhaComSom(ctx) {
         maxSeconds: 30
     });
     if (!resultado.ok) {
-        return ctx.replyNYX(`â ${resultado.erro || "NÃ£o consegui criar a figurinha."}`, "bot");
+        return ctx.replyNYX(`❌ ${resultado.erro || "Não consegui criar a figurinha."}`, "bot");
     }
     return resultado;
 }
@@ -70,13 +70,13 @@ module.exports = {
             }
         } catch (erro) {
             console.error("[S-FIG] Erro:", erro.message);
-            return ctx.replyNYX("â NÃ£o consegui iniciar a criaÃ§Ã£o da figurinha.", "bot");
+            return ctx.replyNYX("❌ Não consegui iniciar a criação da figurinha.", "bot");
         }
 
         requireAdmin(ctx);
 
         if(!ctx.isGroup){
-            return ctx.reply("â Apenas grupos.");
+            return ctx.reply("❌ Apenas grupos.");
         }
 
         const quantidade =
@@ -90,7 +90,7 @@ module.exports = {
             quantidade > 10
         ){
             return ctx.reply(
-                "â Quantidade invÃ¡lida. Use de 1 a 10 marcaÃ§Ãµes."
+                "❌ Quantidade inválida. Use de 1 a 10 marcações."
             );
         }
 
@@ -102,7 +102,7 @@ module.exports = {
 
         if(typeof estadoOriginal !== "boolean"){
             return ctx.reply(
-                "â NÃ£o foi possÃ­vel confirmar o estado original do grupo. A operaÃ§Ã£o nÃ£o foi iniciada."
+                "❌ Não foi possível confirmar o estado original do grupo. A operação não foi iniciada."
             );
         }
 
@@ -118,7 +118,7 @@ module.exports = {
 
             await ctx.sock.groupUpdateSubject(
                 ctx.chat,
-                "á´á´á´ á´á´xá´É´á´á´ sá´Êá´"
+                "ᴀᴅᴍ ᴘᴜxᴀɴᴅᴏ sᴀʟᴀ"
             );
 
             await ctx.sock.groupSettingUpdate(
@@ -127,7 +127,7 @@ module.exports = {
             );
 
             await ctx.replyNYX(
-                "É¢Êá´á´á´ *Òá´á´Êá´á´á´* á´á´Êá´ á´á´xá´Ê sá´Êá´ ð«",
+                "ɢʀᴜᴘᴏ *ғᴇᴄʜᴀᴅᴏ* ᴘᴀʀᴀ ᴘᴜxᴀʀ sᴀʟᴀ 🚫",
                 "bot"
             );
 
@@ -138,9 +138,9 @@ module.exports = {
             ){
 
                 const texto =
-`â¸ºÍÍá´á´Êá´á´É´á´á´ á´á´á´á´ á´ É¢Êá´á´á´
+`⸺͟͞ᴍᴀʀᴄᴀɴᴅᴏ ᴛᴏᴅᴏ ᴏ ɢʀᴜᴘᴏ
 
-> *Êá´á´Êá´* ÊÉªsá´á´ á´Éª á´É´á´ á´á´á´á´á´á´á´
+> *ʀᴏᴜʙᴀ* ʟɪsᴛᴀ ᴀɪ ᴘɴᴄ ᴋᴋᴋᴋᴋᴋᴋ
 > 777x
 
 *${contador}/${quantidade}*`;
@@ -169,11 +169,11 @@ module.exports = {
 
             await ctx.reply({
                 poll: {
-                    name: "â¸ºÍÍsá´Êá´",
+                    name: "⸺͟͞sᴀʟᴀ",
 
                     values: [
-                        "â ð¢ð¡ððð¡ð",
-                        "â ð¢ððððð¡ð"
+                        "✔ 𝗢𝗡𝗟𝗜𝗡𝗘",
+                        "✖ 𝗢𝗙𝗙𝗟𝗜𝗡𝗘"
                     ],
 
                     selectableCount: 1

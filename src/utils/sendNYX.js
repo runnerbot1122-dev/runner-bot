@@ -224,9 +224,9 @@ function obterContextoNewsletter(){
 
 
 
-// ConvenÃ§Ã£o para novos comandos: use ctx.reply para respostas padrÃ£o.
-// A atribuiÃ§Ã£o do canal Ã© anexada somente apÃ³s o roteamento do comando e
-// quando hÃ¡ um registro vÃ¡lido; respostas anteriores ao roteamento continuam simples.
+// Convenção para novos comandos: use ctx.reply para respostas padrão.
+// A atribuição do canal é anexada somente após o roteamento do comando e
+// quando há um registro válido; respostas anteriores ao roteamento continuam simples.
 async function sendCommandReply(ctx, conteudo){
 
     const mensagemOriginal =
@@ -264,8 +264,8 @@ async function sendCommandReply(ctx, conteudo){
 
     // Para respostas de texto, use o mesmo caminho do sendNYX/replyNYX:
     // o contexto da newsletter precisa ficar dentro da mensagem de texto
-    // (extendedTextMessage.contextInfo), nÃ£o no nÃ­vel externo do payload.
-    // MÃ­dias, botÃµes e outros payloads continuam pelo caminho original.
+    // (extendedTextMessage.contextInfo), não no nível externo do payload.
+    // Mídias, botões e outros payloads continuam pelo caminho original.
     const somenteTexto =
         mensagem &&
         typeof mensagem === "object" &&

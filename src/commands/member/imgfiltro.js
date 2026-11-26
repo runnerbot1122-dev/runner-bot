@@ -42,17 +42,17 @@ module.exports = {
 
         // Verifica se respondeu a uma imagem ou figurinha (com ou sem som)
         if (!quoted || (!quoted.imageMessage && !sticker)) {
-            return replyNYX(ctx, `ð¼ï¸ *FILTROS DE IMAGEM*\n\nResponda a uma *foto* ou *figurinha* com:\n*${ctx.prefix}imgfiltro <nome>*\n\nFiltros: cartoon, blur, pixelate, glow, pb, inverter, espelho`, "bot");
+            return replyNYX(ctx, `🖼️ *FILTROS DE IMAGEM*\n\nResponda a uma *foto* ou *figurinha* com:\n*${ctx.prefix}imgfiltro <nome>*\n\nFiltros: cartoon, blur, pixelate, glow, pb, inverter, espelho`, "bot");
         }
 
         const tipo = ctx.args[0]?.toLowerCase();
         const filtrosDisponiveis = ["cartoon", "blur", "pixelate", "glow", "pb", "inverter", "espelho"];
         
         if (!tipo || !filtrosDisponiveis.includes(tipo)) {
-            return replyNYX(ctx, `â Filtro invÃ¡lido ou nÃ£o informado.\n\nEscolha um: ${filtrosDisponiveis.join(", ")}`, "bot");
+            return replyNYX(ctx, `❌ Filtro inválido ou não informado.\n\nEscolha um: ${filtrosDisponiveis.join(", ")}`, "bot");
         }
 
-        try { await ctx.react("ð¨"); } catch (e) {}
+        try { await ctx.react("🎨"); } catch (e) {}
 
         const temp = fs.mkdtempSync(path.join(os.tmpdir(), "filtro-"));
         const inputFile = path.join(temp, "input.img");
@@ -102,7 +102,7 @@ module.exports = {
                     image = image.resize(smallW, smallH, { kernel: 'nearest' }).resize(width, height, { kernel: 'nearest' });
                     break;
                 case "cartoon":
-                    // Efeito de desenho: remove ruÃ­do, aumenta contraste e nitidez
+                    // Efeito de desenho: remove ruído, aumenta contraste e nitidez
                     image = image.median(5).normalize().sharpen();
                     break;
                 case "pb":
@@ -115,7 +115,7 @@ module.exports = {
                     image = image.flop();
                     break;
                 case "glow":
-                    // Efeito Glow: Cria uma versÃ£o desfocada e mistura com a original usando 'screen'
+                    // Efeito Glow: Cria uma versão desfocada e mistura com a original usando 'screen'
                     const blurredBuffer = await image.clone().blur(20).toBuffer();
                     image = image.composite([{ input: blurredBuffer, blend: 'screen' }]);
                     break;
@@ -127,14 +127,14 @@ module.exports = {
             // Envia a imagem processada
             await sendNYXMedia(ctx.sock, ctx.chat, { 
                 image: fs.readFileSync(outputFile),
-                caption: `â¨ Filtro aplicado: *${tipo}*`
+                caption: `✨ Filtro aplicado: *${tipo}*`
             }, ctx.message);
 
-            if (clip) await replyNYX(ctx, "â¹ï¸ A imagem com filtro nÃ£o preserva o Ã¡udio da figurinha.", "bot");
+            if (clip) await replyNYX(ctx, "ℹ️ A imagem com filtro não preserva o áudio da figurinha.", "bot");
 
         } catch (error) {
             console.error("[IMGFILTRO] Erro:", error.message);
-            await replyNYX(ctx, "â Erro ao processar a imagem. Verifique se a mÃ­dia Ã© vÃ¡lida.", "bot");
+            await replyNYX(ctx, "❌ Erro ao processar a imagem. Verifique se a mídia é válida.", "bot");
         } finally {
             fs.rmSync(temp, { recursive: true, force: true });
         }

@@ -57,7 +57,7 @@ requireAdmin(ctx);
 if(!ctx.isGroup){
 
     return ctx.reply(
-        "â Apenas grupos."
+        "❌ Apenas grupos."
     );
 
 }
@@ -84,7 +84,7 @@ if (sticker) {
         }
     } catch (erro) {
         console.error("[TOTAG-STICKER] Erro:", erro.message);
-        return ctx.reply("â NÃ£o consegui reenviar essa figurinha.");
+        return ctx.reply("❌ Não consegui reenviar essa figurinha.");
     }
     return;
 }
@@ -115,7 +115,7 @@ else {
 if(!texto){
 
     return ctx.reply(
-        "â ï¸ Responda uma mensagem ou escreva o texto para marcar todos."
+        "⚠️ Responda uma mensagem ou escreva o texto para marcar todos."
     );
 
 }

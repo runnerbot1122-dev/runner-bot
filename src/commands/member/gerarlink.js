@@ -80,7 +80,7 @@ function fileNameFor(type, content) {
 
 module.exports = {
     name: ["gerarlink"],
-    description: "Gera um link pÃºblico para uma mÃ­dia respondida",
+    description: "Gera um link público para uma mídia respondida",
 
     execute: async ctx => {
         const media = await getMediaFromContext(ctx.message);
@@ -88,13 +88,13 @@ module.exports = {
         if (!media) {
             return replyNYX(
                 ctx,
-                `ð Responda a uma imagem, vÃ­deo, Ã¡udio ou documento com ${ctx.prefix}gerarlink.`,
+                `🔗 Responda a uma imagem, vídeo, áudio ou documento com ${ctx.prefix}gerarlink.`,
                 "bot"
             );
         }
 
         try {
-            await ctx.react("ð");
+            await ctx.react("🔗");
         } catch (error) {}
 
         try {
@@ -116,11 +116,11 @@ module.exports = {
                 );
 
             if (!buffer || buffer.length === 0) {
-                throw new Error("MÃ­dia vazia.");
+                throw new Error("Mídia vazia.");
             }
 
             if (buffer.length > MAX_UPLOAD_SIZE) {
-                return replyNYX(ctx, "â A mÃ­dia deve ter no mÃ¡ximo 50 MB.", "bot");
+                return replyNYX(ctx, "❌ A mídia deve ter no máximo 50 MB.", "bot");
             }
 
             const form = new FormData();
@@ -130,7 +130,7 @@ module.exports = {
                 contentType: media.content?.mimetype || "application/octet-stream"
             });
 
-            await ctx.reply("ð Gerando o link, aguarde...");
+            await ctx.reply("🔗 Gerando o link, aguarde...");
 
             const response = await axios.post("https://catbox.moe/user/api.php", form, {
                 headers: form.getHeaders(),
@@ -141,10 +141,10 @@ module.exports = {
 
             const url = String(response.data || "").trim();
             if (!/^https?:\/\/[^\s]+$/i.test(url)) {
-                throw new Error("O serviÃ§o nÃ£o retornou uma URL vÃ¡lida.");
+                throw new Error("O serviço não retornou uma URL válida.");
             }
 
-            let retorno = `â Link gerado com sucesso!\n\nð ${url}`;
+            let retorno = `✅ Link gerado com sucesso!\n\n🔗 ${url}`;
             if (media.clip?.ogg?.length) {
                 const formSom = new FormData();
                 formSom.append("reqtype", "fileupload");
@@ -160,7 +160,7 @@ module.exports = {
                 });
                 const urlSom = String(respostaSom.data || "").trim();
                 if (/^https?:\/\/[^\s]+$/i.test(urlSom)) {
-                    retorno += `\n\nð Link do Ã¡udio: ${urlSom}\nâ¹ï¸ O link WebP, sozinho, nÃ£o reproduz o som integrado.`;
+                    retorno += `\n\n🔊 Link do áudio: ${urlSom}\nℹ️ O link WebP, sozinho, não reproduz o som integrado.`;
                 }
             }
             return replyNYX(ctx, retorno, "bot");
@@ -168,7 +168,7 @@ module.exports = {
             console.error("[GERARLINK] Erro:", error.message);
             return replyNYX(
                 ctx,
-                "â NÃ£o consegui gerar o link. Tente novamente com uma mÃ­dia menor.",
+                "❌ Não consegui gerar o link. Tente novamente com uma mídia menor.",
                 "bot"
             );
         }

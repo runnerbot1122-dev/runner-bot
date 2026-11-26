@@ -32,9 +32,9 @@ function normalizeCommand(value) {
   return name;
 }
 
-// LÃª dados persistidos de versÃµes anteriores sem deixar um Ãºnico registro legado
-// invÃ¡lido derrubar todas as operaÃ§Ãµes de bloqueio. O valor invÃ¡lido Ã© preservado
-// para nÃ£o apagar silenciosamente dados que podem ser Ãºteis na migraÃ§Ã£o.
+// Lê dados persistidos de versões anteriores sem deixar um único registro legado
+// inválido derrubar todas as operações de bloqueio. O valor inválido é preservado
+// para não apagar silenciosamente dados que podem ser úteis na migração.
 function normalizeStoredList(values, normalizer) {
   if (!Array.isArray(values)) return [];
   const output = [];
@@ -69,7 +69,7 @@ function readState() {
     for (const [rawGroup, names] of Object.entries(data.groupCommands)) {
       const group = normalizeStoredGroupKey(rawGroup);
       if (!Array.isArray(names)) {
-        // Preserva formatos legados inesperados, sem usÃ¡-los como lista vÃ¡lida.
+        // Preserva formatos legados inesperados, sem usá-los como lista válida.
         state.groupCommands[group] = names;
         continue;
       }

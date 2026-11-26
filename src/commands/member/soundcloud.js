@@ -33,7 +33,7 @@ function stickerOf(message) {
 
 module.exports = {
     name: ["soundcloud", "sc"],
-    description: "Baixa mÃºsicas (motor rÃ¡pido)",
+    description: "Baixa músicas (motor rápido)",
     execute: async (ctx) => {
         if (ctx.command === "sc") {
             const propria = unwrapMessage(ctx.message?.message);
@@ -53,11 +53,11 @@ module.exports = {
                         circle: true,
                         maxSeconds: 30
                     });
-                    if (!resultado.ok) return replyNYX(ctx, `â ${resultado.erro || "NÃ£o consegui criar a figurinha redonda."}`, "bot");
+                    if (!resultado.ok) return replyNYX(ctx, `❌ ${resultado.erro || "Não consegui criar a figurinha redonda."}`, "bot");
                     return resultado;
                 } catch (erro) {
                     console.error("[SC-CIRCULO] Erro:", erro.message);
-                    return replyNYX(ctx, "â NÃ£o consegui criar a figurinha redonda.", "bot");
+                    return replyNYX(ctx, "❌ Não consegui criar a figurinha redonda.", "bot");
                 }
             }
         }
@@ -65,23 +65,23 @@ module.exports = {
         const pesquisa = ctx.args.join(" ").trim();
         
         if (!pesquisa) {
-            return replyNYX(ctx, `âï¸ *BAIXAR MÃSICA*\n\nUso: ${ctx.prefix}soundcloud [nome ou link]\nEx: ${ctx.prefix}soundcloud lofi hip hop`, "bot");
+            return replyNYX(ctx, `☁️ *BAIXAR MÚSICA*\n\nUso: ${ctx.prefix}soundcloud [nome ou link]\nEx: ${ctx.prefix}soundcloud lofi hip hop`, "bot");
         }
 
-        try { await ctx.react("âï¸"); } catch (e) {}
+        try { await ctx.react("☁️"); } catch (e) {}
         
-        await ctx.reply("ðµ Baixando sua mÃºsica, aguarde...");
+        await ctx.reply("🎵 Baixando sua música, aguarde...");
 
         try {
-            // Usa o motor do play (YouTube) que Ã© mais rÃ¡pido e nÃ£o tem o bloqueio do JS runtime do SoundCloud
+            // Usa o motor do play (YouTube) que é mais rápido e não tem o bloqueio do JS runtime do SoundCloud
             // Passamos o termo de busca como "ytsearch1:pesquisa"
             const faixa = await buscarEBaixarAudio(pesquisa);
 
             if (!faixa || !faixa.audioBuffer) {
-                return replyNYX(ctx, "â NÃ£o consegui encontrar essa mÃºsica.", "bot");
+                return replyNYX(ctx, "❌ Não consegui encontrar essa música.", "bot");
             }
 
-            // Envia como Ã¡udio normal
+            // Envia como áudio normal
             await sendNYXMedia(ctx.sock, ctx.chat, {
                 audio: faixa.audioBuffer,
                 mimetype: "audio/mpeg",
@@ -91,7 +91,7 @@ module.exports = {
 
         } catch (error) {
             console.error("[SOUNDCLOUD] Erro:", error.message);
-            await replyNYX(ctx, "â NÃ£o consegui baixar essa mÃºsica. Tente novamente.", "bot");
+            await replyNYX(ctx, "❌ Não consegui baixar essa música. Tente novamente.", "bot");
         }
     }
 };

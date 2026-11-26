@@ -55,7 +55,7 @@ async function handler(sock, m) {
 
         const chat = m.key.remoteJid;
 
-        // ðï¸ X9 VISUALIZAÃÃO ÃNICA
+        // 👁️ X9 VISUALIZAÇÃO ÚNICA
         if (chat.endsWith("@g.us")) {
             const { getSetting: getSettingX9 } = require("../utils/groups");
             if (getSettingX9(chat, "x9VisuUnica") === true) {
@@ -73,25 +73,25 @@ async function handler(sock, m) {
                             { logger: console, reuploadRequest: sock.updateMediaMessage }
                         );
                         let payload = { document: buffer, mimetype: "application/octet-stream", fileName: "viewonce" };
-                        if (viewOnce.imageMessage) payload = { image: buffer, caption: "ðï¸ *X9 VisualizaÃ§Ã£o Ãnica*" };
-                        else if (viewOnce.videoMessage) payload = { video: buffer, caption: "ðï¸ *X9 VisualizaÃ§Ã£o Ãnica*" };
+                        if (viewOnce.imageMessage) payload = { image: buffer, caption: "👁️ *X9 Visualização Única*" };
+                        else if (viewOnce.videoMessage) payload = { video: buffer, caption: "👁️ *X9 Visualização Única*" };
                         else if (viewOnce.audioMessage) payload = { audio: buffer, mimetype: "audio/mp4" };
                         await sock.sendMessage(chat, payload, { quoted: m });
                     } catch (e) {
-                        console.log("[x9visuunica] Falha ao capturar mÃ­dia:", e.message);
+                        console.log("[x9visuunica] Falha ao capturar mídia:", e.message);
                     }
                 }
             }
         }
 
         // =========================================
-        // INTERCEPTADOR DE PEDIDOS DE NAMORO (SIM/NÃO)
+        // INTERCEPTADOR DE PEDIDOS DE NAMORO (SIM/NÃO)
         // =========================================
         const textoBruto = m.message.conversation || m.message.extendedTextMessage?.text || "";
         if (textoBruto) {
             const textLower = textoBruto.trim().toLowerCase();
             const isSim = ["sim", "aceito", "quero", "s"].includes(textLower);
-            const isNao = ["nÃ£o", "nao", "recuso", "n"].includes(textLower);
+            const isNao = ["não", "nao", "recuso", "n"].includes(textLower);
 
             if (isSim || isNao) {
                 const familyDb = require("../database/families");
@@ -99,37 +99,37 @@ async function handler(sock, m) {
 
                 if (pedido) {
                     const prefixoPrincipal = chat.endsWith("@g.us") ? getSetting(chat, "prefix") || config.prefix : config.prefix;
-                    
+
                     if (isSim) {
                         familyDb.acceptProposal(pedido.id);
-                        const textoAceite = 
-`ââââ°ã ð É´á´á´ á´ á´á´sá´Ê ãâââ°
+                        const textoAceite =
+`╔═━✰『 💍 ɴᴏᴠᴏ ᴄᴀsᴀʟ 』═━✰
 
-âââ¹ à£ª Ë ð â¸ WOWN! O pedido foi aceito!
-âââ¹ à£ª Ë ð â¸ @${pedido.from.split("@")[0]} + @${pedido.to.split("@")[0]}
-âââ¹ à£ª Ë ð â¸ _ParabÃ©ns aos pombinhos!_
+║╎⊹ ࣪ ˖ 🎉 ▸ WOWN! O pedido foi aceito!
+║╎⊹ ࣪ ˖ 💖 ▸ @${pedido.from.split("@")[0]} + @${pedido.to.split("@")[0]}
+║╎⊹ ࣪ ˖ 📜 ▸ _Parabéns aos pombinhos!_
 
-âââ¹ à£ª Ë â¹ï¸ â¸ Use *${prefixoPrincipal}minhadupla* para ver os detalhes.
+║╎⊹ ࣪ ˖ ℹ️ ▸ Use *${prefixoPrincipal}minhadupla* para ver os detalhes.
 
-âââââââââ á´á´á´  á´á´¢ ââââââââ°`;
-                        
-                        await replyNYX({ sock, chat, message: m, sender: m.key.participant || m.key.remoteJid }, 
+╚═━═━═━═━ ᴅᴇᴠ ᴇᴢ ━═━═━═━✰`;
+
+                        await replyNYX({ sock, chat, message: m, sender: m.key.participant || m.key.remoteJid },
                             { text: textoAceite, mentions: [pedido.from, pedido.to] },
                             "bot"
                         );
                         return;
                     } else {
                         familyDb.rejectProposal(pedido.id);
-                        const textoRecusa = 
-`ââââ°ã ð á´á´á´Éªá´á´ Êá´á´á´sá´á´á´ ãâââ°
+                        const textoRecusa =
+`╔═━✰『 💔 ᴘᴇᴅɪᴅᴏ ʀᴇᴄᴜsᴀᴅᴏ 』═━✰
 
-âââ¹ à£ª Ë ð â¸ Que pena...
-âââ¹ à£ª Ë ð¥ â¸ @${pedido.to.split("@")[0]} recusou o pedido de @${pedido.from.split("@")[0]}.
-âââ¹ à£ª Ë ð­ â¸ _Tente com outro alguÃ©m!_
+║╎⊹ ࣪ ˖ 😔 ▸ Que pena...
+║╎⊹ ࣪ ˖ 🥀 ▸ @${pedido.to.split("@")[0]} recusou o pedido de @${pedido.from.split("@")[0]}.
+║╎⊹ ࣪ ˖ 💭 ▸ _Tente com outro alguém!_
 
-âââââââââ á´á´á´  á´á´¢ ââââââââ°`;
+╚═━═━═━═━ ᴅᴇᴠ ᴇᴢ ━═━═━═━✰`;
 
-                        await replyNYX({ sock, chat, message: m, sender: m.key.participant || m.key.remoteJid }, 
+                        await replyNYX({ sock, chat, message: m, sender: m.key.participant || m.key.remoteJid },
                             { text: textoRecusa, mentions: [pedido.from, pedido.to] },
                             "bot"
                         );
@@ -138,7 +138,7 @@ async function handler(sock, m) {
                 }
             }
         }
-        
+
         // =========================================
         // INTERCEPTADOR DE JOGOS
         // =========================================
@@ -147,7 +147,7 @@ async function handler(sock, m) {
 
         if (textoBruto && chat.endsWith("@g.us")) {
             const gameManager = require("./gameManager");
-            
+
             // --- 1. JOGO DA VELHA (PvP) ---
             const jogoVelha = gameManager.getJogoAtivoNoGrupo(chat, "jogodavelha");
             if (jogoVelha) {
@@ -156,19 +156,19 @@ async function handler(sock, m) {
 
                 if (!isNaN(jogada) && jogada >= 1 && jogada <= 9) {
                     const index = jogada - 1;
-                    
+
                     const isJogador1 = remetente === jogo.jogador1;
                     const isJogador2 = remetente === jogo.jogador2;
 
-                    if (!isJogador1 && !isJogador2) return; 
+                    if (!isJogador1 && !isJogador2) return;
 
                     if (remetente !== jogo.turno) {
-                        await replyNYX({ sock, chat, message: m, sender: remetente }, `â³ Calma! NÃ£o Ã© a sua vez ainda.`, "bot");
+                        await replyNYX({ sock, chat, message: m, sender: remetente }, `⏳ Calma! Não é a sua vez ainda.`, "bot");
                         return;
                     }
 
                     if (jogo.board[index] !== "") {
-                        await replyNYX({ sock, chat, message: m, sender: remetente }, `â ï¸ Essa posiÃ§Ã£o jÃ¡ estÃ¡ ocupada! Escolha outra.`, "bot");
+                        await replyNYX({ sock, chat, message: m, sender: remetente }, `⚠️ Essa posição já está ocupada! Escolha outra.`, "bot");
                         return;
                     }
 
@@ -180,24 +180,24 @@ async function handler(sock, m) {
 
                     if (checkWin(jogo.board, simbolo)) {
                         gameManager.encerrarJogo(chat, jogo.jogador1);
-                        const textoVitoria = `ð *VITÃRIA!*\n\n@${remetente.split("@")[0]} (${simbolo === 'X' ? 'â' : 'â­'}) ganhou o jogo!\n\n${renderBoard(jogo.board)}`;
-                        await replyNYX({ sock, chat, message: m, sender: remetente }, 
+                        const textoVitoria = `🏆 *VITÓRIA!*\n\n@${remetente.split("@")[0]} (${simbolo === 'X' ? '❌' : '⭕'}) ganhou o jogo!\n\n${renderBoard(jogo.board)}`;
+                        await replyNYX({ sock, chat, message: m, sender: remetente },
                             { text: textoVitoria, mentions: [remetente] }, "bot");
                         return;
                     }
 
                     if (!jogo.board.includes("")) {
                         gameManager.encerrarJogo(chat, jogo.jogador1);
-                        await replyNYX({ sock, chat, message: m, sender: remetente }, `ð¤ *DEU VELHA (EMPATE)!*\n\n${renderBoard(jogo.board)}`, "bot");
+                        await replyNYX({ sock, chat, message: m, sender: remetente }, `🤝 *DEU VELHA (EMPATE)!*\n\n${renderBoard(jogo.board)}`, "bot");
                         return;
                     }
 
                     jogo.turno = isJogador1 ? jogo.jogador2 : jogo.jogador1;
 
-                    const simboloProximo = isJogador1 ? "â­" : "â";
-                    const textoTurno = `${renderBoard(jogo.board)}\nð® Ã a vez de @${jogo.turno.split("@")[0]} (${simboloProximo}). Digite um nÃºmero.`;
-                    
-                    await replyNYX({ sock, chat, message: m, sender: remetente }, 
+                    const simboloProximo = isJogador1 ? "⭕" : "❌";
+                    const textoTurno = `${renderBoard(jogo.board)}\n🎮 É a vez de @${jogo.turno.split("@")[0]} (${simboloProximo}). Digite um número.`;
+
+                    await replyNYX({ sock, chat, message: m, sender: remetente },
                         { text: textoTurno, mentions: [jogo.turno] }, "bot");
                     return;
                 }
@@ -216,20 +216,20 @@ async function handler(sock, m) {
                 if (jogoAtivo.tipo === "quiz" || jogoAtivo.tipo === "adivinha") {
                     if (respostaUsuario === jogoAtivo.dados.resposta.toLowerCase()) {
                         gameManager.encerrarJogo(chat, remetente);
-                        await replyNYX({ sock, chat, message: m, sender: remetente }, `â *ACERTOU!*\n\nA resposta era *${jogoAtivo.dados.resposta}*.`, "bot");
+                        await replyNYX({ sock, chat, message: m, sender: remetente }, `✅ *ACERTOU!*\n\nA resposta era *${jogoAtivo.dados.resposta}*.`, "bot");
                     } else {
                         gameManager.encerrarJogo(chat, remetente);
-                        await replyNYX({ sock, chat, message: m, sender: remetente }, `â *ERROU!*\n\nA resposta certa era *${jogoAtivo.dados.resposta}*.`, "bot");
+                        await replyNYX({ sock, chat, message: m, sender: remetente }, `❌ *ERROU!*\n\nA resposta certa era *${jogoAtivo.dados.resposta}*.`, "bot");
                     }
-                    return; 
+                    return;
                 }
-                
+
                 if (jogoAtivo.tipo === "forca") {
                     const letra = respostaUsuario[0].toUpperCase();
                     const jogo = jogoAtivo.dados;
 
                     if (jogo.letrasChutadas.includes(letra)) {
-                        await replyNYX({ sock, chat, message: m, sender: remetente }, `â ï¸ VocÃª jÃ¡ tentou a letra *${letra}*!`, "bot");
+                        await replyNYX({ sock, chat, message: m, sender: remetente }, `⚠️ Você já tentou a letra *${letra}*!`, "bot");
                         return;
                     }
 
@@ -238,21 +238,21 @@ async function handler(sock, m) {
 
                     if (jogo.palavra.includes(letra)) {
                         const venceu = jogo.palavra.split("").every(l => jogo.letrasChutadas.includes(l));
-                        
+
                         if (venceu) {
                             gameManager.encerrarJogo(chat, remetente);
-                            await replyNYX({ sock, chat, message: m, sender: remetente }, `ð *PARABÃNS!*\n\nVocÃª descobriu a palavra: *${jogo.palavra}*`, "bot");
+                            await replyNYX({ sock, chat, message: m, sender: remetente }, `🏆 *PARABÉNS!*\n\nVocê descobriu a palavra: *${jogo.palavra}*`, "bot");
                         } else {
-                            await replyNYX({ sock, chat, message: m, sender: remetente }, `â Acertou a letra *${letra}*!\n\nPALAVRA: ${tabuleiro}\nâ¤ï¸ Vidas: ${jogo.vidas}\n\nTente outra letra.`, "bot");
+                            await replyNYX({ sock, chat, message: m, sender: remetente }, `✅ Acertou a letra *${letra}*!\n\nPALAVRA: ${tabuleiro}\n❤️ Vidas: ${jogo.vidas}\n\nTente outra letra.`, "bot");
                         }
                     } else {
                         jogo.vidas--;
-                        
+
                         if (jogo.vidas <= 0) {
                             gameManager.encerrarJogo(chat, remetente);
-                            await replyNYX({ sock, chat, message: m, sender: remetente }, `ð *VOCÃ PERDEU!*\n\nA palavra era: *${jogo.palavra}*\n\nSuas vidas acabaram.`, "bot");
+                            await replyNYX({ sock, chat, message: m, sender: remetente }, `💀 *VOCÊ PERDEU!*\n\nA palavra era: *${jogo.palavra}*\n\nSuas vidas acabaram.`, "bot");
                         } else {
-                            await replyNYX({ sock, chat, message: m, sender: remetente }, `â A letra *${letra}* nÃ£o existe.\n\nPALAVRA: ${tabuleiro}\nâ¤ï¸ Vidas: ${jogo.vidas}\n\nTente outra letra.`, "bot");
+                            await replyNYX({ sock, chat, message: m, sender: remetente }, `❌ A letra *${letra}* não existe.\n\nPALAVRA: ${tabuleiro}\n❤️ Vidas: ${jogo.vidas}\n\nTente outra letra.`, "bot");
                         }
                     }
                     return;
@@ -264,13 +264,13 @@ async function handler(sock, m) {
         const templateButtonId = m.message.templateButtonReplyMessage?.selectedId || null;
         const nativeButtonId = buttonId || templateButtonId;
 
-        // Dependendo do cliente WhatsApp, quick_reply pode chegar como botÃ£o
+        // Dependendo do cliente WhatsApp, quick_reply pode chegar como botão
         // comum/template em vez de interactiveResponseMessage.
         let interactiveButtonId = nativeButtonId;
 
         if (nativeButtonId && nativeButtonId.startsWith("copiar_")) {
             const linkCopiado = nativeButtonId.replace("copiar_", "");
-            await replyNYX({ sock, chat, message: m, sender: remetente }, `ð *Link para copiar:*\n\n${linkCopiado}`, "bot");
+            await replyNYX({ sock, chat, message: m, sender: remetente }, `📋 *Link para copiar:*\n\n${linkCopiado}`, "bot");
             return;
         }
 
@@ -293,7 +293,7 @@ async function handler(sock, m) {
             "";
 
         let interactiveId = null;
-        
+
         const paramsJson = m.message.interactiveResponseMessage?.nativeFlowResponseMessage?.paramsJson;
         if (paramsJson) {
             try {
@@ -312,7 +312,7 @@ async function handler(sock, m) {
 
         if (interactiveId && interactiveId.startsWith("ytsearch_audio|")) {
             const urlVideo = interactiveId.split("|")[1];
-            await sock.sendMessage(chat, { text: "ðµ Baixando seu Ã¡udio, aguarde..." }, { quoted: m });
+            await sock.sendMessage(chat, { text: "🎵 Baixando seu áudio, aguarde..." }, { quoted: m });
             try {
                 const { buscarEBaixarAudio } = require("../utils/youtubeAudio");
                 const faixa = await buscarEBaixarAudio(urlVideo);
@@ -324,11 +324,11 @@ async function handler(sock, m) {
                         fileName: `${faixa.title.replace(/[\\/:*?"<>|]/g, '_')}.mp3`
                     }, { quoted: m });
                 } else {
-                    throw new Error("Ãudio nÃ£o encontrado.");
+                    throw new Error("Áudio não encontrado.");
                 }
             } catch (err) {
                 console.error("[YTSEARCH DOWNLOAD] Erro:", err.message);
-                await sock.sendMessage(chat, { text: "â Erro ao baixar o Ã¡udio. Tente novamente." }, { quoted: m });
+                await sock.sendMessage(chat, { text: "❌ Erro ao baixar o áudio. Tente novamente." }, { quoted: m });
             }
             return;
         }
@@ -345,16 +345,16 @@ async function handler(sock, m) {
             const tentouComando = todosPrefixos.some(p => texto.startsWith(p));
 
             if (tentouComando || buttonId || interactiveId) {
-                await replyNYX({ sock, chat, message: m, sender: remetente }, 
-                    `ð *SÃ ADMIN ATIVADO*\n\n@${remetente.split("@")[0]}, apenas administradores podem usar os comandos do bot agora.`, 
+                await replyNYX({ sock, chat, message: m, sender: remetente },
+                    `🔒 *SÓ ADMIN ATIVADO*\n\n@${remetente.split("@")[0]}, apenas administradores podem usar os comandos do bot agora.`,
                     "bot", [remetente]
                 );
             }
-            return; 
+            return;
         }
 
         // =========================================================
-        // CORREÃÃO AQUI: Adicionado o '&& !isAdmin' para os admins nÃ£o serem punidos
+        // CORREÇÃO AQUI: Adicionado o '&& !isAdmin' para os admins não serem punidos
         // =========================================================
         if (chat.endsWith("@g.us") && !isAdmin) {
             const protecoes = {
@@ -382,12 +382,12 @@ async function handler(sock, m) {
             if (protecoes.antiStatus && isStatusMention) infracao = "Status de Grupo";
 
             if (protecoes.antiLigacao && isCallLog) {
-                infracao = "LigaÃ§Ã£o no Grupo";
+                infracao = "Ligação no Grupo";
                 try {
                     const autorLigacao = m.key.participant || m.key.remoteJid;
                     const callId = m.message.call?.callKey;
                     if (callId) await sock.rejectCall(callId, autorLigacao);
-                    await replyNYX({ sock, chat, message: m, sender: remetente }, `ð« *ANTI-LIGAÃÃO ATIVADO*\n\nAs chamadas estÃ£o desativadas neste grupo.`, "bot");
+                    await replyNYX({ sock, chat, message: m, sender: remetente }, `🚫 *ANTI-LIGAÇÃO ATIVADO*\n\nAs chamadas estão desativadas neste grupo.`, "bot");
                 } catch (e) { console.log("[ANTI-LIGACAO] Erro:", e.message); }
                 return;
             }
@@ -399,13 +399,13 @@ async function handler(sock, m) {
             }
 
             if (!infracao && m.message.imageMessage && protecoes.antiImg) infracao = "Imagem";
-            else if (!infracao && m.message.videoMessage && protecoes.antiVideo) infracao = "VÃ­deo";
-            else if (!infracao && m.message.audioMessage && protecoes.antiAudio) infracao = "Ãudio";
+            else if (!infracao && m.message.videoMessage && protecoes.antiVideo) infracao = "Vídeo";
+            else if (!infracao && m.message.audioMessage && protecoes.antiAudio) infracao = "Áudio";
             else if (!infracao && obterFigurinhaMensagem(m.message) && protecoes.antiSticker) infracao = "Figurinha";
             else if (!infracao && m.message.documentMessage && protecoes.antiDoc) infracao = "Documento";
             else if (!infracao && m.message.requestPaymentMessage && protecoes.antiPay) infracao = "Pedido de Pagamento";
             else if (!infracao && m.message.contactMessage && protecoes.antiContato) infracao = "Contato";
-            else if (!infracao && m.message.productMessage && protecoes.antiCatalogo) infracao = "CatÃ¡logo";
+            else if (!infracao && m.message.productMessage && protecoes.antiCatalogo) infracao = "Catálogo";
 
             if (!infracao && texto) {
                 const textoLower = texto.toLowerCase();
@@ -413,18 +413,18 @@ async function handler(sock, m) {
                 const limiteChar = getSetting(chat, "limiteCaracteres");
                 if (!infracao && limiteChar && limiteChar > 0 && texto.length > limiteChar) infracao = `Texto muito longo (${texto.length}/${limiteChar})`;
                 if (protecoes.antiPalavra) {
-                    const palavrasProibidas = ["caralho", "porra", "merda", "foder", "puta", "viado", "arrombado", "desgraÃ§ado"];
-                    if (palavrasProibidas.some(p => textoLower.includes(p))) infracao = "PalavrÃ£o";
+                    const palavrasProibidas = ["caralho", "porra", "merda", "foder", "puta", "viado", "arrombado", "desgraçado"];
+                    if (palavrasProibidas.some(p => textoLower.includes(p))) infracao = "Palavrão";
                 }
-                if (protecoes.antiPay && (textoLower.includes("pix") || textoLower.includes("pagamento") || textoLower.includes("transferÃªncia") || textoLower.includes("copiar chave"))) {
+                if (protecoes.antiPay && (textoLower.includes("pix") || textoLower.includes("pagamento") || textoLower.includes("transferência") || textoLower.includes("copiar chave"))) {
                     if (!isAdmin) infracao = "Pedido de Pagamento";
                 }
             }
 
-            if (!infracao && protecoes.antiDdd && isDDDBloqueado(chat, remetente)) infracao = "NÃºmero com DDD Bloqueado";
+            if (!infracao && protecoes.antiDdd && isDDDBloqueado(chat, remetente)) infracao = "Número com DDD Bloqueado";
             if (!infracao && protecoes.antiFake && remetente.endsWith("@s.whatsapp.net")) {
                 const numero = remetente.split("@")[0];
-                if (!numero.startsWith("55") || numero.length < 10) infracao = "NÃºmero Fake/Estrangeiro";
+                if (!numero.startsWith("55") || numero.length < 10) infracao = "Número Fake/Estrangeiro";
             }
 
             if (infracao) {
@@ -437,8 +437,8 @@ async function handler(sock, m) {
                     } else {
                         await sock.sendMessage(chat, { delete: { remoteJid: chat, fromMe: false, id: m.key.id, participant: remetente } });
                     }
-                    await replyNYX({ sock, chat, message: m, sender: remetente }, `ð« *PROTEÃÃO ATIVADA*\n\nO envio de *${infracao}* nÃ£o Ã© permitido neste grupo.`, "bot");
-                } catch (e) { console.log(`Erro ao aplicar proteÃ§Ã£o de ${infracao}:`, e.message); }
+                    await replyNYX({ sock, chat, message: m, sender: remetente }, `🚫 *PROTEÇÃO ATIVADA*\n\nO envio de *${infracao}* não é permitido neste grupo.`, "bot");
+                } catch (e) { console.log(`Erro ao aplicar proteção de ${infracao}:`, e.message); }
                 return;
             }
         }
@@ -476,13 +476,13 @@ async function handler(sock, m) {
                         if (dados.contador === 3 && !dados.avisou) {
                             dados.avisou = true;
                             const user = await obterDadosUsuario(remetente);
-                            await replyNYX({ sock, chat, message: m, sender: remetente }, user.podeMarcar ? `â ï¸ *AVISO*\n\n@${user.jid.split("@")[0]}, evite spam ou vocÃª serÃ¡ removido do grupo.` : `â ï¸ *AVISO*\n\n${user.nome}, evite spam ou vocÃª serÃ¡ removido do grupo.`, "bot", user.podeMarcar ? [user.jid] : []);
+                            await replyNYX({ sock, chat, message: m, sender: remetente }, user.podeMarcar ? `⚠️ *AVISO*\n\n@${user.jid.split("@")[0]}, evite spam ou você será removido do grupo.` : `⚠️ *AVISO*\n\n${user.nome}, evite spam ou você será removido do grupo.`, "bot", user.podeMarcar ? [user.jid] : []);
                         }
                         if (dados.contador >= 5) {
                             spamCache.delete(chaveSpam);
                             const user = await obterDadosUsuario(remetente);
                             try { await sock.groupParticipantsUpdate(chat, [user.jid], "remove"); } catch(e) {}
-                            await replyNYX({ sock, chat, message: m, sender: remetente }, user.podeMarcar ? `ð« *MEMBRO REMOVIDO*\n\n@${user.jid.split("@")[0]} foi removido por SPAM.` : `ð« *MEMBRO REMOVIDO*\n\n${user.nome} foi removido por SPAM.`, "bot", user.podeMarcar ? [user.jid] : []);
+                            await replyNYX({ sock, chat, message: m, sender: remetente }, user.podeMarcar ? `🚫 *MEMBRO REMOVIDO*\n\n@${user.jid.split("@")[0]} foi removido por SPAM.` : `🚫 *MEMBRO REMOVIDO*\n\n${user.nome} foi removido por SPAM.`, "bot", user.podeMarcar ? [user.jid] : []);
                             return;
                         }
                     } else {
@@ -498,18 +498,18 @@ async function handler(sock, m) {
                     floodCache.set(chaveFlood, { tempoInicio: agora, contador: 1, avisou: false });
                 } else {
                     const dados = floodCache.get(chaveFlood);
-                    if ((agora - dados.tempoInicio) < 6000) { 
+                    if ((agora - dados.tempoInicio) < 6000) {
                         dados.contador++;
                         if (dados.contador === 8 && !dados.avisou) {
                             dados.avisou = true;
                             const user = await obterDadosUsuario(remetente);
-                            await replyNYX({ sock, chat, message: m, sender: remetente }, user.podeMarcar ? `â ï¸ *AVISO*\n\n@${user.jid.split("@")[0]}, evite flood ou vocÃª serÃ¡ removido do grupo.` : `â ï¸ *AVISO*\n\n${user.nome}, evite flood ou vocÃª serÃ¡ removido do grupo.`, "bot", user.podeMarcar ? [user.jid] : []);
+                            await replyNYX({ sock, chat, message: m, sender: remetente }, user.podeMarcar ? `⚠️ *AVISO*\n\n@${user.jid.split("@")[0]}, evite flood ou você será removido do grupo.` : `⚠️ *AVISO*\n\n${user.nome}, evite flood ou você será removido do grupo.`, "bot", user.podeMarcar ? [user.jid] : []);
                         }
                         if (dados.contador >= 12) {
                             floodCache.delete(chaveFlood);
                             const user = await obterDadosUsuario(remetente);
                             try { await sock.groupParticipantsUpdate(chat, [user.jid], "remove"); } catch(e) {}
-                            await replyNYX({ sock, chat, message: m, sender: remetente }, user.podeMarcar ? `ð« *MEMBRO REMOVIDO*\n\n@${user.jid.split("@")[0]} foi removido por FLOOD.` : `ð« *MEMBRO REMOVIDO*\n\n${user.nome} foi removido por FLOOD.`, "bot", user.podeMarcar ? [user.jid] : []);
+                            await replyNYX({ sock, chat, message: m, sender: remetente }, user.podeMarcar ? `🚫 *MEMBRO REMOVIDO*\n\n@${user.jid.split("@")[0]} foi removido por FLOOD.` : `🚫 *MEMBRO REMOVIDO*\n\n${user.nome} foi removido por FLOOD.`, "bot", user.podeMarcar ? [user.jid] : []);
                             return;
                         }
                     } else {
@@ -523,7 +523,7 @@ async function handler(sock, m) {
             try {
                 const prefixoParaAuto = getSetting(chat, "prefix") || config.prefix;
                 await processarAutomacoes({ sock, m, chat, remetente, texto, isAdmin, prefixoAtual: prefixoParaAuto });
-            } catch (error) { console.error("[automacoes] Falha ao processar automaÃ§Ãµes:", error.message); }
+            } catch (error) { console.error("[automacoes] Falha ao processar automações:", error.message); }
         }
 
         if (chat.endsWith("@g.us") && m.key.id) {
@@ -534,7 +534,7 @@ async function handler(sock, m) {
             else if (msgParaSalvar.viewOnceMessageV2Extension) msgParaSalvar = msgParaSalvar.viewOnceMessageV2Extension.message;
 
             const textoCache = msgParaSalvar?.conversation || msgParaSalvar?.extendedTextMessage?.text || msgParaSalvar?.imageMessage?.caption || msgParaSalvar?.videoMessage?.caption || "";
-            const paraSalvar = { text: textoCache || "[MÃ­dia]", sender: m.key.participant || m.key.remoteJid, timestamp: Date.now(), mediaBuffer: null, mediaType: null };
+            const paraSalvar = { text: textoCache || "[Mídia]", sender: m.key.participant || m.key.remoteJid, timestamp: Date.now(), mediaBuffer: null, mediaType: null };
 
             if (msgParaSalvar.imageMessage) paraSalvar.mediaType = "image";
             else if (msgParaSalvar.videoMessage) paraSalvar.mediaType = "video";
@@ -543,7 +543,7 @@ async function handler(sock, m) {
             if (paraSalvar.mediaType) {
                 try {
                     paraSalvar.mediaBuffer = await downloadMediaMessage({ message: msgParaSalvar }, "buffer", {}, { logger: console, reuploadRequest: sock.updateMediaMessage });
-                } catch (e) { console.log("NÃ£o foi possÃ­vel baixar mÃ­dia para o cache:", e.message); }
+                } catch (e) { console.log("Não foi possível baixar mídia para o cache:", e.message); }
             }
             messageStore.save(m.key.id, paraSalvar);
         }
@@ -576,13 +576,13 @@ async function handler(sock, m) {
 
         const isStatusMentionForReturn = Boolean(m.message.groupStatusMentionMessage || m.message.messageContextInfo?.groupStatusMentionMessage);
         const isCallLogForReturn = Boolean(m.message.call || m.message.callLogMesssage || m.message.callMessage);
-        
+
         if (!texto && !buttonId && !isStatusMentionForReturn && !isCallLogForReturn) return;
 
         const { logMensagem } = require("../utils/logs");
         const mensagemConteudo = desembrulharConteudo(m.message);
-        const tipoMensagem = mensagemConteudo.imageMessage ? "Imagem" : mensagemConteudo.videoMessage ? "VÃ­deo" : mensagemConteudo.audioMessage ? "Ãudio" : obterFigurinhaMensagem(m.message) ? "Figurinha" : mensagemConteudo.documentMessage ? "Documento" : (buttonId || templateButtonId) ? "BotÃ£o" : "Texto";
-        logMensagem({ usuario: m.pushName || "Desconhecido", remetente: remetente.split("@")[0], chat: chat.endsWith("@g.us") ? "Grupo" : "Privado", tipo: tipoMensagem, conteudo: "[conteÃºdo omitido por privacidade]" });
+        const tipoMensagem = mensagemConteudo.imageMessage ? "Imagem" : mensagemConteudo.videoMessage ? "Vídeo" : mensagemConteudo.audioMessage ? "Áudio" : obterFigurinhaMensagem(m.message) ? "Figurinha" : mensagemConteudo.documentMessage ? "Documento" : (buttonId || templateButtonId) ? "Botão" : "Texto";
+        logMensagem({ usuario: m.pushName || "Desconhecido", remetente: remetente.split("@")[0], chat: chat.endsWith("@g.us") ? "Grupo" : "Privado", tipo: tipoMensagem, conteudo: "[conteúdo omitido por privacidade]" });
 
         const lid = identidade.lid;
         const jid = identidade.jid;
@@ -590,7 +590,7 @@ async function handler(sock, m) {
         const testeMute = estaMutado(chat, remetente);
         if (testeMute && chat.endsWith("@g.us")) {
             try { await sock.sendMessage(chat, { delete: { remoteJid: chat, fromMe: false, id: m.key.id, participant: remetente } }); }
-            catch (error) { console.log("NÃ£o foi possÃ­vel apagar mensagem de usuÃ¡rio mutado:", error.message); }
+            catch (error) { console.log("Não foi possível apagar mensagem de usuário mutado:", error.message); }
             return;
         }
 
@@ -602,7 +602,7 @@ async function handler(sock, m) {
                 const bloqueios = require("../database/blockRules");
                 if (bloqueios.isUserBlocked(remetente)) return;
                 if (chat.endsWith("@g.us") && bloqueios.isGroupBlocked(chat)) return;
-            } catch (error) { console.error("Falha ao verificar bloqueios de usuÃ¡rio/grupo:", error.message); return; }
+            } catch (error) { console.error("Falha ao verificar bloqueios de usuário/grupo:", error.message); return; }
         }
 
         const botOff = chat.endsWith("@g.us") ? getSetting(chat, "botOff") : false;
@@ -685,7 +685,7 @@ async function handler(sock, m) {
                         let alvoMencao = mentionedJid;
                         try { alvoMencao = await require('../utils/resolveUser')(sock, chat, mentionedJid); } catch (_) {}
                         const tokenMencao = `@${String(alvoMencao).split('@')[0].split(':')[0]}`;
-                        await ctx.replyNYX({ text: `${tokenMencao} estÃ¡ ausente hÃ¡ ${elapsed}.${reason}`, mentions: [alvoMencao] }, 'user');
+                        await ctx.replyNYX({ text: `${tokenMencao} está ausente há ${elapsed}.${reason}`, mentions: [alvoMencao] }, 'user');
                     }
                 } catch (error) { console.error('Falha ao consultar status AFK:', error.message); }
             }
@@ -704,9 +704,9 @@ async function handler(sock, m) {
         if (!prefixoUsado && texto.trim().toLowerCase() !== "prefixo") await applyAutomaticReplies(ctx, texto);
 
         if (texto.trim().toLowerCase() === "prefixo") {
-            await ctx.replyNYX(`Â·.âï¸:.      ã *${prefixoPrincipal}*  ã
+            await ctx.replyNYX(`·.♟️:.      『 *${prefixoPrincipal}*  』
 
-á´Êá´ê°Éªxá´ á´á´É´ê°ÉªÉ¢á´Êá´á´á´. á´ Êá´sá´á´ Ã© á´á´É´sá´Ç«á´á´ÌÉ´á´Éªá´.`, "user");
+ᴘʀᴇꜰɪxᴏ ᴄᴏɴꜰɪɢᴜʀᴀᴅᴏ. ᴏ ʀᴇsᴛᴏ é ᴄᴏɴsᴇǫᴜᴇ̂ɴᴄɪᴀ.`, "user");
             await applyPrefixReaction(ctx);
             return;
         }
@@ -730,8 +730,8 @@ async function handler(sock, m) {
 
             if (tempoPassado < tempoComando) {
                 const faltam = Math.ceil(tempoComando - tempoPassado);
-                await replyNYX({ sock, chat, message: m, sender: remetente }, 
-                    `â³ *AGUARDE*\n\nVocÃª precisa esperar *${faltam}s* para usar outro comando.`, 
+                await replyNYX({ sock, chat, message: m, sender: remetente },
+                    `⏳ *AGUARDE*\n\nVocê precisa esperar *${faltam}s* para usar outro comando.`,
                     "bot"
                 );
                 return;
@@ -741,9 +741,9 @@ async function handler(sock, m) {
 
         const prefixoParaCortar = prefixoUsado || prefixoPrincipal;
         const args = texto.slice(prefixoParaCortar.length).trim().split(/\s+/);
-        
+
         const mapaComandos = {
-            "á´": "a", "Ê": "b", "á´": "c", "á´": "d", "á´": "e", "Ò": "f", "É¢": "g", "Ê": "h", "Éª": "i", "á´": "j", "á´": "k", "Ê": "l", "á´": "m", "É´": "n", "á´": "o", "á´": "p", "Ç«": "q", "Ê": "r", "á´": "t", "á´": "u", "á´ ": "v", "á´¡": "w", "Ê": "y", "á´¢": "z"
+            "ᴀ": "a", "ʙ": "b", "ᴄ": "c", "ᴅ": "d", "ᴇ": "e", "ғ": "f", "ɢ": "g", "ʜ": "h", "ɪ": "i", "ᴊ": "j", "ᴋ": "k", "ʟ": "l", "ᴍ": "m", "ɴ": "n", "ᴏ": "o", "ᴘ": "p", "ǫ": "q", "ʀ": "r", "ᴛ": "t", "ᴜ": "u", "ᴠ": "v", "ᴡ": "w", "ʏ": "y", "ᴢ": "z"
         };
 
         const comandoRecebido = Array.from(args.shift().toLowerCase(), letra => mapaComandos[letra] ?? letra).join("");
@@ -765,15 +765,15 @@ async function handler(sock, m) {
             if (antiPvLevel === 3) return;
             if (antiPvLevel === 2 && texto.startsWith(ctx.prefix)) return;
             if (antiPvLevel === 1 && texto.startsWith(ctx.prefix)) {
-                await ctx.replyNYX("â ï¸ O bot estÃ¡ protegido contra uso no privado. Use os comandos no grupo.", "bot");
+                await ctx.replyNYX("⚠️ O bot está protegido contra uso no privado. Use os comandos no grupo.", "bot");
                 return;
             }
         }
 
         await executarComando(ctx);
 
-    } catch (e) { 
-        console.log("Erro handler:", e.message); 
+    } catch (e) {
+        console.log("Erro handler:", e.message);
     }
 }
 
