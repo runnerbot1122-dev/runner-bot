@@ -2,51 +2,53 @@ const axios = require("axios");
 const FormData = require("form-data");
 const { downloadMediaMessage } = require("@whiskeysockets/baileys");
 const replyNYX = require("../../utils/replyNYX");
+const { getSoundStickerKit } = require("../../utils/soundStickerKit");
 
 const MAX_UPLOAD_SIZE = 50 * 1024 * 1024;
 
 function unwrapMessage(message) {
     let current = message || {};
-
-    while (
-        current.viewOnceMessage ||
-        current.viewOnceMessageV2 ||
-        current.viewOnceMessageV2Extension ||
-        current.documentWithCaptionMessage
-    ) {
-        current =
-            current.viewOnceMessage ||
-            current.viewOnceMessageV2 ||
-            current.viewOnceMessageV2Extension ||
-            current.documentWithCaptionMessage;
-        current = current.message || current;
+    for (let i = 0; i < 6; i++) {
+        const inner = current.ephemeralMessage?.message || current.viewOnceMessage?.message ||
+            current.viewOnceMessageV2?.message || current.viewOnceMessageV2Extension?.message ||
+            current.documentWithCaptionMessage?.message || current.editedMessage?.message;
+        if (!inner) break;
+        current = inner;
     }
-
     return current;
 }
 
-function getMediaFromContext(message) {
+function quotedOf(message) {
+    const current = unwrapMessage(message?.message);
+    for (const value of Object.values(current)) {
+        const quoted = value?.contextInfo?.quotedMessage;
+        if (quoted) return unwrapMessage(quoted);
+    }
+    return null;
+}
+
+function stickerOf(message) {
+    const current = unwrapMessage(message);
+    return current.stickerMessage || current.audioStickerMessage?.message?.stickerMessage || null;
+}
+
+async function getMediaFromContext(message) {
     const current = unwrapMessage(message?.message || message);
-    const types = [
-        "imageMessage",
-        "videoMessage",
-        "audioMessage",
-        "documentMessage",
-        "stickerMessage"
-    ];
+    const quoted = quotedOf(message);
+    const types = ["imageMessage", "videoMessage", "audioMessage", "documentMessage"];
 
     for (const type of types) {
         if (current[type]) return { type, content: current[type] };
     }
-
-    const quoted = unwrapMessage(
-        current.extendedTextMessage?.contextInfo?.quotedMessage
-    );
-
     for (const type of types) {
-        if (quoted[type]) return { type, content: quoted[type] };
+        if (quoted?.[type]) return { type, content: quoted[type] };
     }
 
+    const sticker = stickerOf(current) || stickerOf(quoted);
+    if (sticker) {
+        const kit = await getSoundStickerKit();
+        return { type: "stickerMessage", content: sticker, clip: await kit.getStickerSound(sticker) };
+    }
     return null;
 }
 
@@ -78,21 +80,21 @@ function fileNameFor(type, content) {
 
 module.exports = {
     name: ["gerarlink"],
-    description: "Gera um link público para uma mídia respondida",
+    description: "Gera um link pÃºblico para uma mÃ­dia respondida",
 
     execute: async ctx => {
-        const media = getMediaFromContext(ctx.message);
+        const media = await getMediaFromContext(ctx.message);
 
         if (!media) {
             return replyNYX(
                 ctx,
-                `🔗 Responda a uma imagem, vídeo, áudio ou documento com ${ctx.prefix}gerarlink.`,
+                `ð Responda a uma imagem, vÃ­deo, Ã¡udio ou documento com ${ctx.prefix}gerarlink.`,
                 "bot"
             );
         }
 
         try {
-            await ctx.react("🔗");
+            await ctx.react("ð");
         } catch (error) {}
 
         try {
@@ -101,22 +103,24 @@ module.exports = {
                 message: { [media.type]: media.content }
             };
 
-            const buffer = await downloadMediaMessage(
-                messageToDownload,
-                "buffer",
-                {},
-                {
-                    logger: console,
-                    reuploadRequest: ctx.sock.updateMediaMessage
-                }
-            );
+            const buffer = media.type === "stickerMessage"
+                ? await (await getSoundStickerKit()).downloadMedia(media.content, "sticker")
+                : await downloadMediaMessage(
+                    messageToDownload,
+                    "buffer",
+                    {},
+                    {
+                        logger: console,
+                        reuploadRequest: ctx.sock.updateMediaMessage
+                    }
+                );
 
             if (!buffer || buffer.length === 0) {
-                throw new Error("Mídia vazia.");
+                throw new Error("MÃ­dia vazia.");
             }
 
             if (buffer.length > MAX_UPLOAD_SIZE) {
-                return replyNYX(ctx, "❌ A mídia deve ter no máximo 50 MB.", "bot");
+                return replyNYX(ctx, "â A mÃ­dia deve ter no mÃ¡ximo 50 MB.", "bot");
             }
 
             const form = new FormData();
@@ -126,7 +130,7 @@ module.exports = {
                 contentType: media.content?.mimetype || "application/octet-stream"
             });
 
-            await ctx.reply("🔗 Gerando o link, aguarde...");
+            await ctx.reply("ð Gerando o link, aguarde...");
 
             const response = await axios.post("https://catbox.moe/user/api.php", form, {
                 headers: form.getHeaders(),
@@ -137,19 +141,34 @@ module.exports = {
 
             const url = String(response.data || "").trim();
             if (!/^https?:\/\/[^\s]+$/i.test(url)) {
-                throw new Error("O serviço não retornou uma URL válida.");
+                throw new Error("O serviÃ§o nÃ£o retornou uma URL vÃ¡lida.");
             }
 
-            return replyNYX(
-                ctx,
-                `✅ Link gerado com sucesso!\n\n🔗 ${url}`,
-                "bot"
-            );
+            let retorno = `â Link gerado com sucesso!\n\nð ${url}`;
+            if (media.clip?.ogg?.length) {
+                const formSom = new FormData();
+                formSom.append("reqtype", "fileupload");
+                formSom.append("fileToUpload", media.clip.ogg, {
+                    filename: "runnerbot-som.ogg",
+                    contentType: "audio/ogg"
+                });
+                const respostaSom = await axios.post("https://catbox.moe/user/api.php", formSom, {
+                    headers: formSom.getHeaders(),
+                    timeout: 90000,
+                    maxContentLength: 2 * 1024 * 1024,
+                    maxBodyLength: MAX_UPLOAD_SIZE + 1024 * 1024
+                });
+                const urlSom = String(respostaSom.data || "").trim();
+                if (/^https?:\/\/[^\s]+$/i.test(urlSom)) {
+                    retorno += `\n\nð Link do Ã¡udio: ${urlSom}\nâ¹ï¸ O link WebP, sozinho, nÃ£o reproduz o som integrado.`;
+                }
+            }
+            return replyNYX(ctx, retorno, "bot");
         } catch (error) {
             console.error("[GERARLINK] Erro:", error.message);
             return replyNYX(
                 ctx,
-                "❌ Não consegui gerar o link. Tente novamente com uma mídia menor.",
+                "â NÃ£o consegui gerar o link. Tente novamente com uma mÃ­dia menor.",
                 "bot"
             );
         }
