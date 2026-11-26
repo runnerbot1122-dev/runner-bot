@@ -30,7 +30,7 @@ O QUE FAZER:
        - CommonJS: const kit = await import('./figurinha-com-som/lib/index.mjs'); kit.useBaileys(require('<pacote do bot>'));
          (carregue uma vez só e guarde numa variável; use um caminho relativo correto a partir do arquivo)
      O useBaileys() DEVE receber o MESMO pacote Baileys que o bot usa para conectar.
-  3) Comando .s / sticker: troque a lógica pela função figurinha(sock, msg, { args, packname, author, circle, maxSeconds: 30 }).
+  3) Comando .fig / sticker: troque a lógica pela função figurinha(sock, msg, { args, packname, author, circle, maxSeconds: 30 }).
        - "msg" tem que ser a mensagem ORIGINAL do Baileys (com .key e .message).
        - se retornar { ok:false, erro }, responda o usuário com o erro.
        - mantenha os aliases e o texto de ajuda que o bot já tinha.
@@ -45,14 +45,14 @@ O QUE FAZER:
          mensagem agendada, marcar todos com figurinha): salve também o som com getStickerSound(st)
          (ogg em base64, seconds, waveform em base64) e na hora de enviar use
          sendSoundSticker(sock, jid, { webp, clip }) quando tiver som; senão sendMessage({ sticker }).
-       - figurinha → vídeo: use stickerToVideo(webp, clip?.ogg) para o vídeo sair com o som.
-       - figurinha → GIF/imagem: GIF e imagem não têm som; só avise o usuário.
+       - fig → vídeo: use stickerToVideo(webp, clip?.ogg) para o vídeo sair com o som.
+       - fig → GIF/imagem: GIF e imagem não têm som; só avise o usuário.
   5) Autosticker: se existir, use autoFigurinha(sock, msg, { packname, author }) para vídeos com som virarem figurinha com som.
   6) Adicione (se não existir) o comando .somfig: responde uma figurinha com som e o bot manda o som como nota de voz
      (getStickerSound + sendMessage({ audio: clip.ogg, mimetype: 'audio/ogg; codecs=opus', ptt: true })).
   7) Atualize o menu/ajuda dos comandos de figurinha explicando:
-       .s respondendo áudio → figurinha com som | .s em vídeo com som → figurinha animada com som
-       .s 15 (dura 15s) | .s 1:05 10 (começa em 1:05, dura 10s) | .s mudo | .s circulo | .somfig
+       .saudio respondendo áudio → figurinha com som | .saudio em vídeo com som → figurinha animada com som
+       .saudio 15 (dura 15s) | .s 1:05 10 (começa em 1:05, dura 10s) | .s mudo | .s circulo | .somfig
   8) Dependências: garanta "sharp" e "node-webpmux" no package.json (não troque a versão do Baileys).
   9) NÃO use a opção -vsync do ffmpeg em lugar nenhum (o ffmpeg novo removeu e dá erro).
 
@@ -66,5 +66,5 @@ REGRAS:
 ENTREGA:
   - O bot completo atualizado em .zip (sem node_modules e sem a pasta da sessão).
   - Uma lista curta, em português, de cada comando que você alterou e o que mudou.
-  - Como testar: mandar um áudio e responder ".s"; mandar um vídeo com som com legenda ".s".
+  - Como testar: mandar um áudio e responder ".saudio"; mandar um vídeo com som com legenda ".saudio".
   - Observação: só aparece/toca o som em quem já tem o recurso no WhatsApp; os outros veem figurinha comum.
