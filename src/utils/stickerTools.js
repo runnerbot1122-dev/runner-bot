@@ -1,48 +1,16 @@
 const crypto = require("crypto");
-const { downloadMediaMessage } = require("@whiskeysockets/baileys");
 const { Image } = require("node-webpmux");
+const { getSoundStickerKit } = require("./soundStickerKit");
 
-function unwrap(message) {
-    let current = message || {};
-
-    while (
-        current.viewOnceMessage ||
-        current.viewOnceMessageV2 ||
-        current.viewOnceMessageV2Extension ||
-        current.documentWithCaptionMessage
-    ) {
-        current =
-            current.viewOnceMessage ||
-            current.viewOnceMessageV2 ||
-            current.viewOnceMessageV2Extension ||
-            current.documentWithCaptionMessage;
-        current = current.message || current;
-    }
-
-    return current;
-}
-
-function findSticker(message) {
-    const current = unwrap(message?.message || message);
-    if (current.stickerMessage) return current.stickerMessage;
-
-    const quoted = unwrap(current.extendedTextMessage?.contextInfo?.quotedMessage);
-    return quoted.stickerMessage || null;
+async function findSticker(message) {
+    const kit = await getSoundStickerKit();
+    const quoted = kit.quotedOf(message);
+    return kit.stickerOf(quoted) || kit.stickerOf(kit.unwrapMessage(message?.message || message));
 }
 
 async function downloadSticker(ctx, stickerMessage) {
-    return downloadMediaMessage(
-        {
-            key: ctx.message.key,
-            message: { stickerMessage }
-        },
-        "buffer",
-        {},
-        {
-            logger: console,
-            reuploadRequest: ctx.sock.updateMediaMessage
-        }
-    );
+    const kit = await getSoundStickerKit();
+    return kit.downloadMedia(stickerMessage, "sticker");
 }
 
 function parseExif(exif) {
@@ -79,10 +47,11 @@ async function readStickerInfo(buffer) {
     const image = new Image();
     await image.load(buffer);
     const metadata = parseExif(image.exif);
+    const hash = crypto.createHash("sha256").update(buffer).digest("hex");
 
     return {
-        id: crypto.createHash("sha256").update(buffer).digest("hex").slice(0, 16),
-        hash: crypto.createHash("sha256").update(buffer).digest("hex"),
+        id: hash.slice(0, 16),
+        hash,
         size: buffer.length,
         width: image.width || "Desconhecida",
         height: image.height || "Desconhecida",
@@ -98,9 +67,4 @@ function formatBytes(bytes) {
     return `${(bytes / 1024 / 1024).toFixed(2)} MB`;
 }
 
-module.exports = {
-    findSticker,
-    downloadSticker,
-    readStickerInfo,
-    formatBytes
-};
+module.exports = { findSticker, downloadSticker, readStickerInfo, formatBytes };
