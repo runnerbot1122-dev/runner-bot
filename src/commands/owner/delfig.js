@@ -26,6 +26,8 @@ module.exports = {
 
         try {
             fs.unlinkSync(arquivo);
+            const sidecar = `${arquivo}.sound.json`;
+            if (fs.existsSync(sidecar)) fs.unlinkSync(sidecar);
             return replyNYX(ctx, `✅ Figurinha *${nome}.webp* removida do catálogo.`, "bot");
         } catch (error) {
             console.error("[DELFIG] Erro:", error.message);
