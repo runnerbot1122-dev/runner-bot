@@ -4,7 +4,7 @@ const replyNYX = require("../../utils/replyNYX");
 
 module.exports = {
   name: "autosticker",
-  description: "Converte imagens/vídeos automaticamente em figurinhas",
+  description: "Converte imagens/vídeos automaticamente em figurinhas (vídeos podem manter o som)",
   category: "admin",
   adminOnly: true,
   async execute(ctx) {
@@ -32,7 +32,7 @@ module.exports = {
       ctx,
       `✅ Auto-sticker ${ativo ? "ativado" : "desativado"}!\n\n` +
         (ativo
-          ? "🎨 Imagens e vídeos enviados no grupo serão convertidos automaticamente em figurinhas."
+          ? "🎨 Imagens e vídeos enviados no grupo serão convertidos automaticamente em figurinhas; vídeos com áudio podem manter o som."
           : "🎨 A conversão automática foi desligada."),
       "user"
     );
