@@ -58,6 +58,14 @@ const circleFilter = (size) =>
   `crop='min(iw,ih)':'min(iw,ih)',scale=${size}:${size},format=rgba,` +
   `geq=r='r(X,Y)':g='g(X,Y)':b='b(X,Y)':a='255*clip(W/2-hypot(X-W/2+0.5,Y-H/2+0.5),0,1)'`;
 
+// Mantém a proporção do vídeo e corta somente as bordas excedentes.
+// O scale=${size}:${size} direto estica vídeos retangulares e os deixa amassados.
+const videoScaleFilter = (size, square, circle) => circle
+  ? circleFilter(size)
+  : square
+    ? `scale=${size}:${size}:flags=lanczos:force_original_aspect_ratio=increase,crop=${size}:${size}`
+    : `scale=${size}:${size}:flags=lanczos:force_original_aspect_ratio=decrease,pad=${size}:${size}:(ow-iw)/2:(oh-ih)/2:color=0x00000000,format=rgba`;
+
 const scaleFilter = (size, square, circle) => circle
   ? circleFilter(size)
   : square
@@ -69,7 +77,7 @@ async function encodeAnim(tmpIn, dur, size, fps, q, square, circle) {
   try {
     await runFfmpeg([
       '-i', tmpIn, '-t', String(dur),
-      '-vf', `fps=${fps},${scaleFilter(size, square, circle)}`,
+      '-vf', `fps=${fps},${videoScaleFilter(size, square, circle)}`,
       '-c:v', animEncoder(), '-lossless', '0', '-q:v', String(q),
       '-compression_level', '4', '-loop', '0', '-an', '-f', 'webp', out
     ]);
