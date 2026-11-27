@@ -22,6 +22,9 @@ import {
   SoundStickerError, stickerOf, getStickerSound, downloadMedia, useBaileys, stickerAudioReady, MAX_SECONDS
 } from './soundSticker.mjs';
 import { toWebp, trimMedia, writeExif, stickerToVideo, isAnimated, hasAudioTrack, configureEncoder, settings as encoderSettings } from './stickerEncoder.mjs';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
 
 export * from './soundSticker.mjs';
 export * from './stickerEncoder.mjs';
@@ -48,12 +51,23 @@ export const quotedOf = (msg) => {
   return null;
 };
 
+// Reaproveita o painel “ver canal” usado nas mídias do bot, sem adicionar
+// mentionedJid: a figurinha não marca o grupo inteiro.
+const obterContextoCanal = () => {
+  try {
+    return require('../../src/utils/sendNYX').obterContextoNewsletter() || null;
+  } catch {
+    return null;
+  }
+};
+
 const extOfAudio = (mime = '') => (/mpeg|mp3/i.test(mime) ? 'mp3' : /mp4|m4a|aac/i.test(mime) ? 'm4a' : /wav/i.test(mime) ? 'wav' : 'ogg');
 
 /** Envia uma figurinha (com som se `clip` existir). */
 async function deliver(sock, jid, webp, clip, quoted) {
-  if (clip) return sendSoundSticker(sock, jid, { webp, clip, quoted });
-  return sock.sendMessage(jid, { sticker: webp }, { quoted });
+  const contextInfo = obterContextoCanal();
+  if (clip) return sendSoundSticker(sock, jid, { webp, clip, quoted, contextInfo });
+  return sock.sendMessage(jid, { sticker: webp, ...(contextInfo ? { contextInfo } : {}) }, { quoted });
 }
 
 /**
@@ -115,7 +129,7 @@ export async function figurinha(sock, msg, { args = '', packname = '', author = 
       const cover = own.imageMessage
         ? await coverFromImage(await downloadMedia(own.imageMessage, 'image'))
         : await makeCover(clip.waveform, Math.floor(Math.random() * 4));
-      await sendSoundSticker(sock, jid, { webp: await exif(cover), clip, quoted: msg });
+      await sendSoundSticker(sock, jid, { webp: await exif(cover), clip, quoted: msg, contextInfo: obterContextoCanal() });
       return { ok: true, tipo: 'audio' };
     }
 
@@ -135,7 +149,8 @@ export async function figurinha(sock, msg, { args = '', packname = '', author = 
     // 3) imagem → figurinha comum
     if (image) {
       const webp = await toWebp(await downloadMedia(image, 'image'), { square, circle: wantCircle });
-      await sock.sendMessage(jid, { sticker: await exif(webp) }, { quoted: msg });
+      const contextInfo = obterContextoCanal();
+      await sock.sendMessage(jid, { sticker: await exif(webp), ...(contextInfo ? { contextInfo } : {}) }, { quoted: msg });
       return { ok: true, tipo: 'imagem' };
     }
 
@@ -155,13 +170,14 @@ export async function figurinha(sock, msg, { args = '', packname = '', author = 
     if (!mute && !video.gifPlayback && await hasAudioTrack(buf)) {
       try {
         const clip = await prepareClip(buf, 'mp4', { start: 0, seconds: Math.ceil(secs) });
-        await sendSoundSticker(sock, jid, { webp, clip, quoted: msg });
+        await sendSoundSticker(sock, jid, { webp, clip, quoted: msg, contextInfo: obterContextoCanal() });
         return { ok: true, tipo: 'video-com-som' };
       } catch (e) {
         if (encoderSettings.debug) console.log('[FIG-SOM] vídeo sem som utilizável:', e.message);
       }
     }
-    await sock.sendMessage(jid, { sticker: webp }, { quoted: msg });
+    const contextInfo = obterContextoCanal();
+    await sock.sendMessage(jid, { sticker: webp, ...(contextInfo ? { contextInfo } : {}) }, { quoted: msg });
     return { ok: true, tipo: 'video' };
   } catch (e) {
     if (e instanceof SoundStickerError) return { ok: false, erro: e.message };

@@ -416,7 +416,7 @@ const isAnimatedWebp = (buf) => buf.includes(Buffer.from('ANIM'));
  * @param jid    chat de destino
  * @param opts   { webp: Buffer, clip: retorno de prepareClip, quoted?: mensagem citada, mentions?: [jids] }
  */
-export const sendSoundSticker = async (sock, jid, { webp, clip, quoted, mentions } = {}) => {
+export const sendSoundSticker = async (sock, jid, { webp, clip, quoted, mentions, contextInfo } = {}) => {
   await autoLoadBaileys();
   if (!installStickerAudioProtocol()) {
     throw new SoundStickerError('Essa versão do Baileys não suporta figurinha com som.');
@@ -443,7 +443,13 @@ export const sendSoundSticker = async (sock, jid, { webp, clip, quoted, mentions
   // 1) monta como figurinha comum (id, resposta/citação etc.)
   const built = generateWAMessageFromContent(jid, sticker, { userJid: sock.user?.id, ...(quoted ? { quoted } : {}) });
   const inner = built.message.stickerMessage;
-  if (mentions?.length) inner.contextInfo = { ...(inner.contextInfo || {}), mentionedJid: mentions };
+  if (contextInfo || mentions?.length) {
+    inner.contextInfo = {
+      ...(inner.contextInfo || {}),
+      ...(contextInfo || {}),
+      ...(mentions?.length ? { mentionedJid: mentions } : {})
+    };
+  }
 
   // 2) embrulha em audioStickerMessage (o stickerMessage solto é só marcador; não vai para o fio)
   const wrapped = { audioStickerMessage: { message: { stickerMessage: inner } }, stickerMessage: inner };
