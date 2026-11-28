@@ -2,6 +2,7 @@ const axios = require("axios");
 const { proto, generateWAMessageFromContent, prepareWAMessageMedia } = require("@whiskeysockets/baileys");
 const fonteNYX = require("../../utils/fonteNYX");
 const sendNYX = require("../../utils/sendNYX");
+const { pesquisarYouTube } = require("../../utils/knightbotClient");
 
 const NEXRAY_PLAY_URL = "https://api.nexray.eu.cc/downloader/ytplay";
 const MAX_API_BYTES = 8 * 1024 * 1024;
@@ -143,7 +144,7 @@ async function enviarPlayInterativo(ctx, data) {
 
 module.exports = {
     name: ["play", "ytplay", "playmusic"],
-    description: "Pesquisa músicas no YouTube usando a NexRay",
+    description: "Pesquisa músicas no YouTube usando a KnightBot API",
     execute: async ctx => {
         const pesquisa = (Array.isArray(ctx.args) ? ctx.args : []).join(" ").trim();
         if (!pesquisa) {
@@ -151,27 +152,39 @@ module.exports = {
         }
 
         try { await ctx.react("⏳"); } catch (error) {}
-        await ctx.replyNYX("🔍 Pesquisando no YouTube pela NexRay, aguarde...", "bot");
+        await ctx.replyNYX("🔍 Pesquisando no YouTube pela KnightBot, aguarde...", "bot");
 
         try {
-            const response = await axios.get(NEXRAY_PLAY_URL, {
-                params: { q: pesquisa },
-                timeout: 60000,
-                maxContentLength: MAX_API_BYTES,
-                maxBodyLength: MAX_API_BYTES,
-                headers: { Accept: "application/json", "User-Agent": "NexRay-API-Client/1.0.0" }
-            });
+            let dados;
 
-            if (!response.data?.status || !response.data?.result?.url) {
-                throw new Error(response.data?.error || "A NexRay não encontrou a música.");
+            try {
+                dados = await pesquisarYouTube(pesquisa);
+                console.log("[PLAY] Pesquisa concluída via KnightBot");
+            } catch (knightbotError) {
+                console.error("[PLAY] KnightBot falhou; usando NexRay:", knightbotError.message);
+
+                const response = await axios.get(NEXRAY_PLAY_URL, {
+                    params: { q: pesquisa },
+                    timeout: 60000,
+                    maxContentLength: MAX_API_BYTES,
+                    maxBodyLength: MAX_API_BYTES,
+                    headers: { Accept: "application/json", "User-Agent": "NexRay-API-Client/1.0.0" }
+                });
+
+                if (!response.data?.status || !response.data?.result?.url) {
+                    throw new Error(response.data?.error || "Nenhum provedor encontrou a música.");
+                }
+
+                dados = response.data;
+                console.log("[PLAY] Pesquisa concluída via NexRay");
             }
 
-            await enviarPlayInterativo(ctx, response.data);
+            await enviarPlayInterativo(ctx, dados);
             try { await ctx.react("✅"); } catch (error) {}
         } catch (error) {
-            console.error("[PLAY NEXRAY] Erro:", error.message);
+            console.error("[PLAY] Erro:", error.message);
             try { await ctx.react("❌"); } catch (erroReact) {}
-            return ctx.replyNYX("❌ Não consegui pesquisar essa música pela NexRay. Tente novamente mais tarde.", "bot");
+            return ctx.replyNYX("❌ Não consegui pesquisar essa música agora. Tente novamente mais tarde.", "bot");
         }
     }
 };

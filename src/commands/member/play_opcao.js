@@ -7,6 +7,7 @@ const axios = require("axios");
 const replyNYX = require("../../utils/replyNYX");
 const sendNYXMedia = require("../../utils/sendNYXMedia");
 const { buscarEBaixarAudio } = require("../../utils/youtubeAudio");
+const { baixarAudio: baixarAudioKnightbot, baixarVideo: baixarVideoKnightbot } = require("../../utils/knightbotClient");
 
 const execFileAsync = promisify(execFile);
 const MAX_FILE_SIZE = 60 * 1024 * 1024;
@@ -46,6 +47,24 @@ async function baixarAudioNexray(link) {
         audioBuffer,
         title: result.title,
         fileName: `${nomeSeguro(result.title, "runner-play")}.mp3`
+    };
+}
+
+async function baixarAudioViaKnightbot(link) {
+    const faixa = await baixarAudioKnightbot(link);
+    return {
+        audioBuffer: faixa.audioBuffer,
+        title: faixa.title,
+        fileName: `${nomeSeguro(faixa.title, "runner-play")}.mp3`
+    };
+}
+
+async function baixarVideoViaKnightbot(link) {
+    const video = await baixarVideoKnightbot(link);
+    return {
+        buffer: video.buffer,
+        title: video.title,
+        fileName: `${nomeSeguro(video.title, "runner-play-video")}.mp4`
     };
 }
 
@@ -171,28 +190,35 @@ module.exports = {
                 let faixa;
 
                 try {
-                    const cobalt = await baixarCobalt(link, "audio");
-                    faixa = {
-                        audioBuffer: cobalt.buffer,
-                        title: cobalt.title,
-                        fileName: cobalt.fileName
-                    };
-                    console.log(`[PLAY ${tipo.toUpperCase()}] Download concluído via Cobalt`);
-                } catch (cobaltError) {
-                    console.error(`[PLAY ${tipo.toUpperCase()}] Cobalt falhou; usando NexRay:`, cobaltError.message);
+                    faixa = await baixarAudioViaKnightbot(link);
+                    console.log(`[PLAY ${tipo.toUpperCase()}] Download concluído via KnightBot`);
+                } catch (knightbotError) {
+                    console.error(`[PLAY ${tipo.toUpperCase()}] KnightBot falhou; usando Cobalt:`, knightbotError.message);
 
                     try {
-                        faixa = await baixarAudioNexray(link);
-                        console.log(`[PLAY ${tipo.toUpperCase()}] Download concluído via NexRay`);
-                    } catch (nexrayError) {
-                        console.error(`[PLAY ${tipo.toUpperCase()}] NexRay falhou; usando yt-dlp:`, nexrayError.message);
+                        const cobalt = await baixarCobalt(link, "audio");
+                        faixa = {
+                            audioBuffer: cobalt.buffer,
+                            title: cobalt.title,
+                            fileName: cobalt.fileName
+                        };
+                        console.log(`[PLAY ${tipo.toUpperCase()}] Download concluído via Cobalt`);
+                    } catch (cobaltError) {
+                        console.error(`[PLAY ${tipo.toUpperCase()}] Cobalt falhou; usando NexRay:`, cobaltError.message);
 
                         try {
-                            faixa = await baixarAudioYtDlp(link);
-                            console.log(`[PLAY ${tipo.toUpperCase()}] Download concluído via yt-dlp`);
-                        } catch (ytDlpError) {
-                            console.error(`[PLAY ${tipo.toUpperCase()}] yt-dlp falhou; usando Denzy:`, ytDlpError.message);
-                            faixa = await buscarEBaixarAudio(link);
+                            faixa = await baixarAudioNexray(link);
+                            console.log(`[PLAY ${tipo.toUpperCase()}] Download concluído via NexRay`);
+                        } catch (nexrayError) {
+                            console.error(`[PLAY ${tipo.toUpperCase()}] NexRay falhou; usando yt-dlp:`, nexrayError.message);
+
+                            try {
+                                faixa = await baixarAudioYtDlp(link);
+                                console.log(`[PLAY ${tipo.toUpperCase()}] Download concluído via yt-dlp`);
+                            } catch (ytDlpError) {
+                                console.error(`[PLAY ${tipo.toUpperCase()}] yt-dlp falhou; usando Denzy:`, ytDlpError.message);
+                                faixa = await buscarEBaixarAudio(link);
+                            }
                         }
                     }
                 }
@@ -224,6 +250,19 @@ module.exports = {
         if (tipo === "video") {
             try {
                 try {
+                    const knightbot = await baixarVideoViaKnightbot(link);
+                    console.log("[PLAY VÍDEO] Download concluído via KnightBot");
+                    return await sendNYXMedia(ctx.sock, ctx.chat, {
+                        video: knightbot.buffer,
+                        mimetype: "video/mp4",
+                        fileName: knightbot.fileName,
+                        caption: "🎬 Vídeo baixado pelo Play"
+                    }, ctx.message);
+                } catch (knightbotError) {
+                    console.error("[PLAY VÍDEO] KnightBot falhou; usando Cobalt:", knightbotError.message);
+                }
+
+                try {
                     const cobalt = await baixarCobalt(link, "video");
                     return await sendNYXMedia(ctx.sock, ctx.chat, {
                         video: cobalt.buffer,
@@ -237,28 +276,28 @@ module.exports = {
 
                 const temporario = fs.mkdtempSync(path.join(os.tmpdir(), "runnerbot-play-video-"));
                 try {
-                const output = path.join(temporario, "video.%(ext)s");
-                await execFileAsync("yt-dlp", [
-                    "--no-warnings",
-                    "--no-playlist",
-                    "--format", "best[ext=mp4]/best",
-                    "--max-filesize", "60M",
-                    "--no-part",
-                    "-o", output,
-                    link
-                ], { timeout: 240000, maxBuffer: 10 * 1024 * 1024 });
+                    const output = path.join(temporario, "video.%(ext)s");
+                    await execFileAsync("yt-dlp", [
+                        "--no-warnings",
+                        "--no-playlist",
+                        "--format", "best[ext=mp4]/best",
+                        "--max-filesize", "60M",
+                        "--no-part",
+                        "-o", output,
+                        link
+                    ], { timeout: 240000, maxBuffer: 10 * 1024 * 1024 });
 
-                const file = fs.readdirSync(temporario).find(nome => /\.(mp4|webm|mkv)$/i.test(nome));
-                if (!file) throw new Error("Vídeo não encontrado.");
+                    const file = fs.readdirSync(temporario).find(nome => /\.(mp4|webm|mkv)$/i.test(nome));
+                    if (!file) throw new Error("Vídeo não encontrado.");
 
-                const buffer = fs.readFileSync(path.join(temporario, file));
-                if (!buffer.length || buffer.length > MAX_FILE_SIZE) throw new Error("Vídeo maior que 60 MB.");
+                    const buffer = fs.readFileSync(path.join(temporario, file));
+                    if (!buffer.length || buffer.length > MAX_FILE_SIZE) throw new Error("Vídeo maior que 60 MB.");
 
-                return await sendNYXMedia(ctx.sock, ctx.chat, {
-                    video: buffer,
-                    mimetype: /\.mp4$/i.test(file) ? "video/mp4" : "video/webm",
-                    caption: "🎬 Vídeo baixado pelo Play"
-                }, ctx.message);
+                    return await sendNYXMedia(ctx.sock, ctx.chat, {
+                        video: buffer,
+                        mimetype: /\.mp4$/i.test(file) ? "video/mp4" : "video/webm",
+                        caption: "🎬 Vídeo baixado pelo Play"
+                    }, ctx.message);
                 } finally {
                     fs.rmSync(temporario, { recursive: true, force: true });
                 }
