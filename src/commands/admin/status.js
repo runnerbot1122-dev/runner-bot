@@ -4,6 +4,8 @@ const fonteNYX = require("../../utils/fonteNYX");
 const { getGroup } = require("../../utils/groups");
 const config = require("../../config/config");
 const { requireAdmin } = require("../../utils/checkPermission");
+const comandos = require("../../core/loader");
+const scheduler = require("../../core/scheduler");
 
 function ligado(valor) {
     return valor ? "✅ ON" : "❌ OFF";
@@ -52,7 +54,11 @@ module.exports = {
             ? s.extrasPrefixos.join(", ")
             : "Nenhum";
         const reacoes = Array.isArray(s.reactionKeywords) ? s.reactionKeywords.length : 0;
-        const respostas = Array.isArray(s.autoReplies) ? s.autoReplies.length : 0;
+        const respostasLista = Array.isArray(s.autoReplies) ? s.autoReplies : [];
+        const respostas = respostasLista.filter(item => item?.enabled !== false).length;
+        const respostasPausadas = respostasLista.filter(item => item?.enabled === false).length;
+        const schedulerStats = scheduler.getStats();
+        const memoria = process.memoryUsage();
         const limiteCaracteres = s.limiteCaracteres || s.limiteCaracteres === 0 ? s.limiteCaracteres : "Desativado";
         const tempoComando = Number(s.tempoComando) > 0 ? `${s.tempoComando}s` : "Desativado";
         const versaoWhatsApp = Array.isArray(ctx.sock?.ws?.config?.version)
@@ -80,7 +86,9 @@ ${linha("NODE", process.version)}
 ${linha("WHATSAPP", versaoWhatsApp)}
 ${linha("PLATAFORMA", `${process.platform} ${process.arch}`)}
 ${linha("UPTIME", formatarUptime(process.uptime()))}
-${linha("MEMÓRIA", `${Math.round(process.memoryUsage().rss / 1024 / 1024)} MB RSS`)}
+${linha("MEMÓRIA", `${Math.round(memoria.rss / 1024 / 1024)} MB RSS / ${Math.round(memoria.heapUsed / 1024 / 1024)} MB heap`)}
+${linha("COMANDOS", comandos.size)}
+${linha("SESSÕES", schedulerStats.sessions)}
 
 ╠═✰『 ᴘʀᴏᴛᴇᴄ̧ᴏ̃ᴇs 』
 ${linha("ANTILINK", ligado(s.antilink))}
@@ -121,7 +129,10 @@ ${linha("AUTO-TEXTO", ligado(s.autoToText))}
 
 ╠═✰『 ᴇxᴛʀᴀs 』
 ${linha("PALAVRAS DE REAÇÃO", reacoes)}
-${linha("RESPOSTAS AUTOMÁTICAS", respostas)}
+${linha("RESPOSTAS ATIVAS", respostas)}
+${linha("RESPOSTAS PAUSADAS", respostasPausadas)}
+${linha("LEMBRETES PENDENTES", schedulerStats.pending)}
+${linha("LEMBRETES ENVIANDO", schedulerStats.sending)}
 ${linha("EMOJI GLOBAL", emoji)}
 
 ╚═━═━═━═━ ${fonteNYX("DEV EZ")} ━═━═━═━✰

@@ -27,7 +27,8 @@ ${secao("ɢᴇsᴛᴀ̃ᴏ ᴅᴏ ɢʀᴜᴘᴏ", [
     "regras",
     "regraspp",
     "ephemeral",
-    "msgtemp"
+    "msgtemp",
+    "status"
 ])}
 
 ${secao("ᴍᴇᴍʙʀᴏs", [
@@ -100,6 +101,13 @@ ${secao("ᴄᴏɴғɪɢᴜʀᴀᴄᴏᴇs", [
     "autosticker",
     "autofigu",
     "autototext",
+    "addr",
+    "delr",
+    "listarrespostas",
+    "testarresposta",
+    "ativarresposta",
+    "desativarresposta",
+    "editarresposta",
     "odelete",
     "x9",
     "x9visuunica",
@@ -113,7 +121,6 @@ ${secao("ᴄᴏɴғɪɢᴜʀᴀᴄᴏᴇs", [
 ${secao("ᴇxᴛʀᴀs", [
     "s",
     "x",
-    "status",
     "xp",
     "rank"
 ])}

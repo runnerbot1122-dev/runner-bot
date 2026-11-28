@@ -387,10 +387,17 @@ function addAutoReply(id, trigger, response){
         );
 
 
-    const registro = {
-        trigger: alvo,
-        response: texto
-    };
+    const registro = existente >= 0
+        ? {
+            ...respostas[existente],
+            trigger: alvo,
+            response: texto
+        }
+        : {
+            trigger: alvo,
+            response: texto,
+            enabled: true
+        };
 
 
     if(existente >= 0){
@@ -411,6 +418,91 @@ function addAutoReply(id, trigger, response){
     database.saveGroups();
 
     return respostas;
+
+}
+
+
+function findAutoReply(id, trigger){
+
+    const alvo =
+        String(trigger || "").trim().toLowerCase();
+
+    if(!alvo){
+        return null;
+    }
+
+    return getAutoReplies(id).find(
+        item => String(item && item.trigger || "")
+            .trim()
+            .toLowerCase() === alvo
+    ) || null;
+
+}
+
+
+function setAutoReplyEnabled(id, trigger, enabled){
+
+    const resposta =
+        findAutoReply(id, trigger);
+
+    if(!resposta){
+        return false;
+    }
+
+    resposta.enabled = Boolean(enabled);
+    database.saveGroups();
+    return resposta;
+
+}
+
+
+function updateAutoReply(id, trigger, novoTrigger, response){
+
+    const respostas =
+        getAutoReplies(id);
+
+    const alvo =
+        String(trigger || "").trim().toLowerCase();
+
+    const destino =
+        String(novoTrigger || "").trim();
+
+    const texto =
+        String(response || "").trim();
+
+    if(!alvo || !destino || !texto){
+        return null;
+    }
+
+    const indice = respostas.findIndex(
+        item => String(item && item.trigger || "")
+            .trim()
+            .toLowerCase() === alvo
+    );
+
+    if(indice < 0){
+        return null;
+    }
+
+    const conflito = respostas.findIndex(
+        (item, itemIndice) => itemIndice !== indice &&
+            String(item && item.trigger || "")
+                .trim()
+                .toLowerCase() === destino.toLowerCase()
+    );
+
+    if(conflito >= 0){
+        return null;
+    }
+
+    respostas[indice] = {
+        ...respostas[indice],
+        trigger: destino,
+        response: texto
+    };
+
+    database.saveGroups();
+    return respostas[indice];
 
 }
 
@@ -559,9 +651,10 @@ removeReactionKeyword
 ,
 
 getAutoReplies,
-
 addAutoReply,
-
+findAutoReply,
+setAutoReplyEnabled,
+updateAutoReply,
 removeAutoReply,
 
 // Novas funções globais:

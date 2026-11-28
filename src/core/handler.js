@@ -643,6 +643,7 @@ async function handler(sock, m, opcoes = {}) {
         const ctx = {
             sock, message: m, chat, sender: remetente, sessionId: opcoes.sessionId || null, args: [], command: null,
             customReactionSent: false,
+            customReactionEmoji: null,
             prefix: prefixoAtual, text: texto, level: permissoes.level,
             isOwner: permissoes.owner,
             isMaster: isMaster(remetente) || isMaster(identidade.jid) || isMaster(identidade.lid),
@@ -650,8 +651,11 @@ async function handler(sock, m, opcoes = {}) {
             reply(conteudo) { return sendNYX.sendCommandReply(this, conteudo); },
             replyNYX(texto, modo = "user") { return replyNYX(this, texto, modo); },
             react(emoji) {
-                this.customReactionSent = Boolean(emoji);
-                return sock.sendMessage(chat, { react: { text: emoji, key: m.key } });
+                const valor = String(emoji || "").trim();
+                if (!valor) return Promise.resolve(false);
+                this.customReactionSent = true;
+                this.customReactionEmoji = valor;
+                return sock.sendMessage(chat, { react: { text: valor, key: m.key } });
             },
             delete() { return sock.sendMessage(chat, { delete: { remoteJid: chat, fromMe: m.key.fromMe, id: m.key.id, participant: m.key.participant } }); }
         };

@@ -197,6 +197,7 @@ ${secao("ᴍᴇᴍʙʀᴏs / ʀᴀɴᴅᴏᴍ", [
     "encurtalink",
     "getperfil",
     "getbio",
+    "lembrete",
     "lermais",
     "spoiler",
     "idade",

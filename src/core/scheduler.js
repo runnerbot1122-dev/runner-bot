@@ -222,6 +222,15 @@ function cancelTask(id, contexto) {
     return { found: true, task: tarefa };
 }
 
+function getStats() {
+    const lista = Object.values(tarefas());
+    return {
+        pending: lista.filter(tarefa => tarefa?.status === "pending").length,
+        sending: lista.filter(tarefa => tarefa?.status === "sending").length,
+        sessions: sockets.size
+    };
+}
+
 normalizarTarefas();
 agendarProximo();
 
@@ -235,5 +244,6 @@ module.exports = {
     cancelTask,
     registerSession,
     unregisterSession,
-    processarTarefas
+    processarTarefas,
+    getStats
 };
