@@ -1,12 +1,12 @@
 # Mapeamento completo de comandos e aliases
 
-Gerado em 2026-11-28T16:51:13.693Z. Inventário somente leitura baseado em src/commands, no loader e nos menus atuais.
+Gerado em 2026-11-28T17:24:20.226Z. Inventário somente leitura baseado em src/commands, no loader e nos menus atuais.
 
 ## Resumo
 
-- Arquivos de comando: **380**
-- Aliases declarados, sem repetição: **662**
-- Aliases efetivamente carregados: **662**
+- Arquivos de comando: **382**
+- Aliases declarados, sem repetição: **664**
+- Aliases efetivamente carregados: **664**
 - Arquivos de menu: **11**
 - Conflitos de alias: **0**
 - Erros de carregamento: **0**
@@ -118,7 +118,7 @@ Gerado em 2026-11-28T16:51:13.693Z. Inventário somente leitura baseado em src/c
 | `src/commands/admin/xp.js` | `xp` | `xp` | Ativa ou desativa o ganho de XP no grupo |
 | `src/commands/admin/zerarativos.js` | `zerarativos` | `zerarativos`, `zerarxp`, `resetxp` | Zera o XP de todos os membros deste grupo |
 
-### ia (8 arquivos)
+### ia (10 arquivos)
 
 | Arquivo | Alias principal | Aliases | Descrição |
 |---|---|---|---|
@@ -129,7 +129,9 @@ Gerado em 2026-11-28T16:51:13.693Z. Inventário somente leitura baseado em src/c
 | `src/commands/ia/gpt.js` | `gpt` | `gpt` | Conversa com um modelo rápido servido pela Groq |
 | `src/commands/ia/ia-sticker.js` | `ia-sticker` | `ia-sticker`, `iasticker`, `iafig`, `figia` | Gera uma figurinha usando Inteligência Artificial |
 | `src/commands/ia/imagine.js` | `imagine` | `imagine`, `gerarimg`, `desenhar` | Gera uma imagem usando Inteligência Artificial |
+| `src/commands/ia/limparia.js` | `limparia` | `limparia` | Apaga o histórico da conversa com a IA |
 | `src/commands/ia/modoia.js` | `modoia` | `modoia` | Ativa ou desativa a conversa contínua com a IA |
+| `src/commands/ia/statusia.js` | `statusia` | `statusia` | Mostra o status do modo contínuo e do histórico da IA |
 
 ### member (161 arquivos)
 
@@ -636,6 +638,8 @@ Gerado em 2026-11-28T16:51:13.693Z. Inventário somente leitura baseado em src/c
 - `gemini`
 - `claude`
 - `modoia`
+- `statusia`
+- `limparia`
 - `flux`
 - `imagine`
 - `ia`

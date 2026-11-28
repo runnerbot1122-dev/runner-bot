@@ -30,9 +30,32 @@ function setMode(chat, sender, provider = "gemini") {
 
 function clearMode(chat, sender) {
     modes.delete(modeKey(chat, sender));
+    clearHistory(chat, sender);
+}
+
+function clearHistory(chat, sender, provider = null) {
+    const prefix = `${chat}:${sender}:`;
+    let removed = 0;
     for (const key of histories.keys()) {
-        if (key.startsWith(`${chat}:${sender}:`)) histories.delete(key);
+        if (key.startsWith(prefix) && (!provider || key === `${prefix}${provider}`)) {
+            histories.delete(key);
+            removed++;
+        }
     }
+    return removed;
+}
+
+function getHistoryInfo(chat, sender, provider = null) {
+    const prefix = `${chat}:${sender}:`;
+    let messages = 0;
+    const providers = [];
+    for (const [key, history] of histories.entries()) {
+        if (key.startsWith(prefix) && (!provider || key === `${prefix}${provider}`)) {
+            messages += history.length;
+            providers.push(key.slice(prefix.length));
+        }
+    }
+    return { messages, providers: [...new Set(providers)] };
 }
 
 function resetExpired(history) {
@@ -81,4 +104,4 @@ async function processContinuousMessage({ sock, message, chat, sender, text }) {
     return true;
 }
 
-module.exports = { askConversation, getMode, setMode, clearMode, processContinuousMessage, TTL };
+module.exports = { askConversation, getMode, setMode, clearMode, clearHistory, getHistoryInfo, processContinuousMessage, TTL };

@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-11-28T16:51:13.693Z",
+  "generatedAt": "2026-11-28T17:24:20.226Z",
   "summary": {
-    "commandFiles": 380,
-    "declaredAliases": 662,
-    "effectiveAliases": 662,
+    "commandFiles": 382,
+    "declaredAliases": 664,
+    "effectiveAliases": 664,
     "menuFiles": 11,
     "loadErrors": 0,
     "duplicateAliases": 0
   },
   "categoryStats": {
     "admin": 100,
-    "ia": 8,
+    "ia": 10,
     "member": 161,
     "menu": 14,
     "owner": 97
@@ -1464,6 +1464,18 @@
     },
     {
       "category": "ia",
+      "file": "src/commands/ia/limparia.js",
+      "name": "limparia",
+      "aliases": [
+        "limparia"
+      ],
+      "description": "Apaga o histórico da conversa com a IA",
+      "loadedAliases": [
+        "limparia"
+      ]
+    },
+    {
+      "category": "ia",
       "file": "src/commands/ia/modoia.js",
       "name": "modoia",
       "aliases": [
@@ -1472,6 +1484,18 @@
       "description": "Ativa ou desativa a conversa contínua com a IA",
       "loadedAliases": [
         "modoia"
+      ]
+    },
+    {
+      "category": "ia",
+      "file": "src/commands/ia/statusia.js",
+      "name": "statusia",
+      "aliases": [
+        "statusia"
+      ],
+      "description": "Mostra o status do modo contínuo e do histórico da IA",
+      "loadedAliases": [
+        "statusia"
       ]
     },
     {
@@ -5369,6 +5393,8 @@
         "gemini",
         "claude",
         "modoia",
+        "statusia",
+        "limparia",
         "flux",
         "imagine",
         "ia"

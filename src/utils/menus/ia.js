@@ -16,7 +16,9 @@ ${secao("ᴄᴏɴᴠᴇʀsᴀᴄ̧ᴀ̃ᴏ", [
     "gpt",
     "gemini",
     "claude",
-    "modoia"
+    "modoia",
+    "statusia",
+    "limparia"
 ])}
 
 ${secao("ɪᴍᴀɢᴇɴs", [
