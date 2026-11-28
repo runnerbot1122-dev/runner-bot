@@ -396,7 +396,9 @@ function addAutoReply(id, trigger, response){
         : {
             trigger: alvo,
             response: texto,
-            enabled: true
+            enabled: true,
+            priority: 0,
+            cooldownMs: 0
         };
 
 
@@ -450,6 +452,37 @@ function setAutoReplyEnabled(id, trigger, enabled){
     }
 
     resposta.enabled = Boolean(enabled);
+    database.saveGroups();
+    return resposta;
+
+}
+
+
+function setAutoReplyOptions(id, trigger, options = {}){
+
+    const resposta =
+        findAutoReply(id, trigger);
+
+    if(!resposta){
+        return null;
+    }
+
+    if(options.priority !== undefined){
+        const prioridade = Number(options.priority);
+        if(!Number.isInteger(prioridade) || prioridade < -100 || prioridade > 100){
+            return null;
+        }
+        resposta.priority = prioridade;
+    }
+
+    if(options.cooldownMs !== undefined){
+        const cooldown = Number(options.cooldownMs);
+        if(!Number.isInteger(cooldown) || cooldown < 0 || cooldown > 24 * 60 * 60 * 1000){
+            return null;
+        }
+        resposta.cooldownMs = cooldown;
+    }
+
     database.saveGroups();
     return resposta;
 
@@ -654,6 +687,7 @@ getAutoReplies,
 addAutoReply,
 findAutoReply,
 setAutoReplyEnabled,
+setAutoReplyOptions,
 updateAutoReply,
 removeAutoReply,
 

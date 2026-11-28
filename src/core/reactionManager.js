@@ -94,6 +94,13 @@ function normalizeTrigger(trigger){
 
 }
 
+function isPrefixCommand(text, prefixes){
+    const mensagem = String(text || "").trim();
+    const lista = Array.isArray(prefixes) ? prefixes : [prefixes];
+    return Boolean(mensagem) && lista.filter(Boolean)
+        .some(prefixo => mensagem.startsWith(String(prefixo)));
+}
+
 
 async function reactNYX(ctx, emoji){
 
@@ -313,6 +320,7 @@ async function applyPrefixReaction(ctx){
 
 module.exports = {
     reactNYX,
+    isPrefixCommand,
     applyAutomaticKeywordReactions,
     applyCommandSuccessReaction,
     getCommandReaction,

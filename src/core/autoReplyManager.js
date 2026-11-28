@@ -11,6 +11,8 @@ const {
     registrarErro
 } = require("../utils/errorLogger");
 
+const cooldowns = new Map();
+
 
 function normalizeTrigger(trigger){
 
@@ -45,7 +47,7 @@ async function applyAutomaticReplies(ctx, texto){
     }
 
 
-    const encontradas = findAutomaticReplies(ctx.chat, mensagem);
+    const encontradas = findAutomaticReplies(ctx.chat, mensagem, { respectCooldown: true });
 
 
     for(const item of encontradas){
@@ -57,6 +59,7 @@ async function applyAutomaticReplies(ctx, texto){
                 item.response,
                 "user"
             );
+            registrarCooldown(ctx.chat, item);
 
         }
         catch(error){
@@ -82,7 +85,7 @@ async function applyAutomaticReplies(ctx, texto){
 
 }
 
-function findAutomaticReplies(chat, texto){
+function findAutomaticReplies(chat, texto, options = {}){
     if(!chat || !String(texto || "").trim()) return [];
     const respostas = getAutoReplies(chat);
     if(!Array.isArray(respostas) || !respostas.length) return [];
@@ -94,16 +97,45 @@ function findAutomaticReplies(chat, texto){
         const response = String(item && item.response || "").trim();
         const normalizado = normalizeTrigger(trigger);
         const habilitada = item?.enabled !== false;
-        if(normalizado && response && habilitada && !usadas.has(normalizado) && mensagemLower.includes(normalizado)){
+        const priority = Number.isInteger(Number(item?.priority)) ? Number(item.priority) : 0;
+        const cooldownMs = Number.isFinite(Number(item?.cooldownMs)) ? Math.max(0, Number(item.cooldownMs)) : 0;
+        const bloqueada = options.respectCooldown === true && cooldownAtivo(chat, normalizado, cooldownMs);
+        if(normalizado && response && habilitada && !bloqueada && !usadas.has(normalizado) && mensagemLower.includes(normalizado)){
             usadas.add(normalizado);
-            encontradas.push({ trigger, response });
+            const registro = { trigger, response };
+            Object.defineProperties(registro, {
+                priority: { value: priority, enumerable: false },
+                cooldownMs: { value: cooldownMs, enumerable: false }
+            });
+            encontradas.push(registro);
         }
     }
-    return encontradas;
+    return encontradas.sort((a, b) => b.priority - a.priority || b.trigger.length - a.trigger.length);
+}
+
+function cooldownAtivo(chat, trigger, cooldownMs){
+    if(!cooldownMs) return false;
+    const chave = `${chat}:${trigger}`;
+    const ultimo = cooldowns.get(chave) || 0;
+    if(Date.now() - ultimo >= cooldownMs){
+        cooldowns.delete(chave);
+        return false;
+    }
+    return true;
+}
+
+function registrarCooldown(chat, item){
+    if(!item.cooldownMs) return;
+    cooldowns.set(`${chat}:${normalizeTrigger(item.trigger)}`, Date.now());
+}
+
+function clearCooldowns(){
+    cooldowns.clear();
 }
 
 
 module.exports = {
     applyAutomaticReplies,
-    findAutomaticReplies
+    findAutomaticReplies,
+    clearCooldowns
 };

@@ -19,7 +19,7 @@ const sendNYX = require("../utils/sendNYX");
 const { obterIdentidadeMensagem } = require("../utils/messageIdentity");
 const { ganharXP } = require("../utils/xp");
 const database = require("../database/database");
-const { applyAutomaticKeywordReactions, applyPrefixReaction } = require("./reactionManager");
+const { applyAutomaticKeywordReactions, applyPrefixReaction, isPrefixCommand } = require("./reactionManager");
 const { applyAutomaticReplies } = require("./autoReplyManager");
 const security = require("../database/securityGroups");
 const { deletePaymentMessageWithFallback } = require("../utils/deletePaymentMessage");
@@ -695,7 +695,11 @@ async function handler(sock, m, opcoes = {}) {
             }
         }
 
-        await applyAutomaticKeywordReactions(ctx);
+        // Reações globais só devem atuar em mensagens comuns. Em comandos
+        // prefixados, a reação específica do comando tem prioridade.
+        const mensagemEhComandoPrefixado = Boolean(prefixoUsado) ||
+            isPrefixCommand(texto, todosPrefixos);
+        if (!mensagemEhComandoPrefixado) await applyAutomaticKeywordReactions(ctx);
 
         if (chat.endsWith("@g.us")) {
             const textoLower = texto.toLowerCase();

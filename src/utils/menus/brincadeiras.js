@@ -62,7 +62,6 @@ ${secao("ɪɴᴛᴇʀᴀᴛɪᴠᴏs", [
     "louca",
     "safado",
     "safada",
-    "mencionar",
     "chance",
     "sorteio"
 ])}
@@ -89,8 +88,6 @@ ${secao("ᴘᴇʀsᴏɴᴀɢᴇɴs ᴇ ᴄʀɪᴀᴄ̧ᴀ̃ᴏ", [
     "meupar",
     "meumelhoramigo",
     "meumelhorpar",
-    "sobrenome",
-    "historia",
     "contardias",
     "perfil",
     "meunome",

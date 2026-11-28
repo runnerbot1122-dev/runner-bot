@@ -209,6 +209,12 @@ function listTasks(chat, sender) {
         .sort((a, b) => Number(a.dueAt) - Number(b.dueAt));
 }
 
+function listChatTasks(chat) {
+    return Object.values(tarefas())
+        .filter(tarefa => tarefa?.status === "pending" && tarefa.chat === chat)
+        .sort((a, b) => Number(a.dueAt) - Number(b.dueAt));
+}
+
 function canManageTask(tarefa, { chat, sender, isAdmin, isOwner } = {}) {
     return tarefa && tarefa.chat === chat && (tarefa.sender === sender || isAdmin || isOwner);
 }
@@ -220,6 +226,20 @@ function cancelTask(id, contexto) {
     persistir();
     agendarProximo();
     return { found: true, task: tarefa };
+}
+
+function cancelTasksForChat(chat, contexto) {
+    const removidas = [];
+    for (const tarefa of listChatTasks(chat)) {
+        if (!canManageTask(tarefa, { ...contexto, chat })) continue;
+        delete tarefas()[tarefa.id];
+        removidas.push(tarefa);
+    }
+    if (removidas.length) {
+        persistir();
+        agendarProximo();
+    }
+    return removidas;
 }
 
 function getStats() {
@@ -241,7 +261,9 @@ module.exports = {
     formatDuration,
     createTask,
     listTasks,
+    listChatTasks,
     cancelTask,
+    cancelTasksForChat,
     registerSession,
     unregisterSession,
     processarTarefas,

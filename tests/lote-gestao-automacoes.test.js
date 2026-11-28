@@ -105,3 +105,92 @@ test("scheduler restaura tarefas persistidas em um novo processo", () => {
         assert.match(child.stdout, /scheduler-restart-ok/);
     });
 });
+
+
+test("respostas automáticas respeitam prioridade e cooldown apenas na execução real", async () => {
+    const original = fs.readFileSync(groupsPath, "utf8");
+    try {
+        const groups = require(path.join(root, "src/utils/groups"));
+        const manager = require(path.join(root, "src/core/autoReplyManager"));
+        const id = "test-prioridade@g.us";
+        const respostas = groups.getAutoReplies(id, false);
+        respostas.splice(0, respostas.length);
+        groups.addAutoReply(id, "oi", "resposta baixa");
+        groups.addAutoReply(id, "oi tudo", "resposta alta");
+        groups.setAutoReplyOptions(id, "oi", { priority: 1, cooldownMs: 60000 });
+        groups.setAutoReplyOptions(id, "oi tudo", { priority: 10, cooldownMs: 60000 });
+        assert.deepEqual(manager.findAutomaticReplies(id, "oi tudo", { respectCooldown: false }).map(item => item.response), ["resposta alta", "resposta baixa"]);
+        manager.clearCooldowns();
+        let envios = 0;
+        await manager.applyAutomaticReplies({
+            chat: id,
+            sender: "5511999999999@s.whatsapp.net",
+            message: { message: {}, key: { id: "test" } },
+            sock: {
+                sendMessage: async () => { envios++; },
+                relayMessage: async () => { envios++; }
+            }
+        }, "oi tudo");
+        assert.equal(envios, 2);
+        assert.equal(manager.findAutomaticReplies(id, "oi tudo", { respectCooldown: true }).length, 0);
+        assert.equal(manager.findAutomaticReplies(id, "oi tudo", { respectCooldown: false }).length, 2);
+        manager.clearCooldowns();
+    } finally {
+        fs.writeFileSync(groupsPath, original);
+    }
+});
+
+test("scheduler lista, cancela e limpa lembretes por grupo", () => {
+    withDatabaseSnapshot(tasksPath, () => {
+        const scheduler = require(path.join(root, "src/core/scheduler"));
+        const chat = "120363000000000000@g.us";
+        const sender = "5511999999999@s.whatsapp.net";
+        const contexto = { chat, sender, isAdmin: true, isOwner: false };
+        const primeiro = scheduler.createTask({ chat, sender, text: "primeiro", delayMs: 60000 });
+        const segundo = scheduler.createTask({ chat, sender, text: "segundo", delayMs: 120000 });
+        assert.equal(scheduler.listChatTasks(chat).length, 2);
+        assert.equal(scheduler.cancelTask(primeiro.id, contexto).found, true);
+        assert.equal(scheduler.listChatTasks(chat).length, 1);
+        assert.equal(scheduler.cancelTasksForChat(chat, contexto).length, 1);
+        assert.equal(scheduler.listChatTasks(chat).length, 0);
+        assert.equal(scheduler.cancelTask(segundo.id, contexto).found, false);
+    });
+});
+
+test("auditoria detecta identidade inválida e referências inconsistentes", () => {
+    const { auditar } = require(path.join(root, "scripts/auditar-identidades.js"));
+    const problemas = auditar({
+        users: { "5511": { jid: "5511@s.whatsapp.net" } },
+        groups: {},
+        scheduledTasks: {
+            "lm-1": { id: "lm-2", chat: "120363000000000000-123@g.us", sender: "5511999999999@lid" }
+        }
+    });
+    assert.ok(problemas.some(item => item.mensagem.includes("chave inválida")));
+    assert.ok(problemas.some(item => item.mensagem.includes("grupo ausente")));
+    assert.ok(problemas.some(item => item.mensagem.includes("identidade ausente")));
+});
+
+test("menus não exibem entradas removidas e exibem o gerenciamento novo", () => {
+    const admin = require(path.join(root, "src/utils/menus/admin"))("7");
+    const brincadeiras = require(path.join(root, "src/utils/menus/brincadeiras"))("7");
+    const principal = require(path.join(root, "src/utils/menus/principal"))("7");
+    for (const entrada of ["7bemvindo2", "7legendabv2", "7legendasaiu2", "7mencionar", "7sobrenome", "7historia", "7attp2", "7attp_white", "7attp_brat", "7apex", "7morechat"]) {
+        assert.equal(admin.includes(entrada) || brincadeiras.includes(entrada) || principal.includes(entrada), false, `entrada inválida: ${entrada}`);
+    }
+    assert.match(admin, /7configresposta/);
+    assert.match(admin, /7lembretesgrupo/);
+});
+
+test("reações globais não competem com comandos prefixados", () => {
+    const { isPrefixCommand } = require(path.join(root, "src/core/reactionManager"));
+    assert.equal(isPrefixCommand("7play música", ["7"]), true);
+    assert.equal(isPrefixCommand("oi 7play", ["7"]), false);
+});
+
+test("loader registra os aliases de configuração e lembretes administrativos", () => {
+    const loader = require(path.join(root, "src/core/loader"));
+    for (const alias of ["configresposta", "configurarresposta", "lembretesgrupo", "listarlembretes", "cancelarlembrete", "removerlembrete", "limparlembretes"]) {
+        assert.ok(loader.get(alias), `alias ausente: ${alias}`);
+    }
+});
