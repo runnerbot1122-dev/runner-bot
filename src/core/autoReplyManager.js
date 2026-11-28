@@ -45,58 +45,7 @@ async function applyAutomaticReplies(ctx, texto){
     }
 
 
-    const respostas =
-        getAutoReplies(ctx.chat);
-
-
-    if(
-        !Array.isArray(respostas) ||
-        !respostas.length
-    ){
-
-        return [];
-
-    }
-
-
-    const mensagemLower =
-        mensagem.toLowerCase();
-
-    const encontradas = [];
-    const usadas = new Set();
-
-
-    for(const item of respostas){
-
-        const trigger =
-            String(item && item.trigger || "")
-                .trim();
-
-        const response =
-            String(item && item.response || "")
-                .trim();
-
-        const normalizado =
-            normalizeTrigger(trigger);
-
-
-        if(
-            normalizado &&
-            response &&
-            !usadas.has(normalizado) &&
-            mensagemLower.includes(normalizado)
-        ){
-
-            usadas.add(normalizado);
-
-            encontradas.push({
-                trigger,
-                response
-            });
-
-        }
-
-    }
+    const encontradas = findAutomaticReplies(ctx.chat, mensagem);
 
 
     for(const item of encontradas){
@@ -133,7 +82,28 @@ async function applyAutomaticReplies(ctx, texto){
 
 }
 
+function findAutomaticReplies(chat, texto){
+    if(!chat || !String(texto || "").trim()) return [];
+    const respostas = getAutoReplies(chat);
+    if(!Array.isArray(respostas) || !respostas.length) return [];
+    const mensagemLower = String(texto).trim().toLowerCase();
+    const encontradas = [];
+    const usadas = new Set();
+    for(const item of respostas){
+        const trigger = String(item && item.trigger || "").trim();
+        const response = String(item && item.response || "").trim();
+        const normalizado = normalizeTrigger(trigger);
+        const habilitada = item?.enabled !== false;
+        if(normalizado && response && habilitada && !usadas.has(normalizado) && mensagemLower.includes(normalizado)){
+            usadas.add(normalizado);
+            encontradas.push({ trigger, response });
+        }
+    }
+    return encontradas;
+}
+
 
 module.exports = {
-    applyAutomaticReplies
+    applyAutomaticReplies,
+    findAutomaticReplies
 };

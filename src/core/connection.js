@@ -15,6 +15,7 @@ const { isVisualizarAtivo, getSetting } = require("../utils/groups");
 const messageStore = require("../database/messageStore");
 const { enviarAntideleteParaDono } = require("../utils/antideleteSender");
 const { getSoundStickerKit, serializarClip } = require("../utils/soundStickerKit");
+const scheduler = require("./scheduler");
 
 const pareamentosSolicitados = new Set();
 const numerosPareamento = new Map();
@@ -422,7 +423,7 @@ async function iniciarConexao(id, cicloVida = {}){
                     continue;
                 }
 
-                await handler(sock, m);
+                await handler(sock, m, { sessionId: id });
             }
         } catch (erro) {
             registrarErroListener("Falha ao processar mensagem", erro);
@@ -438,13 +439,17 @@ async function iniciarConexao(id, cicloVida = {}){
             if(typeof cicloVida.aoAbrir === "function"){
                 aceito = cicloVida.aoAbrir(sock, geracao) !== false;
             }
-            if(aceito) logger.success(`${id} conectado`);
+            if(aceito){
+                scheduler.registerSession(id, sock);
+                logger.success(`${id} conectado`);
+            }
         }
 
         if(connection === "close"){
             console.log("ERRO CONEXÃO:", lastDisconnect?.error);
             const erro = lastDisconnect?.error?.output?.statusCode;
             const loggedOut = erro === DisconnectReason.loggedOut;
+            scheduler.unregisterSession(id, sock);
             if(loggedOut) logger.error("Sessão deslogada.");
             else logger.info("Reconectando sessão...");
             if(typeof cicloVida.aoFechar === "function"){

@@ -143,6 +143,11 @@ carregar(
 "users.json"
 );
 
+const databaseInicialScheduledTasks =
+carregar(
+"scheduledTasks.json"
+);
+
 let ultimoGroupsPersistido =
 JSON.stringify(
 databaseInicialGroups,
@@ -153,6 +158,13 @@ null,
 let ultimoUsersPersistido =
 JSON.stringify(
 databaseInicialUsers,
+null,
+4
+);
+
+let ultimoScheduledTasksPersistido =
+JSON.stringify(
+databaseInicialScheduledTasks,
 null,
 4
 );
@@ -285,6 +297,10 @@ users:
 databaseInicialUsers,
 
 
+scheduledTasks:
+databaseInicialScheduledTasks,
+
+
 
 
 saveGroups(){
@@ -346,7 +362,20 @@ salvarSeAlterado(
     ultimoUsersPersistido
 );
 
-usersBatchPending = false;
+    usersBatchPending = false;
+
+
+    },
+
+
+saveScheduledTasks(){
+
+ultimoScheduledTasksPersistido =
+salvarSeAlterado(
+    "scheduledTasks.json",
+    this.scheduledTasks,
+    ultimoScheduledTasksPersistido
+);
 
 
 }

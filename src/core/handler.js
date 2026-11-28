@@ -48,7 +48,7 @@ const spamCache = new Map();
 const cooldownCache = new Map();
 const floodCache = new Map();
 
-async function handler(sock, m) {
+async function handler(sock, m, opcoes = {}) {
     try {
         if (!m.message) return;
         if (m.key.fromMe) return;
@@ -641,7 +641,7 @@ async function handler(sock, m) {
         const prefixoAtual = prefixoUsado || prefixoPrincipal;
 
         const ctx = {
-            sock, message: m, chat, sender: remetente, args: [], command: null,
+            sock, message: m, chat, sender: remetente, sessionId: opcoes.sessionId || null, args: [], command: null,
             customReactionSent: false,
             prefix: prefixoAtual, text: texto, level: permissoes.level,
             isOwner: permissoes.owner,
