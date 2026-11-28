@@ -2,7 +2,7 @@ const ownerOnly = require("../../utils/ownerOnly");
 const { isVisualizarAtivo, setVisualizar } = require("../../utils/groups");
 
 module.exports = {
-    name: ["visualizarmsg", "antidelete", "antidel", "visualizarmsg"],
+    name: ["visualizarmsg", "antidelete", "antidel"],
     description: "Ativa (1) ou desativa (0) a visualização de mensagens apagadas",
     execute: async (ctx) => {
         ownerOnly(ctx);

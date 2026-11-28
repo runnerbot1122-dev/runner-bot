@@ -3,7 +3,7 @@ const { getTarget } = require("../../utils/checkTarget");
 const { getExistingUser } = require("../../utils/users");
 
 module.exports = {
-    name: ["meusigno", "signo"],
+    name: ["meusigno", "signoregistro"],
     description: "Descobre o signo do usuário baseado no registro",
     execute: async (ctx) => {
         const alvo = getTarget(ctx) || ctx.sender;

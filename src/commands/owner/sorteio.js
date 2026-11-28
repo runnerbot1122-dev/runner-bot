@@ -1,7 +1,7 @@
 const ownerOnly = require("../../utils/ownerOnly");
 
 module.exports = {
-    name: ["sorteio", "sortear"],
+    name: ["sortear"],
     description: "Sorteia um membro do grupo",
     execute: async (ctx) => {
         ownerOnly(ctx);

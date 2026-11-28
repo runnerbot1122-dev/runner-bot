@@ -194,3 +194,35 @@ test("loader registra os aliases de configuração e lembretes administrativos",
         assert.ok(loader.get(alias), `alias ausente: ${alias}`);
     }
 });
+
+
+test("não existem aliases duplicados entre arquivos de comandos", () => {
+    const fs = require("node:fs");
+    const path = require("node:path");
+    const comandosDir = path.join(root, "src", "commands");
+    const aliases = new Map();
+    for (const categoria of fs.readdirSync(comandosDir)) {
+        const pasta = path.join(comandosDir, categoria);
+        if (!fs.statSync(pasta).isDirectory()) continue;
+        for (const arquivo of fs.readdirSync(pasta).filter(nome => nome.endsWith(".js"))) {
+            const caminho = path.join(pasta, arquivo);
+            const comando = require(caminho);
+            const nomes = Array.isArray(comando?.name) ? comando.name : [comando?.name];
+            for (const nome of nomes.filter(Boolean)) {
+                const alias = String(nome).trim().toLowerCase();
+                assert.equal(aliases.has(alias), false, `alias duplicado: ${alias} (${aliases.get(alias)} e ${caminho})`);
+                aliases.set(alias, caminho);
+            }
+        }
+    }
+});
+
+test("aliases históricos continuam apontando para implementações distintas", () => {
+    const loader = require(path.join(root, "src/core/loader"));
+    assert.equal(loader.get("signo").description, "Descobre o signo baseado na data");
+    assert.equal(loader.get("meusigno").description, "Descobre o signo do usuário baseado no registro");
+    assert.equal(loader.get("sorte").description, "Escolhe uma opção aleatória");
+    assert.equal(loader.get("chance").description, "Calcula a chance de algo dar certo");
+    assert.equal(loader.get("sorteio").description, "Sorteia um membro do grupo");
+    assert.equal(loader.get("sortear").description, "Sorteia um membro do grupo");
+});

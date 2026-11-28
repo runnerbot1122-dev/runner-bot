@@ -2,7 +2,7 @@ const replyNYX = require("../../utils/replyNYX");
 const { getBotName } = require("../../utils/botNameStore");
 
 module.exports = {
-    name: ["infobot", "botinfo"],
+    name: ["infobot"],
     description: "Mostra informações técnicas do bot",
     execute: async (ctx) => {
         const uptime = process.uptime();

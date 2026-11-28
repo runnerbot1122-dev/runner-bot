@@ -4,7 +4,7 @@ const { getExistingUser, getXPProgressReadOnly } = require("../../utils/users");
 const { calcularXPNecessario } = require("../../utils/xp");
 
 module.exports = {
-    name: ["checkativo", "perfil", "atividade"],
+    name: ["checkativo"],
     description: "Mostra o perfil de XP de um membro",
     category: "admin",
     async execute(ctx) {

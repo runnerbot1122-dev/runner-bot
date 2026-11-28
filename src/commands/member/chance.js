@@ -1,6 +1,6 @@
 const fs = require("fs"); const path = require("path"); const { getTarget } = require("../../utils/checkTarget"); const fonteNYX = require("../../utils/fonteNYX");
 module.exports = {
-    name: ["chance", "sorte"],
+    name: ["chance"],
     description: "Calcula a chance de algo dar certo",
     execute: async (ctx) => {
         const { sock, chat, sender, message } = ctx;
