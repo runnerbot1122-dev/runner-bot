@@ -160,6 +160,7 @@ ${secao("ᴊᴏɢᴏs / ʙʀɪɴᴄᴀᴅᴇɪʀᴀs", [
     "quizanimais",
     "quizfutebol",
     "anagrama",
+    "enquete",
     "eununca",
     "vcprefere",
     "chance",
@@ -168,6 +169,7 @@ ${secao("ᴊᴏɢᴏs / ʙʀɪɴᴄᴀᴅᴇɪʀᴀs", [
 ])}
 ${secao("ᴍᴇᴍʙʀᴏs / ʀᴀɴᴅᴏᴍ", [
     "totext",
+    "audiodoc",
     "apex",
     "responda",
     "gtts",
@@ -189,6 +191,7 @@ ${secao("ᴍᴇᴍʙʀᴏs / ʀᴀɴᴅᴏᴍ", [
     "contardias",
     "fazernick",
     "traduzir",
+    "contato",
     "gerarcpf",
     "qrcode",
     "encurtalink",
