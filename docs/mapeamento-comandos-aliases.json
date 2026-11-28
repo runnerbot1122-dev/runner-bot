@@ -1,0 +1,5904 @@
+{
+  "generatedAt": "2026-11-28T16:51:13.693Z",
+  "summary": {
+    "commandFiles": 380,
+    "declaredAliases": 662,
+    "effectiveAliases": 662,
+    "menuFiles": 11,
+    "loadErrors": 0,
+    "duplicateAliases": 0
+  },
+  "categoryStats": {
+    "admin": 100,
+    "ia": 8,
+    "member": 161,
+    "menu": 14,
+    "owner": 97
+  },
+  "commands": [
+    {
+      "category": "admin",
+      "file": "src/commands/admin/abrir.js",
+      "name": "abrir",
+      "aliases": [
+        "abrir",
+        "a",
+        "agp",
+        "abrirgp"
+      ],
+      "description": "Abre o grupo",
+      "loadedAliases": [
+        "abrir",
+        "a",
+        "agp",
+        "abrirgp"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/aceitar.js",
+      "name": "aceitar",
+      "aliases": [
+        "aceitar"
+      ],
+      "description": "Aceita TODOS os pedidos de entrada pendentes",
+      "loadedAliases": [
+        "aceitar"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/add_ddd.js",
+      "name": "add_ddd",
+      "aliases": [
+        "add_ddd"
+      ],
+      "description": "Adiciona um DDD à lista de bloqueio do grupo",
+      "loadedAliases": [
+        "add_ddd"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/add_prefixo.js",
+      "name": "add_prefixo",
+      "aliases": [
+        "add_prefixo",
+        "addprefixo"
+      ],
+      "description": "Adiciona um prefixo extra para o grupo",
+      "loadedAliases": [
+        "add_prefixo",
+        "addprefixo"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/addr.js",
+      "name": "addr",
+      "aliases": [
+        "addr"
+      ],
+      "description": "Cadastra uma resposta automática por palavra ou frase",
+      "loadedAliases": [
+        "addr"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/adv.js",
+      "name": "adv",
+      "aliases": [
+        "adv",
+        "advertir"
+      ],
+      "description": "Adverte um usuário",
+      "loadedAliases": [
+        "adv",
+        "advertir"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/antiaudio.js",
+      "name": "antiaudio",
+      "aliases": [
+        "antiaudio"
+      ],
+      "description": "Anti-Áudio (impede o envio de áudios)",
+      "loadedAliases": [
+        "antiaudio"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/antibtm.js",
+      "name": "antibtm",
+      "aliases": [
+        "antibtm",
+        "antibtn"
+      ],
+      "description": "Anti-BTN (bloqueia botões nativos suspeitos)",
+      "loadedAliases": [
+        "antibtm",
+        "antibtn"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/anticatalogo.js",
+      "name": "anticatalogo",
+      "aliases": [
+        "anticatalogo"
+      ],
+      "description": "Anti-Catálogo (bloqueia mensagens de catálogo)",
+      "loadedAliases": [
+        "anticatalogo"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/anticontato.js",
+      "name": "anticontato",
+      "aliases": [
+        "anticontato"
+      ],
+      "description": "Anti-Contato (bloqueia envio de cartões de contato)",
+      "loadedAliases": [
+        "anticontato"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/antidd.js",
+      "name": "antidd",
+      "aliases": [
+        "antidd",
+        "antidd-list"
+      ],
+      "description": "Anti-DDD (bloqueia números com DDDs específicos)",
+      "loadedAliases": [
+        "antidd",
+        "antidd-list"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/antidoc.js",
+      "name": "antidoc",
+      "aliases": [
+        "antidoc"
+      ],
+      "description": "Anti-Documento (bloqueia PDFs, Word, etc)",
+      "loadedAliases": [
+        "antidoc"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/antidocumento.js",
+      "name": "antidocumento",
+      "aliases": [
+        "antidocumento"
+      ],
+      "description": "Anti-Documento (bloqueia arquivos)",
+      "loadedAliases": [
+        "antidocumento"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/antifake.js",
+      "name": "antifake",
+      "aliases": [
+        "antifake"
+      ],
+      "description": "Anti-Fake (bloqueia números suspeitos)",
+      "loadedAliases": [
+        "antifake"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/antiflood.js",
+      "name": "antiflood",
+      "aliases": [
+        "antiflood"
+      ],
+      "description": "Ativa/desativa a proteção contra excesso de mensagens",
+      "loadedAliases": [
+        "antiflood"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/antiimg.js",
+      "name": "antiimg",
+      "aliases": [
+        "antiimg"
+      ],
+      "description": "Anti-Imagem (impede o envio de fotos)",
+      "loadedAliases": [
+        "antiimg"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/antiligacao.js",
+      "name": "antiligacao",
+      "aliases": [
+        "antiligacao",
+        "anti-call",
+        "anticall"
+      ],
+      "description": "Anti-Ligação (bloqueia chamadas no grupo)",
+      "loadedAliases": [
+        "antiligacao",
+        "anti-call",
+        "anticall"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/antilink.js",
+      "name": "antilink",
+      "aliases": [
+        "antilink",
+        "antilinkgp"
+      ],
+      "description": "Controle anti-link",
+      "loadedAliases": [
+        "antilink",
+        "antilinkgp"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/antilinkeasyon.js",
+      "name": "antilinkeasyon",
+      "aliases": [
+        "antilinkeasyon",
+        "antilinkeary"
+      ],
+      "description": "Anti-Link Easy (apenas aviso e remoção)",
+      "loadedAliases": [
+        "antilinkeasyon",
+        "antilinkeary"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/antilinkhard.js",
+      "name": "antilinkhard",
+      "aliases": [
+        "antilinkhard"
+      ],
+      "description": "Anti-Link Hard (punição severa para links)",
+      "loadedAliases": [
+        "antilinkhard"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/antinotas.js",
+      "name": "antinotas",
+      "aliases": [
+        "antinotas",
+        "antinota"
+      ],
+      "description": "Anti-Notas (bloqueia mensagens de nota no grupo)",
+      "loadedAliases": [
+        "antinotas",
+        "antinota"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/antipalavra.js",
+      "name": "antipalavra",
+      "aliases": [
+        "antipalavra",
+        "antipalavrao",
+        "antipalavrão"
+      ],
+      "description": "Anti-Palavra (bloqueia palavras de baixo calão)",
+      "loadedAliases": [
+        "antipalavra",
+        "antipalavrao",
+        "antipalavrão"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/antipay.js",
+      "name": "antipay",
+      "aliases": [
+        "antipay",
+        "antipagamento"
+      ],
+      "description": "Anti-Pay (bloqueia pedidos de pagamento no grupo)",
+      "loadedAliases": [
+        "antipay",
+        "antipagamento"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/antispam.js",
+      "name": "antispam",
+      "aliases": [
+        "antispam"
+      ],
+      "description": "Ativa/desativa a proteção contra mensagens repetidas",
+      "loadedAliases": [
+        "antispam"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/antistatus.js",
+      "name": "antistatus",
+      "aliases": [
+        "antistatus",
+        "anti-status"
+      ],
+      "description": "Anti-Status (bloqueia marcações de status no grupo)",
+      "loadedAliases": [
+        "antistatus",
+        "anti-status"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/antisticker.js",
+      "name": "antisticker",
+      "aliases": [
+        "antisticker"
+      ],
+      "description": "Anti-Figurinha (impede o envio de stickers)",
+      "loadedAliases": [
+        "antisticker"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/antitrava.js",
+      "name": "antitrava",
+      "aliases": [
+        "antitrava",
+        "antitravas"
+      ],
+      "description": "Anti-Trava (bloqueia mensagens de texto que travam o WhatsApp)",
+      "loadedAliases": [
+        "antitrava",
+        "antitravas"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/antivideo.js",
+      "name": "antivideo",
+      "aliases": [
+        "antivideo"
+      ],
+      "description": "Anti-Vídeo (impede o envio de vídeos)",
+      "loadedAliases": [
+        "antivideo"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/ativarresposta.js",
+      "name": "ativarresposta",
+      "aliases": [
+        "ativarresposta",
+        "ativarrespostas",
+        "ligarresposta"
+      ],
+      "description": "Ativa uma resposta automática do grupo",
+      "loadedAliases": [
+        "ativarresposta",
+        "ativarrespostas",
+        "ligarresposta"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/autofigu.js",
+      "name": "autofigu",
+      "aliases": [
+        "autofigu"
+      ],
+      "description": "Reenvia figurinhas recebidas com a legenda configurada",
+      "loadedAliases": [
+        "autofigu"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/autorepo.js",
+      "name": "autorepo",
+      "aliases": [
+        "autorepo"
+      ],
+      "description": "Ativa/desativa auto-reply em mídias recebidas",
+      "loadedAliases": [
+        "autorepo"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/autosticker.js",
+      "name": "autosticker",
+      "aliases": [
+        "autosticker"
+      ],
+      "description": "Converte imagens/vídeos automaticamente em figurinhas (vídeos podem manter o som)",
+      "loadedAliases": [
+        "autosticker"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/autototext.js",
+      "name": "autototext",
+      "aliases": [
+        "autototext"
+      ],
+      "description": "Transcreve áudios automaticamente (requer API)",
+      "loadedAliases": [
+        "autototext"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/ban.js",
+      "name": "ban",
+      "aliases": [
+        "ban"
+      ],
+      "description": "Remove usuário do grupo",
+      "loadedAliases": [
+        "ban"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/banfake.js",
+      "name": "banfake",
+      "aliases": [
+        "banfake"
+      ],
+      "description": "Remove números fakes/estrangeiros (ignora foto de perfil)",
+      "loadedAliases": [
+        "banfake"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/banghost.js",
+      "name": "banghost",
+      "aliases": [
+        "banghost"
+      ],
+      "description": "Remove membros que não possuem conta válida no WhatsApp",
+      "loadedAliases": [
+        "banghost"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/bemvindo2.js",
+      "name": "bemvindo2",
+      "aliases": [
+        "bemvindo2"
+      ],
+      "description": "Alias compatível para ativar ou desativar boas-vindas",
+      "loadedAliases": [
+        "bemvindo2"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/cancelarlembrete.js",
+      "name": "cancelarlembrete",
+      "aliases": [
+        "cancelarlembrete",
+        "removerlembrete"
+      ],
+      "description": "Cancela um lembrete pendente do grupo",
+      "loadedAliases": [
+        "cancelarlembrete",
+        "removerlembrete"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/checkativo.js",
+      "name": "checkativo",
+      "aliases": [
+        "checkativo"
+      ],
+      "description": "Mostra o perfil de XP de um membro",
+      "loadedAliases": [
+        "checkativo"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/configresposta.js",
+      "name": "configresposta",
+      "aliases": [
+        "configresposta",
+        "configurarresposta"
+      ],
+      "description": "Configura prioridade e cooldown de uma resposta automática",
+      "loadedAliases": [
+        "configresposta",
+        "configurarresposta"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/del_ddd.js",
+      "name": "del_ddd",
+      "aliases": [
+        "del_ddd"
+      ],
+      "description": "Remove um DDD da lista de bloqueio do grupo",
+      "loadedAliases": [
+        "del_ddd"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/delr.js",
+      "name": "delr",
+      "aliases": [
+        "delr"
+      ],
+      "description": "Remove uma resposta automática por palavra ou frase",
+      "loadedAliases": [
+        "delr"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/desativarresposta.js",
+      "name": "desativarresposta",
+      "aliases": [
+        "desativarresposta",
+        "desativarrespostas",
+        "desligarresposta"
+      ],
+      "description": "Desativa uma resposta automática sem removê-la",
+      "loadedAliases": [
+        "desativarresposta",
+        "desativarrespostas",
+        "desligarresposta"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/descgp.js",
+      "name": "descgp",
+      "aliases": [
+        "descgp"
+      ],
+      "description": "Consulta ou altera a descrição do grupo",
+      "loadedAliases": [
+        "descgp"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/editarresposta.js",
+      "name": "editarresposta",
+      "aliases": [
+        "editarresposta",
+        "editarrespostas",
+        "editresposta"
+      ],
+      "description": "Edita uma resposta automática do grupo",
+      "loadedAliases": [
+        "editarresposta",
+        "editarrespostas",
+        "editresposta"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/ephemeral.js",
+      "name": "ephemeral",
+      "aliases": [
+        "ephemeral"
+      ],
+      "description": "Ativa/desativa mensagens temporárias",
+      "loadedAliases": [
+        "ephemeral"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/fechar.js",
+      "name": "fechar",
+      "aliases": [
+        "fechar",
+        "f",
+        "fgp",
+        "fechargp"
+      ],
+      "description": "Fecha o grupo",
+      "loadedAliases": [
+        "fechar",
+        "f",
+        "fgp",
+        "fechargp"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/infobemvindo.js",
+      "name": "infobemvindo",
+      "aliases": [
+        "infobemvindo",
+        "infobv"
+      ],
+      "description": "Mostra as configurações de boas-vindas",
+      "loadedAliases": [
+        "infobemvindo",
+        "infobv"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/infogrupo.js",
+      "name": "infogrupo",
+      "aliases": [
+        "infogrupo",
+        "grupo",
+        "grupoinfo",
+        "infogp"
+      ],
+      "description": "Informações do grupo",
+      "loadedAliases": [
+        "infogrupo",
+        "grupo",
+        "grupoinfo",
+        "infogp"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/kick.js",
+      "name": "kick",
+      "aliases": [
+        "kick"
+      ],
+      "description": "Remove usuário do grupo",
+      "loadedAliases": [
+        "kick"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/legenda_documento.js",
+      "name": "legenda_documento",
+      "aliases": [
+        "legenda_documento",
+        "legendadoc"
+      ],
+      "description": "Define a legenda padrão para documentos",
+      "loadedAliases": [
+        "legenda_documento",
+        "legendadoc"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/legenda_estrangeiro.js",
+      "name": "legenda_estrangeiro",
+      "aliases": [
+        "legenda_estrangeiro",
+        "legendaestrangeiro"
+      ],
+      "description": "Define a legenda para números estrangeiros",
+      "loadedAliases": [
+        "legenda_estrangeiro",
+        "legendaestrangeiro"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/legenda_imagem.js",
+      "name": "legenda_imagem",
+      "aliases": [
+        "legenda_imagem",
+        "legendaimg"
+      ],
+      "description": "Define a legenda padrão para imagens",
+      "loadedAliases": [
+        "legenda_imagem",
+        "legendaimg"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/legenda_video.js",
+      "name": "legenda_video",
+      "aliases": [
+        "legenda_video",
+        "legendavid"
+      ],
+      "description": "Define a legenda padrão para vídeos",
+      "loadedAliases": [
+        "legenda_video",
+        "legendavid"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/legendabv.js",
+      "name": "legendabv",
+      "aliases": [
+        "legendabv"
+      ],
+      "description": "Define a legenda de boas-vindas",
+      "loadedAliases": [
+        "legendabv"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/legendabv2.js",
+      "name": "legendabv2",
+      "aliases": [
+        "legendabv2"
+      ],
+      "description": "Alias compatível para configurar a legenda de boas-vindas",
+      "loadedAliases": [
+        "legendabv2"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/legendasaiu.js",
+      "name": "legendasaiu",
+      "aliases": [
+        "legendasaiu",
+        "legendasaida"
+      ],
+      "description": "Define a legenda de despedida",
+      "loadedAliases": [
+        "legendasaiu",
+        "legendasaida"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/legendasaiu2.js",
+      "name": "legendasaiu2",
+      "aliases": [
+        "legendasaiu2"
+      ],
+      "description": "Alias compatível para configurar a legenda de saída",
+      "loadedAliases": [
+        "legendasaiu2"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/lembretesgrupo.js",
+      "name": "lembretesgrupo",
+      "aliases": [
+        "lembretesgrupo",
+        "listarlembretes",
+        "listarlembretesgrupo"
+      ],
+      "description": "Lista os lembretes pendentes do grupo",
+      "loadedAliases": [
+        "lembretesgrupo",
+        "listarlembretes",
+        "listarlembretesgrupo"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/limite_caracteres.js",
+      "name": "limite_caracteres",
+      "aliases": [
+        "limite_caracteres",
+        "limitecaracteres",
+        "limite_letras"
+      ],
+      "description": "Define o limite máximo de caracteres nas mensagens do grupo",
+      "loadedAliases": [
+        "limite_caracteres",
+        "limitecaracteres",
+        "limite_letras"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/limpar.js",
+      "name": "limpar",
+      "aliases": [
+        "limpar"
+      ],
+      "description": "Limpa o histórico do grupo (Método Takeshi)",
+      "loadedAliases": [
+        "limpar"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/limparlembretes.js",
+      "name": "limparlembretes",
+      "aliases": [
+        "limparlembretes",
+        "limparembretes"
+      ],
+      "description": "Remove todos os lembretes pendentes do grupo",
+      "loadedAliases": [
+        "limparlembretes",
+        "limparembretes"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/link.js",
+      "name": "link",
+      "aliases": [
+        "link",
+        "linkgrupo",
+        "linkgp",
+        "linkgroup"
+      ],
+      "description": "",
+      "loadedAliases": [
+        "link",
+        "linkgrupo",
+        "linkgp",
+        "linkgroup"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/listaadmins.js",
+      "name": "listaadmins",
+      "aliases": [
+        "listaadmins",
+        "admins",
+        "adms"
+      ],
+      "description": "Lista todos os administradores do grupo",
+      "loadedAliases": [
+        "listaadmins",
+        "admins",
+        "adms"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/listanegrag.js",
+      "name": "listanegrag",
+      "aliases": [
+        "listanegrag",
+        "listanegra",
+        "verblacklistgp"
+      ],
+      "description": "Lista os números na lista negra deste grupo",
+      "loadedAliases": [
+        "listanegrag",
+        "listanegra",
+        "verblacklistgp"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/listarrespostas.js",
+      "name": "listarrespostas",
+      "aliases": [
+        "listarrespostas",
+        "listarespostas"
+      ],
+      "description": "Lista as respostas automáticas do grupo atual",
+      "loadedAliases": [
+        "listarrespostas",
+        "listarespostas"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/msgtemp.js",
+      "name": "msgtemp",
+      "aliases": [
+        "msgtemp"
+      ],
+      "description": "Define o tempo das mensagens temporárias (exige ephemeral ativo)",
+      "loadedAliases": [
+        "msgtemp"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/mudarftgp.js",
+      "name": "mudarftgp",
+      "aliases": [
+        "mudarftgp"
+      ],
+      "description": "Altera a foto do grupo",
+      "loadedAliases": [
+        "mudarftgp"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/mute.js",
+      "name": "mute",
+      "aliases": [
+        "mute"
+      ],
+      "description": "Muta um usuário",
+      "loadedAliases": [
+        "mute"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/mute2.js",
+      "name": "mute2",
+      "aliases": [
+        "mute2"
+      ],
+      "description": "Muta um usuário por um tempo específico (ex: 10m, 1h)",
+      "loadedAliases": [
+        "mute2"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/mutelist.js",
+      "name": "mutelist",
+      "aliases": [
+        "mutelist"
+      ],
+      "description": "Lista os usuários mutados no grupo",
+      "loadedAliases": [
+        "mutelist"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/nomegp.js",
+      "name": "nomegp",
+      "aliases": [
+        "nomegp"
+      ],
+      "description": "Consulta ou altera o nome do grupo",
+      "loadedAliases": [
+        "nomegp"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/odelete.js",
+      "name": "odelete",
+      "aliases": [
+        "odelete"
+      ],
+      "description": "Ativa/desativa exclusão automática de mensagens",
+      "loadedAliases": [
+        "odelete"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/prefixos.js",
+      "name": "prefixos",
+      "aliases": [
+        "prefixos",
+        "meusprefixos"
+      ],
+      "description": "Lista todos os prefixos do grupo",
+      "loadedAliases": [
+        "prefixos",
+        "meusprefixos"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/promover.js",
+      "name": "promover",
+      "aliases": [
+        "promover",
+        "promote"
+      ],
+      "description": "Promove usuário a administrador",
+      "loadedAliases": [
+        "promover",
+        "promote"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/rank.js",
+      "name": "rank",
+      "aliases": [
+        "rank",
+        "ranking"
+      ],
+      "description": "Mostra ranking de XP do grupo",
+      "loadedAliases": [
+        "rank",
+        "ranking"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/rebaixar.js",
+      "name": "rebaixar",
+      "aliases": [
+        "rebaixar",
+        "demote"
+      ],
+      "description": "Remove administrador",
+      "loadedAliases": [
+        "rebaixar",
+        "demote"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/recusar.js",
+      "name": "recusar",
+      "aliases": [
+        "recusar"
+      ],
+      "description": "Recusa TODOS os pedidos de entrada pendentes",
+      "loadedAliases": [
+        "recusar"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/regras.js",
+      "name": "regras",
+      "aliases": [
+        "regras"
+      ],
+      "description": "Consulta as regras definidas na descrição do grupo",
+      "loadedAliases": [
+        "regras"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/regraspp.js",
+      "name": "regraspp",
+      "aliases": [
+        "regraspp",
+        "regraspv"
+      ],
+      "description": "Envia as regras do grupo no privado",
+      "loadedAliases": [
+        "regraspp",
+        "regraspv"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/revlinkgp.js",
+      "name": "revlinkgp",
+      "aliases": [
+        "revlinkgp",
+        "revlinkgroup"
+      ],
+      "description": "Revoga o link do grupo",
+      "loadedAliases": [
+        "revlinkgp",
+        "revlinkgroup"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/rmadv.js",
+      "name": "rmadv",
+      "aliases": [
+        "rmadv",
+        "removeradv",
+        "tiraradv"
+      ],
+      "description": "",
+      "loadedAliases": [
+        "rmadv",
+        "removeradv",
+        "tiraradv"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/rmphotogp.js",
+      "name": "rmphotogp",
+      "aliases": [
+        "rmphotogp",
+        "removerfotogp"
+      ],
+      "description": "Remove a foto do grupo",
+      "loadedAliases": [
+        "rmphotogp",
+        "removerfotogp"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/s.js",
+      "name": "s",
+      "aliases": [
+        "s"
+      ],
+      "description": "Marca o grupo e envia a enquete.",
+      "loadedAliases": [
+        "s"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/savegp.js",
+      "name": "savegp",
+      "aliases": [
+        "savegp",
+        "salvarlink",
+        "salvarlinkgp"
+      ],
+      "description": "Salva o link atual do grupo no banco de dados (Apenas Dono)",
+      "loadedAliases": [
+        "savegp",
+        "salvarlink",
+        "salvarlinkgp"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/soadm.js",
+      "name": "soadm",
+      "aliases": [
+        "soadm",
+        "so_adm"
+      ],
+      "description": "Ativa ou desativa comandos públicos",
+      "loadedAliases": [
+        "soadm",
+        "so_adm"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/solicitacao.js",
+      "name": "solicitacao",
+      "aliases": [
+        "solicitacao"
+      ],
+      "description": "Ativa/desativa a aprovação de entrada no grupo",
+      "loadedAliases": [
+        "solicitacao"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/status.js",
+      "name": "status",
+      "aliases": [
+        "status"
+      ],
+      "description": "Mostra configurações completas do grupo e informações do bot",
+      "loadedAliases": [
+        "status"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/tempocmd.js",
+      "name": "tempocmd",
+      "aliases": [
+        "tempocmd",
+        "tempo_comando"
+      ],
+      "description": "Define o tempo de espera (cooldown) entre comandos",
+      "loadedAliases": [
+        "tempocmd",
+        "tempo_comando"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/testarresposta.js",
+      "name": "testarresposta",
+      "aliases": [
+        "testarresposta",
+        "testarrespostas"
+      ],
+      "description": "Simula uma mensagem contra as respostas automáticas do grupo",
+      "loadedAliases": [
+        "testarresposta",
+        "testarrespostas"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/testebv.js",
+      "name": "testebv",
+      "aliases": [
+        "testebv"
+      ],
+      "description": "Testa a mensagem de boas-vindas",
+      "loadedAliases": [
+        "testebv"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/tirar_prefixo.js",
+      "name": "tirar_prefixo",
+      "aliases": [
+        "tirar_prefixo",
+        "tirarprefixo",
+        "rm_prefixo"
+      ],
+      "description": "Remove um prefixo extra do grupo",
+      "loadedAliases": [
+        "tirar_prefixo",
+        "tirarprefixo",
+        "rm_prefixo"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/totag.js",
+      "name": "totag",
+      "aliases": [
+        "totag",
+        "t",
+        "hidetag"
+      ],
+      "description": "Envia mensagem marcando todos",
+      "loadedAliases": [
+        "totag",
+        "t",
+        "hidetag"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/unmute.js",
+      "name": "unmute",
+      "aliases": [
+        "unmute",
+        "desmute"
+      ],
+      "description": "Remove o mute de um usuário",
+      "loadedAliases": [
+        "unmute",
+        "desmute"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/warnings.js",
+      "name": "warnings",
+      "aliases": [
+        "warnings",
+        "advertencias",
+        "advlist"
+      ],
+      "description": "Lista advertências do usuário",
+      "loadedAliases": [
+        "warnings",
+        "advertencias",
+        "advlist"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/welcome.js",
+      "name": "welcome",
+      "aliases": [
+        "welcome",
+        "bemvindo"
+      ],
+      "description": "Ativa ou desativa boas vindas",
+      "loadedAliases": [
+        "welcome",
+        "bemvindo"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/x.js",
+      "name": "x",
+      "aliases": [
+        "x"
+      ],
+      "description": "Marca o grupo e envia a enquete XGRUPO.",
+      "loadedAliases": [
+        "x"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/x9visuunica.js",
+      "name": "x9visuunica",
+      "aliases": [
+        "x9visuunica"
+      ],
+      "description": "Ativa/desativa captura de visualização única",
+      "loadedAliases": [
+        "x9visuunica"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/xp.js",
+      "name": "xp",
+      "aliases": [
+        "xp"
+      ],
+      "description": "Ativa ou desativa o ganho de XP no grupo",
+      "loadedAliases": [
+        "xp"
+      ]
+    },
+    {
+      "category": "admin",
+      "file": "src/commands/admin/zerarativos.js",
+      "name": "zerarativos",
+      "aliases": [
+        "zerarativos",
+        "zerarxp",
+        "resetxp"
+      ],
+      "description": "Zera o XP de todos os membros deste grupo",
+      "loadedAliases": [
+        "zerarativos",
+        "zerarxp",
+        "resetxp"
+      ]
+    },
+    {
+      "category": "ia",
+      "file": "src/commands/ia/claude.js",
+      "name": "claude",
+      "aliases": [
+        "claude",
+        "cloude"
+      ],
+      "description": "Conversa com Claude",
+      "loadedAliases": [
+        "claude",
+        "cloude"
+      ]
+    },
+    {
+      "category": "ia",
+      "file": "src/commands/ia/conversa.js",
+      "name": null,
+      "aliases": [],
+      "description": "",
+      "loadedAliases": []
+    },
+    {
+      "category": "ia",
+      "file": "src/commands/ia/flux.js",
+      "name": "flux",
+      "aliases": [
+        "flux",
+        "fluximg"
+      ],
+      "description": "Gera uma imagem em alta qualidade",
+      "loadedAliases": [
+        "flux",
+        "fluximg"
+      ]
+    },
+    {
+      "category": "ia",
+      "file": "src/commands/ia/gemini.js",
+      "name": "gemini",
+      "aliases": [
+        "gemini",
+        "ia",
+        "deepseek"
+      ],
+      "description": "Conversa com o Gemini e mantém compatibilidade com aliases antigos",
+      "loadedAliases": [
+        "gemini",
+        "ia",
+        "deepseek"
+      ]
+    },
+    {
+      "category": "ia",
+      "file": "src/commands/ia/gpt.js",
+      "name": "gpt",
+      "aliases": [
+        "gpt"
+      ],
+      "description": "Conversa com um modelo rápido servido pela Groq",
+      "loadedAliases": [
+        "gpt"
+      ]
+    },
+    {
+      "category": "ia",
+      "file": "src/commands/ia/ia-sticker.js",
+      "name": "ia-sticker",
+      "aliases": [
+        "ia-sticker",
+        "iasticker",
+        "iafig",
+        "figia"
+      ],
+      "description": "Gera uma figurinha usando Inteligência Artificial",
+      "loadedAliases": [
+        "ia-sticker",
+        "iasticker",
+        "iafig",
+        "figia"
+      ]
+    },
+    {
+      "category": "ia",
+      "file": "src/commands/ia/imagine.js",
+      "name": "imagine",
+      "aliases": [
+        "imagine",
+        "gerarimg",
+        "desenhar"
+      ],
+      "description": "Gera uma imagem usando Inteligência Artificial",
+      "loadedAliases": [
+        "imagine",
+        "gerarimg",
+        "desenhar"
+      ]
+    },
+    {
+      "category": "ia",
+      "file": "src/commands/ia/modoia.js",
+      "name": "modoia",
+      "aliases": [
+        "modoia"
+      ],
+      "description": "Ativa ou desativa a conversa contínua com a IA",
+      "loadedAliases": [
+        "modoia"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/abraco.js",
+      "name": "abraco",
+      "aliases": [
+        "abraco",
+        "abraçar",
+        "abracar"
+      ],
+      "description": "Envia um abraço virtual com GIF",
+      "loadedAliases": [
+        "abraco",
+        "abraçar",
+        "abracar"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/adivinha.js",
+      "name": "adivinha",
+      "aliases": [
+        "adivinha",
+        "adivinhar"
+      ],
+      "description": "Adivinhe o número que o bot pensou",
+      "loadedAliases": [
+        "adivinha",
+        "adivinhar"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/adotar.js",
+      "name": "adotar",
+      "aliases": [
+        "adotar",
+        "adotarfilho"
+      ],
+      "description": "Adota alguém como filho no seu casamento",
+      "loadedAliases": [
+        "adotar",
+        "adotarfilho"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/aliases_play_audio.js",
+      "name": "playaudio",
+      "aliases": [
+        "playaudio",
+        "playdoc",
+        "ytmp3"
+      ],
+      "description": "",
+      "loadedAliases": [
+        "playaudio",
+        "playdoc",
+        "ytmp3"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/aliases_redes_audio.js",
+      "name": "tiktok_audio",
+      "aliases": [
+        "tiktok_audio",
+        "tiktok_audio2",
+        "insta_audio",
+        "insta_audio2",
+        "face_audio",
+        "twitter_audio"
+      ],
+      "description": "",
+      "loadedAliases": [
+        "tiktok_audio",
+        "tiktok_audio2",
+        "insta_audio",
+        "insta_audio2",
+        "face_audio",
+        "twitter_audio"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/aliases_video.js",
+      "name": "playvid",
+      "aliases": [
+        "playvid",
+        "playvideo",
+        "playmp4"
+      ],
+      "description": "",
+      "loadedAliases": [
+        "playvid",
+        "playvideo",
+        "playmp4"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/amazon.js",
+      "name": "amazon",
+      "aliases": [
+        "amazon"
+      ],
+      "description": "Normaliza links e pesquisas da Amazon Brasil",
+      "loadedAliases": [
+        "amazon"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/amazonsearch.js",
+      "name": "amazonsearch",
+      "aliases": [
+        "amazonsearch"
+      ],
+      "description": "Pesquisa produtos na Amazon Brasil",
+      "loadedAliases": [
+        "amazonsearch"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/amigo.js",
+      "name": "amigo",
+      "aliases": [
+        "amigo",
+        "amizade",
+        "melhoresamigos"
+      ],
+      "description": "Calcula a porcentagem de amizade entre duas pessoas",
+      "loadedAliases": [
+        "amigo",
+        "amizade",
+        "melhoresamigos"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/anagrama.js",
+      "name": "anagrama",
+      "aliases": [
+        "anagrama"
+      ],
+      "description": "Jogo de descobrir a palavra embaralhada",
+      "loadedAliases": [
+        "anagrama"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/aptoide.js",
+      "name": "aptoide",
+      "aliases": [
+        "aptoide"
+      ],
+      "description": "Busca aplicativos na Aptoide",
+      "loadedAliases": [
+        "aptoide"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/atividade.js",
+      "name": "atividade",
+      "aliases": [
+        "atividade"
+      ],
+      "description": "Atalho para o perfil de atividade",
+      "loadedAliases": [
+        "atividade"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/attp.js",
+      "name": "attp",
+      "aliases": [
+        "attp"
+      ],
+      "description": "Cria uma figurinha com texto neon animado",
+      "loadedAliases": [
+        "attp"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/audiodoc.js",
+      "name": "audiodoc",
+      "aliases": [
+        "audiodoc",
+        "audio_documento",
+        "audio2doc"
+      ],
+      "description": "Envia um áudio citado como documento",
+      "loadedAliases": [
+        "audiodoc",
+        "audio_documento",
+        "audio2doc"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/avaliar.js",
+      "name": "avaliar",
+      "aliases": [
+        "avaliar",
+        "feedback"
+      ],
+      "description": "Envia uma avaliação para o dono do bot",
+      "loadedAliases": [
+        "avaliar",
+        "feedback"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/baiano.js",
+      "name": "baiano",
+      "aliases": [
+        "baiano",
+        "baiana"
+      ],
+      "description": "Zoeira regional",
+      "loadedAliases": [
+        "baiano",
+        "baiana"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/baixar_audio.js",
+      "name": "baixar_audio_interno",
+      "aliases": [
+        "baixar_audio_interno"
+      ],
+      "description": "Baixa o áudio de um link",
+      "loadedAliases": [
+        "baixar_audio_interno"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/beijo.js",
+      "name": "beijo",
+      "aliases": [
+        "beijo",
+        "beijar"
+      ],
+      "description": "Envia um beijo virtual com GIF",
+      "loadedAliases": [
+        "beijo",
+        "beijar"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/beta.js",
+      "name": "beta",
+      "aliases": [
+        "beta"
+      ],
+      "description": "Chama alguém de beta",
+      "loadedAliases": [
+        "beta"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/book.js",
+      "name": "book",
+      "aliases": [
+        "book",
+        "livro"
+      ],
+      "description": "Busca informações de um livro",
+      "loadedAliases": [
+        "book",
+        "livro"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/brat.js",
+      "name": "brat",
+      "aliases": [
+        "brat",
+        "brat1",
+        "brat3",
+        "brat4",
+        "bratteste"
+      ],
+      "description": "Cria uma figurinha estilo Brat localmente",
+      "loadedAliases": [
+        "brat",
+        "brat1",
+        "brat3",
+        "brat4",
+        "bratteste"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/brat2.js",
+      "name": "brat2",
+      "aliases": [
+        "brat2"
+      ],
+      "description": "Cria uma figurinha animada estilo Brat (texto por partes)",
+      "loadedAliases": [
+        "brat2"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/bratvideo.js",
+      "name": "bratvideo",
+      "aliases": [
+        "bratvideo",
+        "bratv",
+        "bratvteste"
+      ],
+      "description": "Cria uma figurinha animada estilo Brat",
+      "loadedAliases": [
+        "bratvideo",
+        "bratv",
+        "bratvteste"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/calc.js",
+      "name": "calc",
+      "aliases": [
+        "calc",
+        "calcular",
+        "conta"
+      ],
+      "description": "Calculadora matemática",
+      "loadedAliases": [
+        "calc",
+        "calcular",
+        "conta"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/cantada.js",
+      "name": "cantada",
+      "aliases": [
+        "cantada",
+        "cantadas"
+      ],
+      "description": "Envia uma cantada leve",
+      "loadedAliases": [
+        "cantada",
+        "cantadas"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/caraoucoroa.js",
+      "name": "caraoucoroa",
+      "aliases": [
+        "caraoucoroa"
+      ],
+      "description": "Joga cara ou coroa",
+      "loadedAliases": [
+        "caraoucoroa"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/carinho.js",
+      "name": "carinho",
+      "aliases": [
+        "carinho",
+        "cafune",
+        "afago"
+      ],
+      "description": "Envia um carinho virtual com GIF",
+      "loadedAliases": [
+        "carinho",
+        "cafune",
+        "afago"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/carioca.js",
+      "name": "carioca",
+      "aliases": [
+        "carioca",
+        "paulista",
+        "mineiro"
+      ],
+      "description": "Zoação regional",
+      "loadedAliases": [
+        "carioca",
+        "paulista",
+        "mineiro"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/cep.js",
+      "name": "cep",
+      "aliases": [
+        "cep"
+      ],
+      "description": "Busca o endereço de um CEP",
+      "loadedAliases": [
+        "cep"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/chance.js",
+      "name": "chance",
+      "aliases": [
+        "chance"
+      ],
+      "description": "Calcula a chance de algo dar certo",
+      "loadedAliases": [
+        "chance"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/circulo.js",
+      "name": "circulo",
+      "aliases": [
+        "circulo",
+        "redonda"
+      ],
+      "description": "Cria ou refaz uma figurinha redonda, mantendo o som quando disponível",
+      "loadedAliases": [
+        "circulo",
+        "redonda"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/clima.js",
+      "name": "clima",
+      "aliases": [
+        "clima",
+        "tempo"
+      ],
+      "description": "Mostra a previsão do tempo de uma cidade",
+      "loadedAliases": [
+        "clima",
+        "tempo"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/compatibilidade.js",
+      "name": "compatibilidade",
+      "aliases": [
+        "compatibilidade",
+        "compativel"
+      ],
+      "description": "Calcula a compatibilidade entre duas pessoas",
+      "loadedAliases": [
+        "compatibilidade",
+        "compativel"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/conselho.js",
+      "name": "conselho",
+      "aliases": [
+        "conselho",
+        "conselhos"
+      ],
+      "description": "Envia um conselho aleatório",
+      "loadedAliases": [
+        "conselho",
+        "conselhos"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/conselhosbiblicos.js",
+      "name": "conselhosbilbicos",
+      "aliases": [
+        "conselhosbilbicos"
+      ],
+      "description": "Envia um conselho bíblico aleatório",
+      "loadedAliases": [
+        "conselhosbilbicos"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/contardias.js",
+      "name": "contardias",
+      "aliases": [
+        "contardias",
+        "dias"
+      ],
+      "description": "Mostra quantos dias o usuário tem registrado no bot",
+      "loadedAliases": [
+        "contardias",
+        "dias"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/contato.js",
+      "name": "contato",
+      "aliases": [
+        "contato",
+        "vcard",
+        "vcf"
+      ],
+      "description": "Gera um contato vCard",
+      "loadedAliases": [
+        "contato",
+        "vcard",
+        "vcf"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/dado.js",
+      "name": "dado",
+      "aliases": [
+        "dado"
+      ],
+      "description": "Lança um dado de seis faces",
+      "loadedAliases": [
+        "dado"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/dado2.js",
+      "name": "dado2",
+      "aliases": [
+        "dado2"
+      ],
+      "description": "Lança dois dados de seis faces",
+      "loadedAliases": [
+        "dado2"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/dadoapostado.js",
+      "name": "dadoapostado",
+      "aliases": [
+        "dadoapostado"
+      ],
+      "description": "Aposta no resultado de um dado",
+      "loadedAliases": [
+        "dadoapostado"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/ddd.js",
+      "name": "ddd",
+      "aliases": [
+        "ddd"
+      ],
+      "description": "Busca o estado e cidades de um DDD",
+      "loadedAliases": [
+        "ddd"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/donos.js",
+      "name": "donos",
+      "aliases": [
+        "donos",
+        "owners"
+      ],
+      "description": "Lista os donos do bot",
+      "loadedAliases": [
+        "donos",
+        "owners"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/duelo.js",
+      "name": "duelo",
+      "aliases": [
+        "duelo",
+        "batalha"
+      ],
+      "description": "Desafie alguém para um duelo",
+      "loadedAliases": [
+        "duelo",
+        "batalha"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/emoji.js",
+      "name": "emoji",
+      "aliases": [
+        "emoji"
+      ],
+      "description": "Sugere emojis por categoria",
+      "loadedAliases": [
+        "emoji"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/encurtalink.js",
+      "name": "encurtalink",
+      "aliases": [
+        "encurtalink"
+      ],
+      "description": "Encurta um link",
+      "loadedAliases": [
+        "encurtalink"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/enigma.js",
+      "name": "enigma",
+      "aliases": [
+        "enigma",
+        "charada"
+      ],
+      "description": "Jogo de adivinhação",
+      "loadedAliases": [
+        "enigma",
+        "charada"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/enquete.js",
+      "name": "enquete",
+      "aliases": [
+        "enquete",
+        "poll"
+      ],
+      "description": "Cria uma enquete nativa do WhatsApp",
+      "loadedAliases": [
+        "enquete",
+        "poll"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/eununca.js",
+      "name": "eununca",
+      "aliases": [
+        "eununca"
+      ],
+      "description": "Sorteia uma frase de Eu Nunca em formato de enquete",
+      "loadedAliases": [
+        "eununca"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/facebook.js",
+      "name": "facebook",
+      "aliases": [
+        "facebook",
+        "fb",
+        "face",
+        "face_video"
+      ],
+      "description": "Baixa vídeos do Facebook via link",
+      "loadedAliases": [
+        "facebook",
+        "fb",
+        "face",
+        "face_video"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/familia.js",
+      "name": "familia",
+      "aliases": [
+        "familia",
+        "minhafamilia"
+      ],
+      "description": "Mostra a árvore genealógica da sua família",
+      "loadedAliases": [
+        "familia",
+        "minhafamilia"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/fancy.js",
+      "name": "fancy",
+      "aliases": [
+        "fancy",
+        "font"
+      ],
+      "description": "Transforma o texto em letras estilizadas",
+      "loadedAliases": [
+        "fancy",
+        "font"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/fazernick.js",
+      "name": "fazernick",
+      "aliases": [
+        "fazernick"
+      ],
+      "description": "Gera apelidos estilizados",
+      "loadedAliases": [
+        "fazernick"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/fiel.js",
+      "name": "fiel",
+      "aliases": [
+        "fiel",
+        "infiel"
+      ],
+      "description": "Testa a fidelidade de alguém",
+      "loadedAliases": [
+        "fiel",
+        "infiel"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/fig.js",
+      "name": "fig",
+      "aliases": [
+        "fig",
+        "sticker",
+        "st",
+        "fsticker",
+        "figvideo",
+        "stk"
+      ],
+      "description": "Cria figurinha de imagem, vídeo ou áudio; mantém o som quando disponível",
+      "loadedAliases": [
+        "fig",
+        "sticker",
+        "st",
+        "fsticker",
+        "figvideo",
+        "stk"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/figfundo.js",
+      "name": "figfundo",
+      "aliases": [
+        "figfundo",
+        "figusemfundo",
+        "removebg"
+      ],
+      "description": "Remove o fundo de uma imagem e cria uma figurinha",
+      "loadedAliases": [
+        "figfundo",
+        "figusemfundo",
+        "removebg"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/figperfil.js",
+      "name": "figperfil",
+      "aliases": [
+        "figperfil"
+      ],
+      "description": "Transforma a foto de perfil em figurinha",
+      "loadedAliases": [
+        "figperfil"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/figuweb.js",
+      "name": "figuweb",
+      "aliases": [
+        "figuweb"
+      ],
+      "description": "Cria uma figurinha a partir de uma imagem da web",
+      "loadedAliases": [
+        "figuweb"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/forca.js",
+      "name": "forca",
+      "aliases": [
+        "forca"
+      ],
+      "description": "Jogo da forca",
+      "loadedAliases": [
+        "forca"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/frase.js",
+      "name": "frase",
+      "aliases": [
+        "frase"
+      ],
+      "description": "Envia uma frase aleatória",
+      "loadedAliases": [
+        "frase"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/gartic.js",
+      "name": "gartic",
+      "aliases": [
+        "gartic"
+      ],
+      "description": "Sorteia um desafio de desenho do Gartic",
+      "loadedAliases": [
+        "gartic"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/gerarcpf.js",
+      "name": "gerarcpf",
+      "aliases": [
+        "gerarcpf"
+      ],
+      "description": "Gera um CPF válido apenas para testes",
+      "loadedAliases": [
+        "gerarcpf"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/gerarlink.js",
+      "name": "gerarlink",
+      "aliases": [
+        "gerarlink"
+      ],
+      "description": "Gera um link público para uma mídia respondida",
+      "loadedAliases": [
+        "gerarlink"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/getbio.js",
+      "name": "getbio",
+      "aliases": [
+        "getbio"
+      ],
+      "description": "Mostra a biografia/status do WhatsApp",
+      "loadedAliases": [
+        "getbio"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/getperfil.js",
+      "name": "getperfil",
+      "aliases": [
+        "getperfil"
+      ],
+      "description": "Busca a foto de perfil de um usuário",
+      "loadedAliases": [
+        "getperfil"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/gostoso.js",
+      "name": "gostoso",
+      "aliases": [
+        "gostoso",
+        "gostosa"
+      ],
+      "description": "Faz um elogio ousado",
+      "loadedAliases": [
+        "gostoso",
+        "gostosa"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/gruposwhatsapp.js",
+      "name": "gruposwhatsapp",
+      "aliases": [
+        "gruposwhatsapp"
+      ],
+      "description": "Busca links públicos de grupos do WhatsApp",
+      "loadedAliases": [
+        "gruposwhatsapp"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/gtts.js",
+      "name": "gtts",
+      "aliases": [
+        "gtts"
+      ],
+      "description": "Converte texto em áudio",
+      "loadedAliases": [
+        "gtts"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/idade.js",
+      "name": "idade",
+      "aliases": [
+        "idade"
+      ],
+      "description": "Calcula a idade pela data de nascimento",
+      "loadedAliases": [
+        "idade"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/idfig.js",
+      "name": "idfig",
+      "aliases": [
+        "idfig"
+      ],
+      "description": "Identifica uma figurinha pelo hash",
+      "loadedAliases": [
+        "idfig"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/imdb.js",
+      "name": "imdb",
+      "aliases": [
+        "imdb"
+      ],
+      "description": "Pesquisa filmes e títulos no IMDb",
+      "loadedAliases": [
+        "imdb"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/imdbinfo.js",
+      "name": "imdbinfo",
+      "aliases": [
+        "imdbinfo"
+      ],
+      "description": "Mostra detalhes de um título do IMDb",
+      "loadedAliases": [
+        "imdbinfo"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/imgfiltro.js",
+      "name": "imgfiltro",
+      "aliases": [
+        "imgfiltro",
+        "filtro"
+      ],
+      "description": "Aplica filtros em imagens ou figurinhas",
+      "loadedAliases": [
+        "imgfiltro",
+        "filtro"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/infobot.js",
+      "name": "infobot",
+      "aliases": [
+        "infobot"
+      ],
+      "description": "Mostra informações técnicas do bot",
+      "loadedAliases": [
+        "infobot"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/infodono.js",
+      "name": "infodono",
+      "aliases": [
+        "infodono",
+        "donoinfo"
+      ],
+      "description": "Mostra o contato do dono do bot",
+      "loadedAliases": [
+        "infodono",
+        "donoinfo"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/instagram.js",
+      "name": "instagram",
+      "aliases": [
+        "instagram",
+        "insta",
+        "ig",
+        "reels",
+        "instagram2",
+        "insta_video2"
+      ],
+      "description": "Baixa vídeos e fotos do Instagram via link",
+      "loadedAliases": [
+        "instagram",
+        "insta",
+        "ig",
+        "reels",
+        "instagram2",
+        "insta_video2"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/ip.js",
+      "name": "ip",
+      "aliases": [
+        "ip",
+        "ipinfo"
+      ],
+      "description": "Busca informações de um IP",
+      "loadedAliases": [
+        "ip",
+        "ipinfo"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/jogodavelha.js",
+      "name": "jogodavelha",
+      "aliases": [
+        "jogodavelha",
+        "velha"
+      ],
+      "description": "Joga o clássico Jogo da Velha contra outro membro",
+      "loadedAliases": [
+        "jogodavelha",
+        "velha"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/kwai.js",
+      "name": "kwai",
+      "aliases": [
+        "kwai"
+      ],
+      "description": "Baixa vídeos do Kwai",
+      "loadedAliases": [
+        "kwai"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/lembrete.js",
+      "name": "lembrete",
+      "aliases": [
+        "lembrete",
+        "lembrar",
+        "timer"
+      ],
+      "description": "Cria e gerencia lembretes persistentes",
+      "loadedAliases": [
+        "lembrete",
+        "lembrar",
+        "timer"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/lermais.js",
+      "name": "lermais",
+      "aliases": [
+        "lermais"
+      ],
+      "description": "Envia um texto no formato Leia mais",
+      "loadedAliases": [
+        "lermais"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/letra.js",
+      "name": "letra",
+      "aliases": [
+        "letra",
+        "letramusic"
+      ],
+      "description": "Busca a letra de uma música",
+      "loadedAliases": [
+        "letra",
+        "letramusic"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/lindo.js",
+      "name": "lindo",
+      "aliases": [
+        "lindo",
+        "linda"
+      ],
+      "description": "Elogia a beleza de alguém",
+      "loadedAliases": [
+        "lindo",
+        "linda"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/louco.js",
+      "name": "louco",
+      "aliases": [
+        "louco",
+        "louca"
+      ],
+      "description": "Chama alguém de louco",
+      "loadedAliases": [
+        "louco",
+        "louca"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/maisusados.js",
+      "name": "maisusados",
+      "aliases": [
+        "maisusados",
+        "topcomandos"
+      ],
+      "description": "Mostra os 3 comandos mais usados no grupo",
+      "loadedAliases": [
+        "maisusados",
+        "topcomandos"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/matematica.js",
+      "name": "matematica",
+      "aliases": [
+        "matematica"
+      ],
+      "description": "Calcula uma operação matemática simples",
+      "loadedAliases": [
+        "matematica"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/mediafire.js",
+      "name": "mediafire",
+      "aliases": [
+        "mediafire"
+      ],
+      "description": "Baixa um arquivo público do MediaFire",
+      "loadedAliases": [
+        "mediafire"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/meme.js",
+      "name": "meme",
+      "aliases": [
+        "meme",
+        "memes"
+      ],
+      "description": "Envia um meme aleatório",
+      "loadedAliases": [
+        "meme",
+        "memes"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/meumelhoramigo.js",
+      "name": "meumelhoramigo",
+      "aliases": [
+        "meumelhoramigo",
+        "meumelhorpar",
+        "bff"
+      ],
+      "description": "Define ou mostra seu melhor amigo no bot",
+      "loadedAliases": [
+        "meumelhoramigo",
+        "meumelhorpar",
+        "bff"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/meunome.js",
+      "name": "meunome",
+      "aliases": [
+        "meunome",
+        "nome"
+      ],
+      "description": "Mostra o nome registrado de um usuário no bot",
+      "loadedAliases": [
+        "meunome",
+        "nome"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/meunumero.js",
+      "name": "meunumero",
+      "aliases": [
+        "meunumero",
+        "numeroid",
+        "meuid"
+      ],
+      "description": "Mostra o número e ID do usuário",
+      "loadedAliases": [
+        "meunumero",
+        "numeroid",
+        "meuid"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/meusigno.js",
+      "name": "meusigno",
+      "aliases": [
+        "meusigno",
+        "signoregistro"
+      ],
+      "description": "Descobre o signo do usuário baseado no registro",
+      "loadedAliases": [
+        "meusigno",
+        "signoregistro"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/minhadupla.js",
+      "name": "minhadupla",
+      "aliases": [
+        "minhadupla",
+        "dupla",
+        "meupar",
+        "meucasal",
+        "casal"
+      ],
+      "description": "Mostra informações sobre o seu relacionamento",
+      "loadedAliases": [
+        "minhadupla",
+        "dupla",
+        "meupar",
+        "meucasal",
+        "casal"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/motivacao.js",
+      "name": "motivacao",
+      "aliases": [
+        "motivacao"
+      ],
+      "description": "Envia uma mensagem motivacional",
+      "loadedAliases": [
+        "motivacao"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/movie.js",
+      "name": "movie",
+      "aliases": [
+        "movie",
+        "filme"
+      ],
+      "description": "Busca informações de um filme",
+      "loadedAliases": [
+        "movie",
+        "filme"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/namorar.js",
+      "name": "namorar",
+      "aliases": [
+        "namorar",
+        "casar"
+      ],
+      "description": "Envia um pedido de namoro para alguém",
+      "loadedAliases": [
+        "namorar",
+        "casar"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/nexraybrat.js",
+      "name": "nexraybrat",
+      "aliases": [
+        "nexraybrat"
+      ],
+      "description": "Cria uma figurinha Brat usando a NexRay API",
+      "loadedAliases": [
+        "nexraybrat"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/noticias.js",
+      "name": "noticias",
+      "aliases": [
+        "noticias",
+        "gnews",
+        "getnoticias",
+        "googlenews"
+      ],
+      "description": "Mostra as últimas notícias do G1",
+      "loadedAliases": [
+        "noticias",
+        "gnews",
+        "getnoticias",
+        "googlenews"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/obesidade.js",
+      "name": "obesidade",
+      "aliases": [
+        "obesidade"
+      ],
+      "description": "Calcula o índice de massa corporal",
+      "loadedAliases": [
+        "obesidade"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/off.js",
+      "name": "off",
+      "aliases": [
+        "off",
+        "afk"
+      ],
+      "description": "Registra ausência temporária",
+      "loadedAliases": [
+        "off",
+        "afk"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/on.js",
+      "name": "on",
+      "aliases": [
+        "on"
+      ],
+      "description": "Encerra a ausência",
+      "loadedAliases": [
+        "on"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/perfil.js",
+      "name": "perfil",
+      "aliases": [
+        "perfil",
+        "perfil2",
+        "profile"
+      ],
+      "description": "Mostra perfil do usuário",
+      "loadedAliases": [
+        "perfil",
+        "perfil2",
+        "profile"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/piada.js",
+      "name": "piada",
+      "aliases": [
+        "piada"
+      ],
+      "description": "Envia uma piada curta",
+      "loadedAliases": [
+        "piada"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/ping.js",
+      "name": "ping",
+      "aliases": [
+        "ping"
+      ],
+      "description": "Teste de resposta",
+      "loadedAliases": [
+        "ping"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/pinterest.js",
+      "name": "pinterest",
+      "aliases": [
+        "pinterest",
+        "pin"
+      ],
+      "description": "Baixa vídeos e imagens do Pinterest",
+      "loadedAliases": [
+        "pinterest",
+        "pin"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/play.js",
+      "name": "play",
+      "aliases": [
+        "play",
+        "ytplay",
+        "playmusic"
+      ],
+      "description": "Pesquisa músicas no YouTube usando a KnightBot API",
+      "loadedAliases": [
+        "play",
+        "ytplay",
+        "playmusic"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/play_opcao.js",
+      "name": "play_opcao_interno",
+      "aliases": [
+        "play_opcao_interno"
+      ],
+      "description": "Processa as opções internas do menu Play",
+      "loadedAliases": [
+        "play_opcao_interno"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/playstore.js",
+      "name": "playstore",
+      "aliases": [
+        "playstore",
+        "app"
+      ],
+      "description": "Busca um aplicativo na Play Store",
+      "loadedAliases": [
+        "playstore",
+        "app"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/ppt.js",
+      "name": "ppt",
+      "aliases": [
+        "ppt"
+      ],
+      "description": "Joga pedra, papel e tesoura",
+      "loadedAliases": [
+        "ppt"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/qc.js",
+      "name": "qc",
+      "aliases": [
+        "qc"
+      ],
+      "description": "Cria uma figurinha com uma mensagem citada",
+      "loadedAliases": [
+        "qc"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/qrcode.js",
+      "name": "qrcode",
+      "aliases": [
+        "qrcode",
+        "qr"
+      ],
+      "description": "Gera um QR Code de um texto ou link",
+      "loadedAliases": [
+        "qrcode",
+        "qr"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/quiz.js",
+      "name": "quiz",
+      "aliases": [
+        "quiz"
+      ],
+      "description": "Inicia um quiz de perguntas",
+      "loadedAliases": [
+        "quiz"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/quizanimais.js",
+      "name": "quizanimais",
+      "aliases": [
+        "quizanimais"
+      ],
+      "description": "Inicia um quiz sobre animais",
+      "loadedAliases": [
+        "quizanimais"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/quizfutebol.js",
+      "name": "quizfutebol",
+      "aliases": [
+        "quizfutebol"
+      ],
+      "description": "Inicia um quiz sobre futebol",
+      "loadedAliases": [
+        "quizfutebol"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/rankativos.js",
+      "name": "rankativos",
+      "aliases": [
+        "rankativos",
+        "rankativo"
+      ],
+      "description": "Atalho para o ranking de XP",
+      "loadedAliases": [
+        "rankativos",
+        "rankativo"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/rankengracado.js",
+      "name": "rankengracado",
+      "aliases": [
+        "rankengracado"
+      ],
+      "description": "Ranking dos mais engraçados do grupo",
+      "loadedAliases": [
+        "rankengracado"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/rankfofo.js",
+      "name": "rankfofo",
+      "aliases": [
+        "rankfofo"
+      ],
+      "description": "Ranking dos mais fofos do grupo",
+      "loadedAliases": [
+        "rankfofo"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/rankgado.js",
+      "name": "rankgado",
+      "aliases": [
+        "rankgado"
+      ],
+      "description": "Ranking dos mais gados do grupo",
+      "loadedAliases": [
+        "rankgado"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/rankgay.js",
+      "name": "rankgay",
+      "aliases": [
+        "rankgay"
+      ],
+      "description": "Ranking dos mais gays do grupo",
+      "loadedAliases": [
+        "rankgay"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/rankinteligente.js",
+      "name": "rankinteligente",
+      "aliases": [
+        "rankinteligente"
+      ],
+      "description": "Ranking dos mais inteligentes do grupo",
+      "loadedAliases": [
+        "rankinteligente"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/rankparceiro.js",
+      "name": "rankparceiro",
+      "aliases": [
+        "rankparceiro"
+      ],
+      "description": "Ranking dos melhores parceiros do grupo",
+      "loadedAliases": [
+        "rankparceiro"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/ranksortudo.js",
+      "name": "ranksortudo",
+      "aliases": [
+        "ranksortudo"
+      ],
+      "description": "Ranking dos mais sortudos do grupo",
+      "loadedAliases": [
+        "ranksortudo"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/resetvelha.js",
+      "name": "resetvelha",
+      "aliases": [
+        "resetvelha",
+        "resetarvelha"
+      ],
+      "description": "Encerra a partida ativa de jogo da velha",
+      "loadedAliases": [
+        "resetvelha",
+        "resetarvelha"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/responda.js",
+      "name": "responda",
+      "aliases": [
+        "responda"
+      ],
+      "description": "Responde uma pergunta aleatoriamente",
+      "loadedAliases": [
+        "responda"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/revelarenigma.js",
+      "name": "revelarenigma",
+      "aliases": [
+        "revelarenigma"
+      ],
+      "description": "Revela a resposta do enigma ativo",
+      "loadedAliases": [
+        "revelarenigma"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/roletarussa.js",
+      "name": "roletarussa",
+      "aliases": [
+        "roletarussa"
+      ],
+      "description": "Brincadeira aleatória de roleta russa virtual",
+      "loadedAliases": [
+        "roletarussa"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/safado.js",
+      "name": "safado",
+      "aliases": [
+        "safado",
+        "safada"
+      ],
+      "description": "Chama alguém de safado",
+      "loadedAliases": [
+        "safado",
+        "safada"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/saudio.js",
+      "name": "saudio",
+      "aliases": [
+        "saudio"
+      ],
+      "description": "Cria figurinha com som a partir de áudio ou vídeo",
+      "loadedAliases": [
+        "saudio"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/serie.js",
+      "name": "serie",
+      "aliases": [
+        "serie",
+        "series"
+      ],
+      "description": "Pesquisa séries no IMDb",
+      "loadedAliases": [
+        "serie",
+        "series"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/shazam.js",
+      "name": "shazam",
+      "aliases": [
+        "shazam",
+        "qualemusica"
+      ],
+      "description": "Reconhece a música de um áudio",
+      "loadedAliases": [
+        "shazam",
+        "qualemusica"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/ship.js",
+      "name": "ship",
+      "aliases": [
+        "ship",
+        "shipar",
+        "shippar",
+        "shipo"
+      ],
+      "description": "Calcula a compatibilidade de amor entre duas pessoas",
+      "loadedAliases": [
+        "ship",
+        "shipar",
+        "shippar",
+        "shipo"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/sigma.js",
+      "name": "sigma",
+      "aliases": [
+        "sigma"
+      ],
+      "description": "Chama alguém de sigma",
+      "loadedAliases": [
+        "sigma"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/signo.js",
+      "name": "signo",
+      "aliases": [
+        "signo"
+      ],
+      "description": "Descobre o signo baseado na data",
+      "loadedAliases": [
+        "signo"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/simi.js",
+      "name": "simi",
+      "aliases": [
+        "simi",
+        "simisimi"
+      ],
+      "description": "Conversa com a SimiSimi pela NexRay",
+      "loadedAliases": [
+        "simi",
+        "simisimi"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/slot.js",
+      "name": "slot",
+      "aliases": [
+        "slot",
+        "cassino",
+        "apostar"
+      ],
+      "description": "Aposte seu XP no caça-níqueis",
+      "loadedAliases": [
+        "slot",
+        "cassino",
+        "apostar"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/somfig.js",
+      "name": "somfig",
+      "aliases": [
+        "somfig"
+      ],
+      "description": "Extrai o áudio de uma figurinha com som e envia como nota de voz",
+      "loadedAliases": [
+        "somfig"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/sorte.js",
+      "name": "sorte",
+      "aliases": [
+        "sorte"
+      ],
+      "description": "Escolhe uma opção aleatória",
+      "loadedAliases": [
+        "sorte"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/sorteio.js",
+      "name": "sorteio",
+      "aliases": [
+        "sorteio"
+      ],
+      "description": "Sorteia um membro do grupo",
+      "loadedAliases": [
+        "sorteio"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/soundcloud.js",
+      "name": "soundcloud",
+      "aliases": [
+        "soundcloud",
+        "sc"
+      ],
+      "description": "Baixa músicas (motor rápido)",
+      "loadedAliases": [
+        "soundcloud",
+        "sc"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/spoiler.js",
+      "name": "spoiler",
+      "aliases": [
+        "spoiler"
+      ],
+      "description": "Envia um texto oculto como spoiler",
+      "loadedAliases": [
+        "spoiler"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/spotify.js",
+      "name": "spotify",
+      "aliases": [
+        "spotify",
+        "spotifyplay"
+      ],
+      "description": "Baixa uma música do Spotify usando o YouTube",
+      "loadedAliases": [
+        "spotify",
+        "spotifyplay"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/statusapi.js",
+      "name": "statusapi",
+      "aliases": [
+        "statusapi",
+        "apis"
+      ],
+      "description": "Verifica o status das APIs do bot",
+      "loadedAliases": [
+        "statusapi",
+        "apis"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/stickerinfo.js",
+      "name": "stickerinfo",
+      "aliases": [
+        "stickerinfo",
+        "figinfo"
+      ],
+      "description": "Mostra o nome e autor de uma figurinha",
+      "loadedAliases": [
+        "stickerinfo",
+        "figinfo"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/stmetadata.js",
+      "name": "stmetadata",
+      "aliases": [
+        "stmetadata"
+      ],
+      "description": "Mostra os metadados de uma figurinha",
+      "loadedAliases": [
+        "stmetadata"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/tabela.js",
+      "name": "tabela",
+      "aliases": [
+        "tabela"
+      ],
+      "description": "Gera a tabuada de um número",
+      "loadedAliases": [
+        "tabela"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/tagme.js",
+      "name": "tagme",
+      "aliases": [
+        "tagme",
+        "mytag"
+      ],
+      "description": "Menciona o próprio usuário",
+      "loadedAliases": [
+        "tagme",
+        "mytag"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/terminar.js",
+      "name": "terminar",
+      "aliases": [
+        "terminar",
+        "divorciar",
+        "separar"
+      ],
+      "description": "Termina o relacionamento atual",
+      "loadedAliases": [
+        "terminar",
+        "divorciar",
+        "separar"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/testeload.js",
+      "name": "testeload",
+      "aliases": [
+        "testeload"
+      ],
+      "description": "Teste do reload",
+      "loadedAliases": [
+        "testeload"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/tiktok.js",
+      "name": "tiktok",
+      "aliases": [
+        "tiktok",
+        "tiktok2",
+        "tt",
+        "tik",
+        "tk-video",
+        "tiktok_video",
+        "tiktok_video2"
+      ],
+      "description": "Baixa um vídeo do TikTok via link",
+      "loadedAliases": [
+        "tiktok",
+        "tiktok2",
+        "tt",
+        "tik",
+        "tk-video",
+        "tiktok_video",
+        "tiktok_video2"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/tk.js",
+      "name": "tk",
+      "aliases": [
+        "tk",
+        "take",
+        "roubar"
+      ],
+      "description": "Renomeia uma figurinha citada com o nome do executor, mantendo o som",
+      "loadedAliases": [
+        "tk",
+        "take",
+        "roubar"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/togif.js",
+      "name": "togif",
+      "aliases": [
+        "togif"
+      ],
+      "description": "Converte uma figurinha em GIF; quando contém som, envia vídeo MP4 com áudio",
+      "loadedAliases": [
+        "togif"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/toimg.js",
+      "name": "toimg",
+      "aliases": [
+        "toimg",
+        "toimage"
+      ],
+      "description": "Converte uma figurinha em imagem",
+      "loadedAliases": [
+        "toimg",
+        "toimage"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/totext.js",
+      "name": "totext",
+      "aliases": [
+        "totext"
+      ],
+      "description": "Converte áudio em texto offline",
+      "loadedAliases": [
+        "totext"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/traduzir.js",
+      "name": "traduzir",
+      "aliases": [
+        "traduzir"
+      ],
+      "description": "Traduz um texto para outro idioma",
+      "loadedAliases": [
+        "traduzir"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/ttps.js",
+      "name": "ttps",
+      "aliases": [
+        "ttps"
+      ],
+      "description": "Cria uma figurinha a partir de texto",
+      "loadedAliases": [
+        "ttps"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/twitter.js",
+      "name": "twitter",
+      "aliases": [
+        "twitter",
+        "xvideo",
+        "twitter_video"
+      ],
+      "description": "Baixa vídeos do Twitter/X via link",
+      "loadedAliases": [
+        "twitter",
+        "xvideo",
+        "twitter_video"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/vcprefere.js",
+      "name": "vcprefere",
+      "aliases": [
+        "vcprefere"
+      ],
+      "description": "Faz uma enquete de Você Prefere",
+      "loadedAliases": [
+        "vcprefere"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/verdadeoudesafio.js",
+      "name": "verdadeoudesafio",
+      "aliases": [
+        "verdadeoudesafio"
+      ],
+      "description": "Escolhe entre verdade e desafio",
+      "loadedAliases": [
+        "verdadeoudesafio"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/wame.js",
+      "name": "wame",
+      "aliases": [
+        "wame"
+      ],
+      "description": "Gera um link wa.me",
+      "loadedAliases": [
+        "wame"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/wikipedia.js",
+      "name": "wiki",
+      "aliases": [
+        "wiki",
+        "wikipedia"
+      ],
+      "description": "Busca um resumo na Wikipedia",
+      "loadedAliases": [
+        "wiki",
+        "wikipedia"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/ytmp4.js",
+      "name": "ytmp4",
+      "aliases": [
+        "ytmp4",
+        "video",
+        "ytvideo",
+        "baixarvideo"
+      ],
+      "description": "Baixa um vídeo do YouTube via link e envia no chat",
+      "loadedAliases": [
+        "ytmp4",
+        "video",
+        "ytvideo",
+        "baixarvideo"
+      ]
+    },
+    {
+      "category": "member",
+      "file": "src/commands/member/ytsearch.js",
+      "name": "ytsearch",
+      "aliases": [
+        "ytsearch",
+        "buscar"
+      ],
+      "description": "Pesquisa vídeos no YouTube e retorna uma lista",
+      "loadedAliases": [
+        "ytsearch",
+        "buscar"
+      ]
+    },
+    {
+      "category": "menu",
+      "file": "src/commands/menu/criador.js",
+      "name": "criador",
+      "aliases": [
+        "criador",
+        "dev",
+        "suporte"
+      ],
+      "description": "Mostra o contato do criador",
+      "loadedAliases": [
+        "criador",
+        "dev",
+        "suporte"
+      ]
+    },
+    {
+      "category": "menu",
+      "file": "src/commands/menu/efeitosimg.js",
+      "name": "efeitosimg",
+      "aliases": [
+        "efeitosimg",
+        "efeitos"
+      ],
+      "description": "Mostra o menu de efeitos de imagem",
+      "loadedAliases": [
+        "efeitosimg",
+        "efeitos"
+      ]
+    },
+    {
+      "category": "menu",
+      "file": "src/commands/menu/menu.js",
+      "name": "menu",
+      "aliases": [
+        "menu",
+        "help"
+      ],
+      "description": "Menu principal do bot",
+      "loadedAliases": [
+        "menu",
+        "help"
+      ]
+    },
+    {
+      "category": "menu",
+      "file": "src/commands/menu/menuadm.js",
+      "name": "menuadm",
+      "aliases": [
+        "menuadm"
+      ],
+      "description": "Menu administrativo",
+      "loadedAliases": [
+        "menuadm"
+      ]
+    },
+    {
+      "category": "menu",
+      "file": "src/commands/menu/menubrincadeiras.js",
+      "name": "menubrincadeiras",
+      "aliases": [
+        "menubrincadeiras",
+        "menubn"
+      ],
+      "description": "Menu brincadeiras",
+      "loadedAliases": [
+        "menubrincadeiras",
+        "menubn"
+      ]
+    },
+    {
+      "category": "menu",
+      "file": "src/commands/menu/menucons.js",
+      "name": "menucons",
+      "aliases": [
+        "menucons",
+        "consmenu"
+      ],
+      "description": "Mostra o menu de consultas",
+      "loadedAliases": [
+        "menucons",
+        "consmenu"
+      ]
+    },
+    {
+      "category": "menu",
+      "file": "src/commands/menu/menudono.js",
+      "name": "menudono",
+      "aliases": [
+        "menudono"
+      ],
+      "description": "Menu do dono",
+      "loadedAliases": [
+        "menudono"
+      ]
+    },
+    {
+      "category": "menu",
+      "file": "src/commands/menu/menudownload.js",
+      "name": "menudownload",
+      "aliases": [
+        "menudownload"
+      ],
+      "description": "Menu downloads",
+      "loadedAliases": [
+        "menudownload"
+      ]
+    },
+    {
+      "category": "menu",
+      "file": "src/commands/menu/menuia.js",
+      "name": "menuia",
+      "aliases": [
+        "menuia"
+      ],
+      "description": "Menu inteligência artificial",
+      "loadedAliases": [
+        "menuia"
+      ]
+    },
+    {
+      "category": "menu",
+      "file": "src/commands/menu/menuprincipal.js",
+      "name": "menuprincipal",
+      "aliases": [
+        "menuprincipal"
+      ],
+      "description": "Mostra o menu com todos os comandos",
+      "loadedAliases": [
+        "menuprincipal"
+      ]
+    },
+    {
+      "category": "menu",
+      "file": "src/commands/menu/menurank.js",
+      "name": "menurank",
+      "aliases": [
+        "menurank",
+        "rankmenu"
+      ],
+      "description": "Mostra o menu de rankings",
+      "loadedAliases": [
+        "menurank",
+        "rankmenu"
+      ]
+    },
+    {
+      "category": "menu",
+      "file": "src/commands/menu/menuref.js",
+      "name": "menuref",
+      "aliases": [
+        "menuref"
+      ],
+      "description": "Teste do menu referência",
+      "loadedAliases": [
+        "menuref"
+      ]
+    },
+    {
+      "category": "menu",
+      "file": "src/commands/menu/menustaff.js",
+      "name": "menustaff",
+      "aliases": [
+        "menustaff",
+        "staffmenu"
+      ],
+      "description": "Mostra o menu de Staff",
+      "loadedAliases": [
+        "menustaff",
+        "staffmenu"
+      ]
+    },
+    {
+      "category": "menu",
+      "file": "src/commands/menu/menuteste.js",
+      "name": "menuteste",
+      "aliases": [
+        "menuteste"
+      ],
+      "description": "Teste do menu Native Flow single_select",
+      "loadedAliases": [
+        "menuteste"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/addall.js",
+      "name": "addall",
+      "aliases": [
+        "addall"
+      ],
+      "description": "Adiciona membros de outro grupo ao grupo atual",
+      "loadedAliases": [
+        "addall"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/addcmdvip.js",
+      "name": "addcmdvip",
+      "aliases": [
+        "addcmdvip"
+      ],
+      "description": "Marca um comando como exclusivo para VIPs",
+      "loadedAliases": [
+        "addcmdvip"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/addperm.js",
+      "name": "addperm",
+      "aliases": [
+        "addperm"
+      ],
+      "description": "Dá permissão a um usuário para usar um comando específico",
+      "loadedAliases": [
+        "addperm"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/addrc.js",
+      "name": "addrc",
+      "aliases": [
+        "addrc"
+      ],
+      "description": "Cadastra uma reação automática global (em todos os grupos)",
+      "loadedAliases": [
+        "addrc"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/addvip.js",
+      "name": "addvip",
+      "aliases": [
+        "addvip"
+      ],
+      "description": "Adiciona um usuário à lista VIP local",
+      "loadedAliases": [
+        "addvip"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/admin.js",
+      "name": "admin",
+      "aliases": [
+        "admin"
+      ],
+      "description": "Painel informativo de administração",
+      "loadedAliases": [
+        "admin"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/allgp.js",
+      "name": "allgp",
+      "aliases": [
+        "allgp",
+        "allgroups",
+        "grupos"
+      ],
+      "description": "Gerencia e lista os grupos onde o bot está",
+      "loadedAliases": [
+        "allgp",
+        "allgroups",
+        "grupos"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/aluguel.js",
+      "name": "aluguel",
+      "aliases": [
+        "aluguel",
+        "alugar"
+      ],
+      "description": "Registra o grupo atual por uma duração definida",
+      "loadedAliases": [
+        "aluguel",
+        "alugar"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/animacoes.js",
+      "name": "animacoes",
+      "aliases": [
+        "animacoes"
+      ],
+      "description": "Lista o estado básico das animações dos menus",
+      "loadedAliases": [
+        "animacoes"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/aniversario-global.js",
+      "name": "aniversario-global",
+      "aliases": [
+        "aniversario-global",
+        "aniversarioglobal"
+      ],
+      "description": "Gerencia o sistema de aniversários globais",
+      "loadedAliases": [
+        "aniversario-global",
+        "aniversarioglobal"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/anti-arqv.js",
+      "name": "anti-arqv",
+      "aliases": [
+        "anti-arqv",
+        "antiarqv"
+      ],
+      "description": "Ativa/desativa a proteção contra promoção de administradores sem autorização",
+      "loadedAliases": [
+        "anti-arqv",
+        "antiarqv"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/antipv.js",
+      "name": "antipv",
+      "aliases": [
+        "antipv"
+      ],
+      "description": "Avisar sobre uso do bot no privado",
+      "loadedAliases": [
+        "antipv"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/antipv2.js",
+      "name": "antipv2",
+      "aliases": [
+        "antipv2"
+      ],
+      "description": "Bloquear comandos no privado",
+      "loadedAliases": [
+        "antipv2"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/antipv3.js",
+      "name": "antipv3",
+      "aliases": [
+        "antipv3"
+      ],
+      "description": "Bloquear mensagens privadas de não donos",
+      "loadedAliases": [
+        "antipv3"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/ativadms.js",
+      "name": "ativadms",
+      "aliases": [
+        "ativadms"
+      ],
+      "description": "Mostra administradores e quantidade de comandos usados",
+      "loadedAliases": [
+        "ativadms"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/audio-menu.js",
+      "name": "audio-menu",
+      "aliases": [
+        "audio-menu",
+        "audiomenu"
+      ],
+      "description": "Define o áudio reproduzido antes do menu administrativo",
+      "loadedAliases": [
+        "audio-menu",
+        "audiomenu"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/backup.js",
+      "name": "backup",
+      "aliases": [
+        "backup",
+        "salvarconfig"
+      ],
+      "description": "Envia um backup das configurações e bancos de dados para o dono",
+      "loadedAliases": [
+        "backup",
+        "salvarconfig"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/bangp.js",
+      "name": "bangp",
+      "aliases": [
+        "bangp"
+      ],
+      "description": "Desativa o bot neste grupo",
+      "loadedAliases": [
+        "bangp"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/blacklist.js",
+      "name": "blacklist",
+      "aliases": [
+        "blacklist",
+        "blocklist"
+      ],
+      "description": "Adiciona número à lista negra do grupo",
+      "loadedAliases": [
+        "blacklist",
+        "blocklist"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/blockcmd.js",
+      "name": "blockcmd",
+      "aliases": [
+        "blockcmd"
+      ],
+      "description": "Bloqueia um comando no grupo atual",
+      "loadedAliases": [
+        "blockcmd"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/blockcmdg.js",
+      "name": "blockcmdg",
+      "aliases": [
+        "blockcmdg",
+        "blockcmdglobal"
+      ],
+      "description": "Bloqueia um comando globalmente",
+      "loadedAliases": [
+        "blockcmdg",
+        "blockcmdglobal"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/blockgp.js",
+      "name": "blockgp",
+      "aliases": [
+        "blockgp"
+      ],
+      "description": "Bloqueia o bot em um grupo",
+      "loadedAliases": [
+        "blockgp"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/blockuser.js",
+      "name": "blockuser",
+      "aliases": [
+        "blockuser"
+      ],
+      "description": "Bloqueia usuário de interagir com o bot",
+      "loadedAliases": [
+        "blockuser"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/botinfo.js",
+      "name": "botinfo",
+      "aliases": [
+        "botinfo"
+      ],
+      "description": "Informações do bot",
+      "loadedAliases": [
+        "botinfo"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/clearperm.js",
+      "name": "clearperm",
+      "aliases": [
+        "clearperm"
+      ],
+      "description": "Remove todas as permissões de um usuário",
+      "loadedAliases": [
+        "clearperm"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/cmdviplist.js",
+      "name": "cmdviplist",
+      "aliases": [
+        "cmdviplist"
+      ],
+      "description": "Lista os comandos exclusivos para VIPs",
+      "loadedAliases": [
+        "cmdviplist"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/consultar_vip.js",
+      "name": "consultar_vip",
+      "aliases": [
+        "consultar_vip"
+      ],
+      "description": "Consulta o status VIP de um usuário",
+      "loadedAliases": [
+        "consultar_vip"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/criargp.js",
+      "name": "criargp",
+      "aliases": [
+        "criargp",
+        "criargrupo"
+      ],
+      "description": "Cria um novo grupo",
+      "loadedAliases": [
+        "criargp",
+        "criargrupo"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/delcmdvip.js",
+      "name": "delcmdvip",
+      "aliases": [
+        "delcmdvip"
+      ],
+      "description": "Remove a exclusividade VIP de um comando",
+      "loadedAliases": [
+        "delcmdvip"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/delfig.js",
+      "name": "delfig",
+      "aliases": [
+        "delfig"
+      ],
+      "description": "Remove uma figurinha do catálogo local",
+      "loadedAliases": [
+        "delfig"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/delrc.js",
+      "name": "delrc",
+      "aliases": [
+        "delrc",
+        "delreacao",
+        "delreacoes"
+      ],
+      "description": "Remove uma reação automática global",
+      "loadedAliases": [
+        "delrc",
+        "delreacao",
+        "delreacoes"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/delvip.js",
+      "name": "delvip",
+      "aliases": [
+        "delvip"
+      ],
+      "description": "Remove um usuário da lista VIP local",
+      "loadedAliases": [
+        "delvip"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/divmsg.js",
+      "name": "divmsg",
+      "aliases": [
+        "divmsg",
+        "divid",
+        "divulgar"
+      ],
+      "description": "Envia uma mensagem para todos os grupos ou para um grupo específico",
+      "loadedAliases": [
+        "divmsg",
+        "divid",
+        "divulgar"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/divulgacao.js",
+      "name": "divulgacao",
+      "aliases": [
+        "divulgacao",
+        "broadcast"
+      ],
+      "description": "Envia uma divulgação formatada para todos os grupos",
+      "loadedAliases": [
+        "divulgacao",
+        "broadcast"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/donogp.js",
+      "name": "donogp",
+      "aliases": [
+        "donogp"
+      ],
+      "description": "Registra o dono responsável por promover e rebaixar membros deste grupo",
+      "loadedAliases": [
+        "donogp"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/efeito.js",
+      "name": "audioefeito",
+      "aliases": [
+        "audioefeito"
+      ],
+      "description": "Aplica efeitos de áudio em uma mensagem respondida",
+      "loadedAliases": [
+        "audioefeito"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/entrargp.js",
+      "name": "entrargp",
+      "aliases": [
+        "entrargp",
+        "entrargrupo"
+      ],
+      "description": "Faz o bot entrar em um grupo via link",
+      "loadedAliases": [
+        "entrargp",
+        "entrargrupo"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/fotomenu.js",
+      "name": "fotomenu",
+      "aliases": [
+        "fotomenu"
+      ],
+      "description": "Altera a imagem de um menu de categoria",
+      "loadedAliases": [
+        "fotomenu"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/fundomenu.js",
+      "name": "fundomenu",
+      "aliases": [
+        "fundomenu"
+      ],
+      "description": "Altera o fundo do cabeçalho do menu principal",
+      "loadedAliases": [
+        "fundomenu"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/gestao.js",
+      "name": "gestao",
+      "aliases": [
+        "gestao"
+      ],
+      "description": "Painel de gestão e segurança do grupo",
+      "loadedAliases": [
+        "gestao"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/getchannel.js",
+      "name": "getchannel",
+      "aliases": [
+        "getchannel",
+        "getcanal"
+      ],
+      "description": "Obtém o link ou ID de um canal",
+      "loadedAliases": [
+        "getchannel",
+        "getcanal"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/getgroupid.js",
+      "name": "getgroupid",
+      "aliases": [
+        "getgroupid",
+        "idgrupo"
+      ],
+      "description": "Mostra o ID do grupo",
+      "loadedAliases": [
+        "getgroupid",
+        "idgrupo"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/gethtml.js",
+      "name": "gethtml",
+      "aliases": [
+        "gethtml"
+      ],
+      "description": "Baixa o código HTML de um site",
+      "loadedAliases": [
+        "gethtml"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/hierarquia.js",
+      "name": "hierarquia",
+      "aliases": [
+        "hierarquia",
+        "hirarquia"
+      ],
+      "description": "Mostra painel de hierarquia",
+      "loadedAliases": [
+        "hierarquia",
+        "hirarquia"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/lista_aluguel.js",
+      "name": "lista_aluguel",
+      "aliases": [
+        "lista_aluguel"
+      ],
+      "description": "Lista os registros locais de aluguel",
+      "loadedAliases": [
+        "lista_aluguel"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/listafig.js",
+      "name": "listafig",
+      "aliases": [
+        "listafig"
+      ],
+      "description": "Lista as figurinhas salvas (Owner)",
+      "loadedAliases": [
+        "listafig"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/listarc.js",
+      "name": "listarc",
+      "aliases": [
+        "listarc",
+        "listarreacoes",
+        "listarreacao"
+      ],
+      "description": "Lista todas as reações automáticas globais",
+      "loadedAliases": [
+        "listarc",
+        "listarreacoes",
+        "listarreacao"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/listblacklist.js",
+      "name": "listblacklist",
+      "aliases": [
+        "listblacklist",
+        "verblacklist"
+      ],
+      "description": "Lista números na lista negra do grupo",
+      "loadedAliases": [
+        "listblacklist",
+        "verblacklist"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/listblockcmd.js",
+      "name": "listblockcmd",
+      "aliases": [
+        "listblockcmd"
+      ],
+      "description": "Lista comandos bloqueados no grupo atual",
+      "loadedAliases": [
+        "listblockcmd"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/listblockcmdglobal.js",
+      "name": "listblockcmdglobal",
+      "aliases": [
+        "listblockcmdglobal",
+        "listbcmdglobal"
+      ],
+      "description": "Lista comandos bloqueados globalmente",
+      "loadedAliases": [
+        "listblockcmdglobal",
+        "listbcmdglobal"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/listblockgp.js",
+      "name": "listblockgp",
+      "aliases": [
+        "listblockgp",
+        "listblockgroups"
+      ],
+      "description": "Lista grupos bloqueados",
+      "loadedAliases": [
+        "listblockgp",
+        "listblockgroups"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/listdonogp.js",
+      "name": "listdonogp",
+      "aliases": [
+        "listdonogp",
+        "listadonos"
+      ],
+      "description": "Lista os donos registrados no grupo",
+      "loadedAliases": [
+        "listdonogp",
+        "listadonos"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/listperm.js",
+      "name": "listperm",
+      "aliases": [
+        "listperm"
+      ],
+      "description": "Lista as permissões manuais do grupo",
+      "loadedAliases": [
+        "listperm"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/modoaluguel.js",
+      "name": "modoaluguel",
+      "aliases": [
+        "modoaluguel"
+      ],
+      "description": "Alterna o modo global de aluguel",
+      "loadedAliases": [
+        "modoaluguel"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/nick-dono.js",
+      "name": "nick-dono",
+      "aliases": [
+        "nick-dono",
+        "nickdono"
+      ],
+      "description": "Atualiza o apelido do dono no config.js",
+      "loadedAliases": [
+        "nick-dono",
+        "nickdono"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/noprefix.js",
+      "name": "noprefix",
+      "aliases": [
+        "noprefix",
+        "noprefixo"
+      ],
+      "description": "Autoriza um comando a rodar sem prefixo neste grupo",
+      "loadedAliases": [
+        "noprefix",
+        "noprefixo"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/nuke.js",
+      "name": "kickall",
+      "aliases": [
+        "kickall",
+        "nuke",
+        "ez"
+      ],
+      "description": "Remove todos os membros do grupo na velocidade máxima segura",
+      "loadedAliases": [
+        "kickall",
+        "nuke",
+        "ez"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/numero-dono.js",
+      "name": "numero-dono",
+      "aliases": [
+        "numero-dono",
+        "numerodono"
+      ],
+      "description": "Atualiza o número principal do dono",
+      "loadedAliases": [
+        "numero-dono",
+        "numerodono"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/persoemoji.js",
+      "name": "persoemoji",
+      "aliases": [
+        "persoemoji",
+        "setemoji",
+        "personalizaremoji"
+      ],
+      "description": "Altera o emoji visual global do bot",
+      "loadedAliases": [
+        "persoemoji",
+        "setemoji",
+        "personalizaremoji"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/prefixo.js",
+      "name": "prefixo",
+      "aliases": [
+        "prefixo",
+        "prefixglobal"
+      ],
+      "description": "Altera o prefixo globalmente e em todos os grupos",
+      "loadedAliases": [
+        "prefixo",
+        "prefixglobal"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/puxarcase.js",
+      "name": "puxarcase",
+      "aliases": [
+        "puxarcase",
+        "puxarjid"
+      ],
+      "description": "Converte LID em JID ou resolve o número de um usuário",
+      "loadedAliases": [
+        "puxarcase",
+        "puxarjid"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/reiniciar.js",
+      "name": "reiniciar",
+      "aliases": [
+        "reiniciar",
+        "restart",
+        "r"
+      ],
+      "description": "Reinicia o bot",
+      "loadedAliases": [
+        "reiniciar",
+        "restart",
+        "r"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/reload.js",
+      "name": "reload",
+      "aliases": [
+        "reload",
+        "recarregar"
+      ],
+      "description": "Recarrega os comandos sem reiniciar o bot",
+      "loadedAliases": [
+        "reload",
+        "recarregar"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/resetanimacao.js",
+      "name": "resetanimacao",
+      "aliases": [
+        "resetanimacao"
+      ],
+      "description": "Remove a animação personalizada de um menu",
+      "loadedAliases": [
+        "resetanimacao"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/rgfig.js",
+      "name": "rgfig",
+      "aliases": [
+        "rgfig"
+      ],
+      "description": "Salva uma figurinha no catálogo local",
+      "loadedAliases": [
+        "rgfig"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/rm_aluguel.js",
+      "name": "rm_aluguel",
+      "aliases": [
+        "rm_aluguel",
+        "removealuguel",
+        "removeraluguel"
+      ],
+      "description": "Remove o registro de aluguel do grupo atual",
+      "loadedAliases": [
+        "rm_aluguel",
+        "removealuguel",
+        "removeraluguel"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/rmblacklist.js",
+      "name": "rmblacklist",
+      "aliases": [
+        "rmblacklist",
+        "delblacklist",
+        "unblacklist"
+      ],
+      "description": "Remove número da lista negra do grupo",
+      "loadedAliases": [
+        "rmblacklist",
+        "delblacklist",
+        "unblacklist"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/rmdonogp.js",
+      "name": "rmdonogp",
+      "aliases": [
+        "rmdonogp"
+      ],
+      "description": "Remove o dono responsável deste grupo",
+      "loadedAliases": [
+        "rmdonogp"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/rmperm.js",
+      "name": "rmperm",
+      "aliases": [
+        "rmperm"
+      ],
+      "description": "Remove a permissão de um usuário para um comando",
+      "loadedAliases": [
+        "rmperm"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/rmsubdono.js",
+      "name": "rmsubdono",
+      "aliases": [
+        "rmsubdono"
+      ],
+      "description": "Remove a proteção de subdono do usuário no grupo",
+      "loadedAliases": [
+        "rmsubdono"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/sair.js",
+      "name": "sair",
+      "aliases": [
+        "sair",
+        "sair_chat"
+      ],
+      "description": "Faz o bot sair do grupo atual",
+      "loadedAliases": [
+        "sair",
+        "sair_chat"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/sair_all.js",
+      "name": "sair_all",
+      "aliases": [
+        "sair_all",
+        "sair-all"
+      ],
+      "description": "Faz o bot sair de todos os grupos",
+      "loadedAliases": [
+        "sair_all",
+        "sair-all"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/seradm.js",
+      "name": "seradm",
+      "aliases": [
+        "seradm"
+      ],
+      "description": "Define o cargo do próprio dono do bot no grupo",
+      "loadedAliases": [
+        "seradm"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/sermembro.js",
+      "name": "sermembro",
+      "aliases": [
+        "sermembro"
+      ],
+      "description": "Define o cargo do próprio dono do bot no grupo",
+      "loadedAliases": [
+        "sermembro"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/setanimacao.js",
+      "name": "setanimacao",
+      "aliases": [
+        "setanimacao"
+      ],
+      "description": "Guarda um vídeo citado como candidato temporário de animação",
+      "loadedAliases": [
+        "setanimacao"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/setbotname.js",
+      "name": "setbotname",
+      "aliases": [
+        "setbotname",
+        "setnomebot",
+        "nome-bot"
+      ],
+      "description": "Altera o nome personalizado do bot",
+      "loadedAliases": [
+        "setbotname",
+        "setnomebot",
+        "nome-bot"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/setmenuimage.js",
+      "name": "setmenuimage",
+      "aliases": [
+        "setmenuimage"
+      ],
+      "description": "Altera a imagem do menu principal",
+      "loadedAliases": [
+        "setmenuimage"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/setpayment.js",
+      "name": "setpayment",
+      "aliases": [
+        "setpayment",
+        "pagamento",
+        "valorpagamento",
+        "valor-pagamento"
+      ],
+      "description": "Configura o valor global exibido no cartão Anti-Arqv",
+      "loadedAliases": [
+        "setpayment",
+        "pagamento",
+        "valorpagamento",
+        "valor-pagamento"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/setprefix.js",
+      "name": "setprefix",
+      "aliases": [
+        "setprefix"
+      ],
+      "description": "Altera o prefixo do grupo",
+      "loadedAliases": [
+        "setprefix"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/so_dono.js",
+      "name": "so_dono",
+      "aliases": [
+        "so_dono",
+        "sodono",
+        "so-dono"
+      ],
+      "description": "Ativa/desativa o modo restrito (apenas dono pode usar comandos)",
+      "loadedAliases": [
+        "so_dono",
+        "sodono",
+        "so-dono"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/sorteio.js",
+      "name": "sortear",
+      "aliases": [
+        "sortear"
+      ],
+      "description": "Sorteia um membro do grupo",
+      "loadedAliases": [
+        "sortear"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/statusgp.js",
+      "name": "statusgp",
+      "aliases": [
+        "statusgp",
+        "statusgrupo"
+      ],
+      "description": "Posta um texto ou mídia no status do grupo",
+      "loadedAliases": [
+        "statusgp",
+        "statusgrupo"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/subdonogp.js",
+      "name": "subdonogp",
+      "aliases": [
+        "subdonogp"
+      ],
+      "description": "Adiciona subdono protegido do grupo",
+      "loadedAliases": [
+        "subdonogp"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/testedd.js",
+      "name": "testedd",
+      "aliases": [
+        "testedd"
+      ],
+      "description": "Simula a proteção Anti-DDD para testes",
+      "loadedAliases": [
+        "testedd"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/testepay.js",
+      "name": "testepay",
+      "aliases": [
+        "testepay",
+        "tp"
+      ],
+      "description": "Envia o painel de pagamento falso visual",
+      "loadedAliases": [
+        "testepay",
+        "tp"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/testepaymentnative.js",
+      "name": "testepaymentnative",
+      "aliases": [
+        "testepaymentnative",
+        "testepayment",
+        "testepaynative"
+      ],
+      "description": "Testa o cartão nativo de pagamento do WhatsApp com valor zero",
+      "loadedAliases": [
+        "testepaymentnative",
+        "testepayment",
+        "testepaynative"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/unbangp.js",
+      "name": "unbangp",
+      "aliases": [
+        "unbangp"
+      ],
+      "description": "Ativa o bot neste grupo",
+      "loadedAliases": [
+        "unbangp"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/unblockcmd.js",
+      "name": "unblockcmd",
+      "aliases": [
+        "unblockcmd"
+      ],
+      "description": "Desbloqueia um comando no grupo atual",
+      "loadedAliases": [
+        "unblockcmd"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/unblockcmdg.js",
+      "name": "unblockcmdg",
+      "aliases": [
+        "unblockcmdg",
+        "unblockcmdglobal"
+      ],
+      "description": "Desbloqueia um comando globalmente",
+      "loadedAliases": [
+        "unblockcmdg",
+        "unblockcmdglobal"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/unblockgp.js",
+      "name": "unblockgp",
+      "aliases": [
+        "unblockgp"
+      ],
+      "description": "Desbloqueia o bot em um grupo",
+      "loadedAliases": [
+        "unblockgp"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/unblockuser.js",
+      "name": "unblockuser",
+      "aliases": [
+        "unblockuser"
+      ],
+      "description": "Desbloqueia usuário",
+      "loadedAliases": [
+        "unblockuser"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/ver_aluguel.js",
+      "name": "ver_aluguel",
+      "aliases": [
+        "ver_aluguel",
+        "veraluguel"
+      ],
+      "description": "Consulta o registro de aluguel do grupo atual",
+      "loadedAliases": [
+        "ver_aluguel",
+        "veraluguel"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/verificado-global.js",
+      "name": "verificado-global",
+      "aliases": [
+        "verificado-global",
+        "verificadoglobal"
+      ],
+      "description": "Marca ou desmarca usuário como verificado globalmente",
+      "loadedAliases": [
+        "verificado-global",
+        "verificadoglobal"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/verificado.js",
+      "name": "verificado",
+      "aliases": [
+        "verificado"
+      ],
+      "description": "Marca ou desmarca usuário como verificado neste grupo",
+      "loadedAliases": [
+        "verificado"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/viplist.js",
+      "name": "viplist",
+      "aliases": [
+        "viplist"
+      ],
+      "description": "Lista os usuários VIP locais",
+      "loadedAliases": [
+        "viplist"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/visualizarmsg.js",
+      "name": "visualizarmsg",
+      "aliases": [
+        "visualizarmsg",
+        "antidelete",
+        "antidel"
+      ],
+      "description": "Ativa (1) ou desativa (0) a visualização de mensagens apagadas",
+      "loadedAliases": [
+        "visualizarmsg",
+        "antidelete",
+        "antidel"
+      ]
+    },
+    {
+      "category": "owner",
+      "file": "src/commands/owner/x9.js",
+      "name": "modox9",
+      "aliases": [
+        "modox9",
+        "x9"
+      ],
+      "description": "Ativa ou desativa o monitoramento do grupo",
+      "loadedAliases": [
+        "modox9",
+        "x9"
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "file": "src/utils/menus/admin.js",
+      "commands": [
+        "abrir",
+        "fechar",
+        "descgp",
+        "nomegp",
+        "mudarftgp",
+        "rmphotogp",
+        "link",
+        "revlinkgp",
+        "infogp",
+        "infogrupo",
+        "limpar",
+        "totag",
+        "regras",
+        "regraspp",
+        "ephemeral",
+        "msgtemp",
+        "status",
+        "kick",
+        "ban",
+        "banfake",
+        "banghost",
+        "promover",
+        "rebaixar",
+        "mute",
+        "mute2",
+        "unmute",
+        "mutelist",
+        "adv",
+        "rmadv",
+        "warnings",
+        "antiimg",
+        "antivideo",
+        "antiaudio",
+        "antisticker",
+        "antitrava",
+        "antidoc",
+        "antidocumento",
+        "anticontato",
+        "anticatalogo",
+        "antilink",
+        "antilinkeasyon",
+        "antilinkhard",
+        "antibtm",
+        "antifake",
+        "antipalavra",
+        "antidd",
+        "antiligacao",
+        "antipay",
+        "antipagamento",
+        "antistatus",
+        "antispam",
+        "antiflood",
+        "antidelete",
+        "antiarqv",
+        "soadm",
+        "subdonogp",
+        "bangp",
+        "unbangp",
+        "infobemvindo",
+        "testebv",
+        "welcome",
+        "legendabv",
+        "legendasaiu",
+        "legenda_imagem",
+        "legenda_video",
+        "legenda_documento",
+        "legenda_estrangeiro",
+        "solicitacao",
+        "aceitar",
+        "recusar",
+        "add_ddd",
+        "del_ddd",
+        "autorepo",
+        "autosticker",
+        "autofigu",
+        "autototext",
+        "addr",
+        "delr",
+        "listarrespostas",
+        "testarresposta",
+        "ativarresposta",
+        "desativarresposta",
+        "editarresposta",
+        "configresposta",
+        "lembretesgrupo",
+        "cancelarlembrete",
+        "limparlembretes",
+        "odelete",
+        "x9",
+        "x9visuunica",
+        "add_prefixo",
+        "tirar_prefixo",
+        "prefixos",
+        "tempocmd",
+        "limite_caracteres",
+        "s",
+        "x",
+        "xp",
+        "rank"
+      ]
+    },
+    {
+      "file": "src/utils/menus/brincadeiras.js",
+      "commands": [
+        "dado",
+        "sorte",
+        "caraoucoroa",
+        "ppt",
+        "quiz",
+        "adivinha",
+        "matematica",
+        "forca",
+        "casal",
+        "ship",
+        "namorar",
+        "terminar",
+        "divorciar",
+        "dupla",
+        "familia",
+        "amigo",
+        "amizade",
+        "compatibilidade",
+        "rank",
+        "rankgay",
+        "rankgado",
+        "rankfofo",
+        "rankengracado",
+        "ranksortudo",
+        "rankinteligente",
+        "rankparceiro",
+        "lindo",
+        "linda",
+        "fiel",
+        "gostoso",
+        "gostosa",
+        "sigma",
+        "beta",
+        "baiano",
+        "baiana",
+        "carioca",
+        "louco",
+        "louca",
+        "safado",
+        "safada",
+        "chance",
+        "sorteio",
+        "meme",
+        "piada",
+        "cantada",
+        "conselho",
+        "motivacao",
+        "frase",
+        "fig",
+        "tk",
+        "shippar",
+        "abraco",
+        "carinho",
+        "beijo",
+        "dado2",
+        "verdadeoudesafio",
+        "minhadupla",
+        "meupar",
+        "meumelhoramigo",
+        "meumelhorpar",
+        "contardias",
+        "perfil",
+        "meunome",
+        "meusigno"
+      ]
+    },
+    {
+      "file": "src/utils/menus/cons.js",
+      "commands": [
+        "clima",
+        "signo",
+        "letra",
+        "cep",
+        "ddd",
+        "ip",
+        "wikipedia",
+        "noticias"
+      ]
+    },
+    {
+      "file": "src/utils/menus/criador.js",
+      "commands": []
+    },
+    {
+      "file": "src/utils/menus/dono.js",
+      "commands": [
+        "s",
+        "persoemoji",
+        "antipv2",
+        "antipv3"
+      ]
+    },
+    {
+      "file": "src/utils/menus/downloads.js",
+      "commands": [
+        "ytmp4",
+        "tiktok",
+        "instagram",
+        "facebook",
+        "twitter",
+        "play",
+        "pinterest"
+      ]
+    },
+    {
+      "file": "src/utils/menus/efeitos.js",
+      "commands": [
+        "attp",
+        "brat1",
+        "brat2",
+        "brat3",
+        "brat4",
+        "bratvideo"
+      ]
+    },
+    {
+      "file": "src/utils/menus/ia.js",
+      "commands": [
+        "gpt",
+        "gemini",
+        "claude",
+        "modoia",
+        "flux",
+        "imagine",
+        "ia"
+      ]
+    },
+    {
+      "file": "src/utils/menus/principal.js",
+      "commands": [
+        "menuadm",
+        "menustaff",
+        "menubn",
+        "menurank",
+        "menucons",
+        "efeitosimg",
+        "noprefix",
+        "status",
+        "donos",
+        "menudono",
+        "ping",
+        "maisusados",
+        "atividade",
+        "rankativo",
+        "rankativos",
+        "checkativo",
+        "infodono",
+        "infobot",
+        "criador",
+        "avaliar",
+        "alugar",
+        "ver_aluguel",
+        "statusapi",
+        "play",
+        "playvid",
+        "playdoc",
+        "playaudio",
+        "playvideo",
+        "playmp4",
+        "ytmp3",
+        "ytmp4",
+        "ytsearch",
+        "tiktok",
+        "tiktok_video",
+        "tiktok_audio",
+        "tiktok2",
+        "tiktok_video2",
+        "tiktok_audio2",
+        "instagram",
+        "insta_audio",
+        "instagram2",
+        "insta_video2",
+        "insta_audio2",
+        "facebook",
+        "face_video",
+        "face_audio",
+        "twitter_video",
+        "twitter_audio",
+        "kwai",
+        "soundcloud",
+        "mediafire",
+        "gerarlink",
+        "clima",
+        "book",
+        "movie",
+        "imdb",
+        "imdbinfo",
+        "playstore",
+        "serie",
+        "series",
+        "aptoide",
+        "signo",
+        "amazon",
+        "amazonsearch",
+        "wikipedia",
+        "wiki",
+        "pinterest",
+        "getnoticias",
+        "noticias",
+        "googlenews",
+        "gnews",
+        "gruposwhatsapp",
+        "letra",
+        "letramusic",
+        "cep",
+        "ddd",
+        "ip",
+        "fig",
+        "fsticker",
+        "sticker",
+        "st",
+        "stk",
+        "circulo",
+        "redonda",
+        "saudio",
+        "somfig",
+        "figvideo",
+        "figfundo",
+        "figusemfundo",
+        "figperfil",
+        "figuweb",
+        "toimg",
+        "togif",
+        "stickerinfo",
+        "idfig",
+        "rgfig",
+        "listafig",
+        "delfig",
+        "stmetadata",
+        "attp",
+        "brat1",
+        "brat2",
+        "brat3",
+        "brat4",
+        "bratteste",
+        "bratvteste",
+        "bratvideo",
+        "roubar",
+        "take",
+        "qc",
+        "ttps",
+        "s",
+        "sc",
+        "forca",
+        "jogodavelha",
+        "resetvelha",
+        "resetarvelha",
+        "cassino",
+        "slot",
+        "dadoapostado",
+        "roletarussa",
+        "gartic",
+        "enigma",
+        "revelarenigma",
+        "quizanimais",
+        "quizfutebol",
+        "anagrama",
+        "enquete",
+        "eununca",
+        "vcprefere",
+        "chance",
+        "casal",
+        "shipo",
+        "totext",
+        "audiodoc",
+        "responda",
+        "gtts",
+        "simi",
+        "tagme",
+        "emoji",
+        "tabela",
+        "mytag",
+        "conselhosbilbicos",
+        "cantadas",
+        "conselhos",
+        "perfil",
+        "perfil2",
+        "calcular",
+        "calc",
+        "obesidade",
+        "contardias",
+        "fazernick",
+        "traduzir",
+        "contato",
+        "gerarcpf",
+        "qrcode",
+        "encurtalink",
+        "getperfil",
+        "getbio",
+        "lembrete",
+        "lermais",
+        "spoiler",
+        "idade",
+        "wame"
+      ]
+    },
+    {
+      "file": "src/utils/menus/rank.js",
+      "commands": [
+        "rank",
+        "rankgay",
+        "rankgado",
+        "rankfofo",
+        "rankengracado",
+        "ranksortudo",
+        "rankinteligente",
+        "rankparceiro"
+      ]
+    },
+    {
+      "file": "src/utils/menus/staff.js",
+      "commands": [
+        "addvip",
+        "delvip",
+        "viplist",
+        "setprefix",
+        "setnomebot",
+        "soadm",
+        "modox9",
+        "setpayment",
+        "salvarconfig"
+      ]
+    }
+  ],
+  "duplicateAliases": [],
+  "aliasesNotInMenus": [
+    "a",
+    "abracar",
+    "abraçar",
+    "abrirgp",
+    "addall",
+    "addcmdvip",
+    "addperm",
+    "addprefixo",
+    "addrc",
+    "adivinhar",
+    "admin",
+    "admins",
+    "adms",
+    "adotar",
+    "adotarfilho",
+    "advertencias",
+    "advertir",
+    "advlist",
+    "afago",
+    "afk",
+    "agp",
+    "allgp",
+    "allgroups",
+    "aluguel",
+    "animacoes",
+    "aniversario-global",
+    "aniversarioglobal",
+    "anti-arqv",
+    "anti-call",
+    "anti-status",
+    "antibtn",
+    "anticall",
+    "antidd-list",
+    "antidel",
+    "antilinkeary",
+    "antilinkgp",
+    "antinota",
+    "antinotas",
+    "antipalavrao",
+    "antipalavrão",
+    "antipv",
+    "antitravas",
+    "apis",
+    "apostar",
+    "app",
+    "ativadms",
+    "ativarrespostas",
+    "audio-menu",
+    "audio2doc",
+    "audio_documento",
+    "audioefeito",
+    "audiomenu",
+    "backup",
+    "baixar_audio_interno",
+    "baixarvideo",
+    "batalha",
+    "beijar",
+    "bemvindo",
+    "bemvindo2",
+    "bff",
+    "blacklist",
+    "blockcmd",
+    "blockcmdg",
+    "blockcmdglobal",
+    "blockgp",
+    "blocklist",
+    "blockuser",
+    "botinfo",
+    "brat",
+    "bratv",
+    "broadcast",
+    "buscar",
+    "cafune",
+    "casar",
+    "charada",
+    "clearperm",
+    "cloude",
+    "cmdviplist",
+    "compativel",
+    "configurarresposta",
+    "consmenu",
+    "consultar_vip",
+    "conta",
+    "criargp",
+    "criargrupo",
+    "deepseek",
+    "delblacklist",
+    "delcmdvip",
+    "delrc",
+    "delreacao",
+    "delreacoes",
+    "demote",
+    "desativarrespostas",
+    "desenhar",
+    "desligarresposta",
+    "desmute",
+    "dev",
+    "dias",
+    "divid",
+    "divmsg",
+    "divulgacao",
+    "divulgar",
+    "donogp",
+    "donoinfo",
+    "duelo",
+    "editarrespostas",
+    "editresposta",
+    "efeitos",
+    "entrargp",
+    "entrargrupo",
+    "ez",
+    "f",
+    "face",
+    "fancy",
+    "fb",
+    "fechargp",
+    "feedback",
+    "fgp",
+    "figia",
+    "figinfo",
+    "filme",
+    "filtro",
+    "fluximg",
+    "font",
+    "fotomenu",
+    "fundomenu",
+    "gerarimg",
+    "gestao",
+    "getcanal",
+    "getchannel",
+    "getgroupid",
+    "gethtml",
+    "grupo",
+    "grupoinfo",
+    "grupos",
+    "help",
+    "hidetag",
+    "hierarquia",
+    "hirarquia",
+    "ia-sticker",
+    "iafig",
+    "iasticker",
+    "idgrupo",
+    "ig",
+    "imgfiltro",
+    "infiel",
+    "infobv",
+    "insta",
+    "ipinfo",
+    "kickall",
+    "legendabv2",
+    "legendadoc",
+    "legendaestrangeiro",
+    "legendaimg",
+    "legendasaida",
+    "legendasaiu2",
+    "legendavid",
+    "lembrar",
+    "ligarresposta",
+    "limite_letras",
+    "limitecaracteres",
+    "limparembretes",
+    "linkgp",
+    "linkgroup",
+    "linkgrupo",
+    "lista_aluguel",
+    "listaadmins",
+    "listadonos",
+    "listanegra",
+    "listanegrag",
+    "listarc",
+    "listarespostas",
+    "listarlembretes",
+    "listarlembretesgrupo",
+    "listarreacao",
+    "listarreacoes",
+    "listbcmdglobal",
+    "listblacklist",
+    "listblockcmd",
+    "listblockcmdglobal",
+    "listblockgp",
+    "listblockgroups",
+    "listdonogp",
+    "listperm",
+    "livro",
+    "melhoresamigos",
+    "memes",
+    "menu",
+    "menubrincadeiras",
+    "menudownload",
+    "menuia",
+    "menuprincipal",
+    "menuref",
+    "menuteste",
+    "meucasal",
+    "meuid",
+    "meunumero",
+    "meusprefixos",
+    "mineiro",
+    "minhafamilia",
+    "modoaluguel",
+    "nexraybrat",
+    "nick-dono",
+    "nickdono",
+    "nome",
+    "nome-bot",
+    "noprefixo",
+    "nuke",
+    "numero-dono",
+    "numerodono",
+    "numeroid",
+    "off",
+    "on",
+    "owners",
+    "pagamento",
+    "paulista",
+    "personalizaremoji",
+    "pin",
+    "play_opcao_interno",
+    "playmusic",
+    "poll",
+    "prefixglobal",
+    "prefixo",
+    "profile",
+    "promote",
+    "puxarcase",
+    "puxarjid",
+    "qr",
+    "qualemusica",
+    "r",
+    "ranking",
+    "rankmenu",
+    "recarregar",
+    "reels",
+    "regraspv",
+    "reiniciar",
+    "reload",
+    "removealuguel",
+    "removebg",
+    "removeradv",
+    "removeraluguel",
+    "removerfotogp",
+    "removerlembrete",
+    "resetanimacao",
+    "resetxp",
+    "restart",
+    "revlinkgroup",
+    "rm_aluguel",
+    "rm_prefixo",
+    "rmblacklist",
+    "rmdonogp",
+    "rmperm",
+    "rmsubdono",
+    "sair",
+    "sair-all",
+    "sair_all",
+    "sair_chat",
+    "salvarlink",
+    "salvarlinkgp",
+    "savegp",
+    "separar",
+    "seradm",
+    "sermembro",
+    "setanimacao",
+    "setbotname",
+    "setemoji",
+    "setmenuimage",
+    "shazam",
+    "shipar",
+    "signoregistro",
+    "simisimi",
+    "so-dono",
+    "so_adm",
+    "so_dono",
+    "sodono",
+    "sortear",
+    "spotify",
+    "spotifyplay",
+    "staffmenu",
+    "statusgp",
+    "statusgrupo",
+    "suporte",
+    "t",
+    "tempo",
+    "tempo_comando",
+    "testarrespostas",
+    "testedd",
+    "testeload",
+    "testepay",
+    "testepayment",
+    "testepaymentnative",
+    "testepaynative",
+    "tik",
+    "timer",
+    "tiraradv",
+    "tirarprefixo",
+    "tk-video",
+    "toimage",
+    "topcomandos",
+    "tp",
+    "tt",
+    "unblacklist",
+    "unblockcmd",
+    "unblockcmdg",
+    "unblockcmdglobal",
+    "unblockgp",
+    "unblockuser",
+    "valor-pagamento",
+    "valorpagamento",
+    "vcard",
+    "vcf",
+    "velha",
+    "veraluguel",
+    "verblacklist",
+    "verblacklistgp",
+    "verificado",
+    "verificado-global",
+    "verificadoglobal",
+    "video",
+    "visualizarmsg",
+    "xvideo",
+    "ytplay",
+    "ytvideo",
+    "zerarativos",
+    "zerarxp"
+  ],
+  "menuMissing": [],
+  "loadErrors": []
+}

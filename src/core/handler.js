@@ -709,6 +709,18 @@ async function handler(sock, m, opcoes = {}) {
             if (textoLower.startsWith("t ")) texto = `${prefixoPrincipal}totag ${texto.slice(2)}`;
         }
 
+        if (!prefixoUsado && texto.trim()) {
+            const { processContinuousMessage } = require("../utils/aiConversation");
+            const respondeuNoModoIA = await processContinuousMessage({
+                sock,
+                message: m,
+                chat,
+                sender: remetente,
+                text: texto
+            });
+            if (respondeuNoModoIA) return;
+        }
+
         if (!prefixoUsado && texto.trim().toLowerCase() !== "prefixo") await applyAutomaticReplies(ctx, texto);
 
         if (texto.trim().toLowerCase() === "prefixo") {
@@ -761,7 +773,17 @@ async function handler(sock, m, opcoes = {}) {
         if (atalhoS) ctx.sQuantity = atalhoS[1] ? Number(atalhoS[1]) : 4;
         if (atalhoX) ctx.xQuantity = atalhoX[1] ? Number(atalhoX[1]) : 4;
 
-        const comando = atalhoS ? "s" : atalhoX ? "x" : comandoRecebido;
+        let comando = atalhoS ? "s" : atalhoX ? "x" : comandoRecebido;
+        if (!comandos.has(comando)) {
+            const normalizarNome = (valor) => String(valor || "")
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase().replace(/[^a-z0-9]/g, "");
+            const nomeBot = normalizarNome(require("../utils/botNameStore").getBotName());
+            if (nomeBot && normalizarNome(comando) === nomeBot) {
+                comando = "modoia";
+                args.unshift("on");
+            }
+        }
         ctx.args = args;
         ctx.command = comando;
         updateActivity(remetente, comando);

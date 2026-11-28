@@ -15,7 +15,8 @@ ${comandos.map(cmd => `${linha}${prefixo}${cmd}`).join("\n")}
 ${secao("ᴄᴏɴᴠᴇʀsᴀᴄ̧ᴀ̃ᴏ", [
     "gpt",
     "gemini",
-    "deepseek"
+    "claude",
+    "modoia"
 ])}
 
 ${secao("ɪᴍᴀɢᴇɴs", [
